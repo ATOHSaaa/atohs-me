@@ -148,4 +148,8 @@ footer {
     body {
         font-size: 1em;
     }
+
+    .top-links {
+        font-size: 1.5em;
+    }
 }
