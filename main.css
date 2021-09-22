@@ -133,6 +133,10 @@ footer {
         font-size: 1.5em;
     }
 
+    .header-links {
+        display: none;
+    }
+
     .header-link{
         margin-right: 1px;
     }
