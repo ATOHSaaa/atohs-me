@@ -5,6 +5,33 @@ body {
     font-size: 20px;
 }
 
+header {
+    height: 30px;
+    width: 100%;
+    margin: 0;
+}
+
+header a {
+    text-decoration: none;
+}
+
+.header-link a {
+    display: block;
+    align-items: flex-end;
+}
+
+.logo {
+    float: left;
+    font-size: 1.5em;
+}
+
+.header-links {
+    float: right;
+    font-size: 0.8em;
+    padding-top: 13px;
+}
+
+
 .top {
     margin-top: 200px;
     text-align: center;
@@ -94,6 +121,14 @@ footer {
 }
 
 @media (max-width: 767px) {
+    .logo {
+        font-size: 1.5em;
+    }
+
+    .header-link{
+        margin-right: 1px;
+    }
+
     .main {
         margin: 0px 15px;
     }
