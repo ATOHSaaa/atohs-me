@@ -85,6 +85,10 @@ footer {
     margin-top: 100px;
 }
 
+.right-list {
+    margin-right: 0px;
+}
+
 @media (max-width: 767px) {
     .main {
         margin: 0px 15px;
