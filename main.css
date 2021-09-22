@@ -121,6 +121,11 @@ footer {
 }
 
 @media (max-width: 767px) {
+
+    .top {
+        margin-top: 50px;
+    }
+
     .logo {
         font-size: 1.5em;
     }
