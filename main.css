@@ -62,8 +62,13 @@ header a {
 a {
     color: black;
     text-decoration-thickness: 2px;
+}
+
+.work a{
     font-size: 0.8em;
 }
+
+
 
 .top-links a{
     margin-right: 20px;
