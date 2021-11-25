@@ -128,6 +128,10 @@ footer {
     margin-right: 0px !important;
 }
 
+.top-dazai {
+    letter-spacing: .2em;
+}
+
 @media (max-width: 767px) {
 
     .top {
