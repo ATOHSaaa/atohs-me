@@ -140,6 +140,10 @@ footer {
     letter-spacing: .2em;
 }
 
+p {
+    letter-spacing: 0px;
+}
+
 
 @media (max-width: 767px) {
 
