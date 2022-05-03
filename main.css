@@ -69,7 +69,7 @@ header a {
 
 a {
     color: black;
-    text-decoration-thickness: 2px;
+    text-decoration: underline gray 1px; 
 }
 
 .work a{
