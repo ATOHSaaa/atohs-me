@@ -1,5 +1,5 @@
 body {
-    font-family:"Roboto", "Noto Sans JP",sans-serif;
+    font-family:YakuHanJP, "Roboto", "Noto Sans JP",sans-serif;
     letter-spacing: .1em;
     font-weight: 400;
     font-size: 18px;
@@ -28,7 +28,7 @@ header a {
 .logo {
     float: left;
     font-size: 1.5em;
-    margin-left: 80px;
+    margin-left: 5%;
     margin-top: 20px;
     letter-spacing: .1em;
 }
@@ -184,6 +184,10 @@ p {
 
     .main {
         margin: 0px 15px;
+    }
+
+    .logo {
+        margin-left: 10px;
     }
 
     h3 {
