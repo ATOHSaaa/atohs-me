@@ -82,7 +82,7 @@ header a {
 
 a {
     color: black;
-    text-decoration: underline gray 1px; 
+    text-decoration: underline rgb(170, 170, 170) 1px; 
 }
 
 .work a{
