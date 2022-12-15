@@ -109,7 +109,7 @@ a {
 
 .date{
     font-weight: bold;
-    font-size: 0.9em;
+    font-size: 1em;
     margin-bottom: -40px;
     letter-spacing: 2px;
 }
@@ -135,9 +135,9 @@ h3 {
 }
 
 h4 {
-    margin-top: 30px;
+    margin-top: 40px;
     margin-bottom: 0px;
-    font-size: 1.2em;
+    font-size: 1.4em;
 }
 
 ul {
@@ -163,8 +163,7 @@ footer {
 }
 
 p {
-    letter-spacing: 0px;
-    line-height: 36px;
+    line-height: 40px;
 }
 
 
