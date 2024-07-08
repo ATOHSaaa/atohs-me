@@ -195,7 +195,7 @@ p {
     height: 100%;
   }
 
-@media (max-width: 767px) {
+@media (max-width: 720px) {
 
     .top {
         margin-top: 50px;
@@ -214,7 +214,8 @@ p {
     }
 
     .main {
-        margin: 0px 15px;
+        width: 100%;
+        margin: 0px 15px !important;
     }
 
     .logo {
