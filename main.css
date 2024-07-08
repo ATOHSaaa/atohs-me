@@ -165,17 +165,27 @@ p {
 }
 
 
-table {
+.custom-table {
     border-collapse: collapse;
     width: 100%;
+    border: 1px solid #999;
     margin-top: 20px;
     margin-left: -8px;
+    line-height: 2.2em;
   }
-  table, th, td {
-    border: 1px solid white;
+  .custom-table td, .custom-table th {
+    border: 1px solid #ffffff;
     padding: 8px;
     text-align: left;
+    vertical-align: top;
   }
+
+  .custom-table td:first-child {
+    width: 0;
+    white-space: nowrap;
+    padding-right: 40px;
+  }
+  
 
 @media (max-width: 767px) {
 
