@@ -24,6 +24,10 @@ body {
     line-height: 1.4em;
 }
 
+.fab {
+    margin-right: 4px;
+}
+
 p {
     margin-top: 4px;
 }
