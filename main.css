@@ -142,6 +142,13 @@ h2 {
     letter-spacing: 0.1em;
 }
 
+h2 span {
+    margin-left: 20px;
+    font-size: 0.6em;
+    letter-spacing: 0;
+    vertical-align: middle;
+}
+
 h3 {
     margin-top: 20px;
     margin-bottom: 0px;
