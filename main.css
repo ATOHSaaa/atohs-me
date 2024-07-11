@@ -6,6 +6,7 @@ body {
     background-color: #FBFAF7;
     color: rgb(10, 10, 55);
     margin: 0;
+    border-top: rgb(10, 10, 55)solid 12px;
 }
 
 .name {
