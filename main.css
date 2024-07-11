@@ -140,10 +140,10 @@ h2 {
     margin-top: 40px;
     margin-bottom: 0px;
     letter-spacing: 0.1em;
-    animation: slideinTop 0.5s;
+    animation: slidein 0.5s;
 }
   
-  @keyframes slideinTop {
+  @keyframes slidein {
     0% {
       transform: translateX(16px);
     }
