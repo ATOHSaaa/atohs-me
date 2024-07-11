@@ -235,7 +235,8 @@ p {
     }
 
     h2 {
-        font-size: 1.3em;
+        font-size: 2em;
+        letter-spacing: .2em;
     }
 
     body {
