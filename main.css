@@ -3,7 +3,7 @@ body {
     letter-spacing: 0em;
     font-weight: 500;
     font-size: 18px;
-    background-color: rgb(255, 255, 255);
+    background-color: #FBFAF7;
     color: rgb(10, 10, 55);
     margin: 0;
 }
@@ -37,9 +37,6 @@ header a {
     letter-spacing: .1em;
 }
 
-.header-logo {
-
-}
 
 .header-links {
     float: right;
@@ -201,14 +198,14 @@ p {
 .custom-table {
     border-collapse: collapse;
     width: 100%;
-    border: 1px solid #999;
+    border: 1px solid #FBFAF7;
     margin-top: 20px;
     margin-left: -8px;
     line-height: 2.2em;
     margin-top: 0px;
   }
   .custom-table td, .custom-table th {
-    border: 1px solid #ffffff;
+    border: 1px solid #FBFAF7;
     padding: 8px;
     text-align: left;
     vertical-align: top;
@@ -218,6 +215,19 @@ p {
     width: 0;
     white-space: nowrap;
     padding-right: 20px;
+  }
+
+  .custom-table tr td span{
+    color: #FBFAF7;
+    background-color: rgb(10, 10, 55);
+    display: block;
+    padding: 0px 8px;
+    border-radius: 2px;
+ 
+  }
+
+  .table-2 tr td span {
+    margin-top: 8px;
   }
   
   .youtube {
