@@ -141,7 +141,7 @@ a {
 h2 {
     font-size: 1.5em;
     font-weight: 900;
-    margin-top: 60px;
+    margin-top: 48px;
     margin-bottom: 0px;
     letter-spacing: 0.2em;
     animation: slidein 0.5s;
@@ -208,9 +208,10 @@ p {
     line-height: 2.2em;
     margin-top: 0px;
   }
+
   .custom-table td, .custom-table th {
     border: 1px solid #FBFAF7;
-    padding: 8px;
+    padding: 20px 8px;
     text-align: left;
     vertical-align: top;
   }
@@ -232,7 +233,7 @@ p {
   }
 
   .table-2 tr td span {
-    margin-top: 8px;
+    margin-top: 10px;
   }
   
   .youtube {
@@ -297,4 +298,8 @@ p {
         margin: 20px 0;
         width: 90%;
     }
+
+    .custom-table tr td span {
+        margin-top:11px;
+      }
 }
