@@ -140,7 +140,17 @@ h2 {
     margin-top: 40px;
     margin-bottom: 0px;
     letter-spacing: 0.1em;
+    animation: slideinTop 0.5s;
 }
+  
+  @keyframes slideinTop {
+    0% {
+      transform: translateX(16px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
 
 h2 span {
     margin-left: 4px;
