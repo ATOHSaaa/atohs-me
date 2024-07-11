@@ -8,6 +8,12 @@ body {
     margin: 0;
 }
 
+.name {
+    font-size: 1.2em;
+    letter-spacing: .1em;
+    font-weight: 700;
+}
+
 .name-detail {
     font-size: 0.8em;
     color:rgba(10, 10, 55, .8);
@@ -26,7 +32,6 @@ header {
     margin: 0;
     font-weight: bold;
 }
-
 
 
 .logo {
@@ -96,14 +101,13 @@ header {
 
 
 a {
-    color: black;
-    text-decoration: underline rgb(170, 170, 170) 1px; 
+    color: rgb(10, 10, 55);
+    text-decoration: underline rgb(10, 10, 55) 2px; 
+    text-underline-offset: 6px;
+    font-weight: 700;
 }
 
 
-.top-links a{
-    margin-right: 20px;
-}
 
 .top-link ul {
     text-align: center;
@@ -167,7 +171,7 @@ h3 {
 }
 
 ul {
-    margin-top: 16px;
+    margin-top: 8px;
     margin-bottom: 52px;
     margin-left: -16px;
 }
