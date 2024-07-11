@@ -292,4 +292,9 @@ p {
     .header-top {
         padding: 0 20px;
     }
+
+    .header-logo {
+        margin: 20px 0;
+        width: 90%;
+    }
 }
