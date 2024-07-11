@@ -280,6 +280,24 @@ p {
     text-decoration: none;
 }
 
+.links {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.links a {
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-item {
+    border: rgba(10, 10, 55, .8) solid 2px;
+    margin-right: 8px;
+    border-radius: 4px;
+    padding: 0 8px;
+}
+
 @media (max-width: 720px) {
 
     .top {
