@@ -314,6 +314,10 @@ p {
     letter-spacing: .1em;
 }
 
+.cat-movie-item {
+    border: none;
+}
+
 @media (max-width: 720px) {
 
     .top {
