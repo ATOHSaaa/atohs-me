@@ -145,7 +145,7 @@ h2 {
   
   @keyframes slidein {
     0% {
-      transform: translateX(16px);
+      transform: translateY(16px);
     }
     100% {
       transform: translateX(0);
