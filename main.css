@@ -5,6 +5,7 @@ body {
     font-size: 18px;
     background-color: rgb(255, 255, 255);
     color: rgb(20, 20, 20);
+    margin: 0;
 }
 
 
@@ -33,6 +34,10 @@ header a {
     letter-spacing: .1em;
 }
 
+.header-logo {
+
+}
+
 .header-links {
     float: right;
     font-size: 0.8em;
@@ -48,6 +53,13 @@ header a {
 
 .top {
     text-align: center;
+}
+
+.header-top {
+    padding:0 40px;
+    font-weight: bold;
+    border-bottom: gray solid 1px;
+    margin: 0;
 }
 
 .top-logo {
@@ -96,7 +108,6 @@ a {
 .main {
     margin: 0 auto;
     width: 720px;
-    font-weight: normal;
 }
 
 .main a {
@@ -124,10 +135,10 @@ a {
 }
 
 h2 {
-    font-size: 1.4em;
+    font-size: 1.5em;
+    font-weight: 900;
     margin-top: 40px;
     margin-bottom: 0px;
-    font-family: 'Roboto', sans-serif;
     letter-spacing: 0.1em;
 }
 
@@ -224,7 +235,7 @@ p {
     }
 
     h2 {
-        font-size: 1.2em;
+        font-size: 1.3em;
     }
 
     body {
@@ -237,5 +248,9 @@ p {
 
     .cat-logo {
         font-size: 3.6em;
+    }
+
+    .header-top {
+        padding: 0 20px;
     }
 }
