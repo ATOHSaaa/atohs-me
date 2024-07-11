@@ -273,7 +273,7 @@ p {
 }
 
 .item h3 {
-    margin: 8px 4px 8px 4px;
+    margin: 8px;
 }
 
 .item span {
@@ -281,7 +281,7 @@ p {
     font-size: .9em;
     margin-top: -12px;
     display: block;
-    margin:0 4px 16px 4px;
+    margin:0 8px 16px 8px;
 }
 
 .item a {
