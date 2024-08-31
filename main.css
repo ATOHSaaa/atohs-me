@@ -16,16 +16,7 @@ body {
     
 }
 
-.name-detail {
-    font-size: 0.8em;
-    color:rgba(10, 10, 55, .8);
-    margin-top: 0px;
-    padding-bottom: 20px;
-    display: block;
-    line-height: 1.4em;
-    border-bottom: rgb(10, 10, 55) solid 2px;
-    max-width: 250px;
-}
+
 
 .fab {
     margin-right: 4px;
@@ -55,6 +46,10 @@ header {
     margin: 32px auto;
     width: 880px;
     font-weight: 900;
+}
+
+.header-logo a {
+    text-decoration: none;
 }
 
 .header-links {
@@ -328,6 +323,17 @@ p {
 
 .experience {
     font-weight: normal ;
+}
+
+.more {
+    background-color: rgb(10, 10, 55);
+    color: white;
+    text-align: center;
+    width: 30%;
+    margin: 0 auto;
+    margin-top: 40px;
+    margin-bottom: 80px;
+    border-radius: 4px;
 }
 
 @media (max-width: 720px) {
