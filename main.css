@@ -318,6 +318,18 @@ p {
     border: none;
 }
 
+.experience h3{
+    font-size: 1.2em;
+}
+
+.experience ul {
+    margin-bottom: 4px;
+}
+
+.experience {
+    font-weight: normal ;
+}
+
 @media (max-width: 720px) {
 
     .top {
