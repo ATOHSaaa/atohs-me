@@ -4,10 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "predev": "node scripts/ensure-og-font.mjs",
+    "prebuild": "node scripts/ensure-og-font.mjs",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "ensure-og-font": "node scripts/ensure-og-font.mjs"
   },
   "dependencies": {
-    "astro": "^5.7.10"
+    "@resvg/resvg-js": "^2.6.2",
+    "astro": "^5.7.10",
+    "satori": "^0.28.0"
   }
 }

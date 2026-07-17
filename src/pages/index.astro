@@ -1,13 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 ---
 
 <BaseLayout title="atohs.me | あとーすのプロフィール">
-  <div class="header-top">
-    <h1 class="header-logo">
-      <a href="/">atohs.me</a>
-    </h1>
-  </div>
+  <SiteHeader />
   <div class="main">
     <div class="name-box">
       <h2 id="real-name">氏名<br /><span>name</span></h2>
@@ -122,8 +119,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </tr>
     </table>
 
+    <h2>ブログ<br /><span>Blog</span></h2>
+    <a href="/blog"><p class="more"><span>ブログを見る</span></p></a>
+
     <h2>リンク<br /><span>Links</span></h2>
     <div class="links">
+      <a href="/blog"><p class="link-item">Blog</p></a>
       <a href="https://twitter.com/atohsaaa" target="_blank" rel="noopener noreferrer"
         ><p class="link-item"><i class="fab fa-twitter"></i>Twitter</p></a
       >
@@ -148,7 +149,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <a href="https://atohs.press" target="_blank" rel="noopener noreferrer"><p class="link-item">個人ブログ</p></a>
     </div>
 
-    <h2>お問い合わせ<br /><span>Contact</span></h2>
+    <h2 id="contact">お問い合わせ<br /><span>Contact</span></h2>
     <div>
       <p>
         info@tadeku.netにメールをお送りいただくか、<a href="https://twitter.com/atohsaaa" target="_blank" rel="noopener noreferrer"
