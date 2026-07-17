@@ -375,6 +375,23 @@ p {
     flex-shrink: 0;
 }
 
+.blog-more {
+    text-align: right;
+    margin-top: 24px;
+    margin-bottom: 80px;
+}
+
+.blog-more a {
+    display: inline-block;
+    background-color: rgb(10, 10, 55);
+    color: #FBFAF7;
+    text-decoration: none;
+    padding: 0 16px;
+    border-radius: 4px;
+    line-height: 2.2em;
+    font-weight: 700;
+}
+
 .breadcrumb {
     margin-top: 48px;
     margin-bottom: 24px;
