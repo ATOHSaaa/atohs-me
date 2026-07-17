@@ -1,3 +1,0 @@
-RewriteEngine on
-RewriteCond %{THE_REQUEST} ^.*/index.html
-RewriteRule ^(.*)index.html$ http://atohs.me/$1 [R=301,L]
