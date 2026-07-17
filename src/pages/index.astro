@@ -58,6 +58,23 @@ const formatDate = (date: Date) =>
     </table>
     <a href="/my-business-experience"><p class="more"><span>職歴詳細を見る</span></p></a>
 
+    <h2>ブログ<br /><span>Blog</span></h2>
+    {
+      latestPosts.length === 0 ? (
+        <p>まだ記事はありません。</p>
+      ) : (
+        <ul class="blog-list">
+          {latestPosts.map((post) => (
+            <li class="blog-list-item">
+              <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+              <a href={`/blog/${post.id}`}>{post.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <p class="blog-more"><a href="/blog">もっと読む</a></p>
+
     <h2>個人プロジェクト<br /><span>Personal projects</span></h2>
     <div class="container">
       <div class="item">
@@ -130,23 +147,6 @@ const formatDate = (date: Date) =>
         </td>
       </tr>
     </table>
-
-    <h2>ブログ<br /><span>Blog</span></h2>
-    {
-      latestPosts.length === 0 ? (
-        <p>まだ記事はありません。</p>
-      ) : (
-        <ul class="blog-list">
-          {latestPosts.map((post) => (
-            <li class="blog-list-item">
-              <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-              <a href={`/blog/${post.id}`}>{post.data.title}</a>
-            </li>
-          ))}
-        </ul>
-      )
-    }
-    <p class="blog-more"><a href="/blog">もっと読む</a></p>
 
     <h2>リンク<br /><span>Links</span></h2>
     <div class="links">
