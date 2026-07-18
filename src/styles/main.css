@@ -14,8 +14,8 @@ body {
     align-items: flex-start;
     gap: 32px;
     margin-top: 48px;
-    /* 氏名（1行）+ 余白 + 詳細（2行）の高さ */
-    --name-block-height: calc(1.2em * 1.4 + 4px + 1em * 1.6 * 3);
+    /* 詳細（3行）の高さ */
+    --name-block-height: calc(1em * 1.6 * 3);
 }
 
 .profile-icon {
@@ -37,6 +37,10 @@ body {
 .name-detail {
     margin: 4px 0 0;
     line-height: 1.6;
+}
+
+.name-primary {
+    font-weight: 700;
 }
 
 
