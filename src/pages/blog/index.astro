@@ -21,8 +21,11 @@ const formatDate = (date: Date) =>
   ogUrl="https://atohs.me/blog"
 >
   <SiteHeader />
-  <div class="main">
-    <h2>ブログ<br /><span>Blog</span></h2>
+  <main id="main-content" class="main">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="blog-title">ブログ記事一覧</h1>
 
     {
       posts.length === 0 ? (
@@ -38,5 +41,5 @@ const formatDate = (date: Date) =>
         </ul>
       )
     }
-  </div>
+  </main>
 </BaseLayout>

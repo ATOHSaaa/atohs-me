@@ -16,8 +16,8 @@ const formatDate = (date: Date) =>
 ---
 
 <BaseLayout title="atohs.me | あとーすのプロフィール">
-  <SiteHeader />
-  <div class="main">
+  <SiteHeader isHome />
+  <main id="main-content" class="main">
     <div class="name-box">
       <h2 id="real-name">氏名<br /><span>name</span></h2>
       <span class="name">伊藤 祥太</span><br />
@@ -33,28 +33,40 @@ const formatDate = (date: Date) =>
 
     <h2>職歴<br /><span>My business experience</span></h2>
     <table class="custom-table">
-      <tr>
-        <td><span>2021/09 - 現在</span></td>
-        <td>個人事業主 （屋号：蓼食う本の虫）</td>
-      </tr>
-      <tr>
-        <td><span>2022/07 - 2025/03</span></td>
-        <td>
-          <a href="https://tooon.co.jp/" target="_blank" rel="noopener noreferrer">Tooon株式会社</a>
-          カスタマーサポート・ライターなど （業務委託）
-        </td>
-      </tr>
-      <tr>
-        <td><span>2018/04 - 2021/08</span></td>
-        <td>
-          <a href="https://www.pixiv.co.jp/" target="_blank" rel="noopener noreferrer">ピクシブ株式会社</a>
-          プロダクトマネージャー・カスタマーサポート （正社員）
-        </td>
-      </tr>
-      <tr>
-        <td><span>2016/04 - 2018/03</span></td>
-        <td>印刷会社 営業・Webディレクター （正社員）</td>
-      </tr>
+      <thead class="visually-hidden">
+        <tr>
+          <th scope="col">期間</th>
+          <th scope="col">内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span>2021/09 - 現在</span></td>
+          <td>個人事業主 （屋号：蓼食う本の虫）</td>
+        </tr>
+        <tr>
+          <td><span>2022/07 - 2025/03</span></td>
+          <td>
+            <a href="https://tooon.co.jp/" target="_blank" rel="noopener noreferrer"
+              >Tooon株式会社<span class="visually-hidden">（新しいタブで開く）</span></a
+            >
+            カスタマーサポート・ライターなど （業務委託）
+          </td>
+        </tr>
+        <tr>
+          <td><span>2018/04 - 2021/08</span></td>
+          <td>
+            <a href="https://www.pixiv.co.jp/" target="_blank" rel="noopener noreferrer"
+              >ピクシブ株式会社<span class="visually-hidden">（新しいタブで開く）</span></a
+            >
+            プロダクトマネージャー・カスタマーサポート （正社員）
+          </td>
+        </tr>
+        <tr>
+          <td><span>2016/04 - 2018/03</span></td>
+          <td>印刷会社 営業・Webディレクター （正社員）</td>
+        </tr>
+      </tbody>
     </table>
     <a href="/my-business-experience"><p class="more"><span>職歴詳細を見る</span></p></a>
 
@@ -78,110 +90,93 @@ const formatDate = (date: Date) =>
     <h2>個人プロジェクト<br /><span>Personal projects</span></h2>
     <div class="container">
       <div class="item">
-        <a href="https://tadeku.net" target="_blank" rel="noopener noreferrer"
-          ><img src="/src/tadeku.png" alt="蓼食う本の虫" /></a
-        >
-        <h3><a href="https://tadeku.net" target="_blank" rel="noopener noreferrer">蓼食う本の虫</a></h3>
+        <a class="item-link" href="https://tadeku.net" target="_blank" rel="noopener noreferrer">
+          <img src="/src/tadeku.png" alt="" />
+          <h3>蓼食う本の虫</h3>
+          <span class="visually-hidden">（新しいタブで開く）</span>
+        </a>
         <span>読む・書くを身近にする文芸Webメディア。2016年3月から運営しています。</span>
       </div>
       <div class="item">
-        <a href="/cat-in-the-park"><img src="/src/cat.png" alt="Cat in the park." /></a>
-        <h3><a href="/cat-in-the-park">Cat in the park.</a></h3>
+        <a class="item-link" href="/cat-in-the-park">
+          <img src="/src/cat.png" alt="" />
+          <h3>Cat in the park.</h3>
+        </a>
         <span>作業用の猫動画を投稿するプロジェクトです。</span>
       </div>
       <div class="item">
-        <a href="https://magicology.jp" target="_blank" rel="noopener noreferrer"
-          ><img src="/src/magicology.png" alt="日本魔法魔術学会" /></a
-        >
-        <h3><a href="https://magicology.jp" target="_blank" rel="noopener noreferrer">日本魔法魔術学会</a></h3>
+        <a class="item-link" href="https://magicology.jp" target="_blank" rel="noopener noreferrer">
+          <img src="/src/magicology.png" alt="" />
+          <h3>日本魔法魔術学会</h3>
+          <span class="visually-hidden">（新しいタブで開く）</span>
+        </a>
         <span>魔法魔術に関する論文・調査報告を掲載しています。</span>
       </div>
       <div class="item">
-        <a href="https://maho.online" target="_blank" rel="noopener noreferrer"
-          ><img src="/src/maho.png" alt="Maho ONLINE" /></a
-        >
-        <h3><a href="https://maho.online" target="_blank" rel="noopener noreferrer">Maho ONLINE</a></h3>
+        <a class="item-link" href="https://maho.online" target="_blank" rel="noopener noreferrer">
+          <img src="/src/maho.png" alt="" />
+          <h3>Maho ONLINE</h3>
+          <span class="visually-hidden">（新しいタブで開く）</span>
+        </a>
         <span>賢い魔法使いのためのニュースメディアです。</span>
       </div>
     </div>
 
-    <h2>掲載<br /><span>Publish</span></h2>
-    <table class="custom-table table-2">
-      <tr>
-        <td><span>2021年</span></td>
-        <td>
-          <a href="https://www.asahi.com/articles/ASDFG1234/" target="_blank" rel="noopener noreferrer"
-            >【大学力】熊本大学 | 九州・山口・沖縄の大学力 | 朝日新聞デジタル</a
-          >に、熊本大学の卒業生としてコメントを寄せました
-        </td>
-      </tr>
-      <tr>
-        <td><span>2021年</span></td>
-        <td>
-          <a href="https://maidonews.jp/article/12345/" target="_blank" rel="noopener noreferrer"
-            >「すべからく」「おもむろに」…本来の意味から離れて使われることがある言葉たちが話題に | まいどなニュース</a
-          >に、蓼食う本の虫を取り上げていただきました
-        </td>
-      </tr>
-      <tr>
-        <td><span>2019年</span></td>
-        <td>
-          <a href="https://lylehout.com/nia-vol3/" target="_blank" rel="noopener noreferrer">『Nia vol.3』</a
-          >に、巻末特集「140字小説の世界」でインタビューを掲載していただきました
-        </td>
-      </tr>
-      <tr>
-        <td><span>2015年</span></td>
-        <td>
-          <a href="https://nlab.itmedia.co.jp/nlab/" target="_blank" rel="noopener noreferrer"
-            >マイケル・ジャクソンはどれくらい「ポー」してる？→実際に調べてみた結果がやっぱりすごい | ねとらぼ</a
-          >に、ブログ「数の奴隷」を取り上げていただきました
-        </td>
-      </tr>
-      <tr>
-        <td><span>2015年</span></td>
-        <td>
-          <a href="https://nlab.itmedia.co.jp/nlab/" target="_blank" rel="noopener noreferrer"
-            >BUMP OF CHICKENの曲から「オーイエアハーン」を取ると何が残る？→実際に調べてみた結果がすごい | ねとらぼ</a
-          >に、ブログ「数の奴隷」を取り上げていただきました
-        </td>
-      </tr>
-    </table>
-
     <h2>リンク<br /><span>Links</span></h2>
     <div class="links">
-      <a href="/blog"><p class="link-item">Blog</p></a>
       <a href="https://twitter.com/atohsaaa" target="_blank" rel="noopener noreferrer"
-        ><p class="link-item"><i class="fab fa-twitter"></i>Twitter</p></a
+        ><p class="link-item">
+          <i class="fab fa-twitter" aria-hidden="true"></i>Twitter<span class="visually-hidden"
+            >（新しいタブで開く）</span
+          >
+        </p></a
       >
       <a href="https://instagram.com/atohsaaa" target="_blank" rel="noopener noreferrer"
-        ><p class="link-item"><i class="fab fa-instagram"></i>Instagram</p></a
+        ><p class="link-item">
+          <i class="fab fa-instagram" aria-hidden="true"></i>Instagram<span class="visually-hidden"
+            >（新しいタブで開く）</span
+          >
+        </p></a
       >
       <a href="https://www.facebook.com/shota.ito.9" target="_blank" rel="noopener noreferrer"
-        ><p class="link-item"><i class="fab fa-facebook-f"></i>Facebook</p></a
+        ><p class="link-item">
+          <i class="fab fa-facebook-f" aria-hidden="true"></i>Facebook<span class="visually-hidden"
+            >（新しいタブで開く）</span
+          >
+        </p></a
       >
       <a href="https://www.linkedin.com/in/atohs" target="_blank" rel="noopener noreferrer"
-        ><p class="link-item"><i class="fab fa-linkedin"></i>LinkedIn</p></a
+        ><p class="link-item">
+          <i class="fab fa-linkedin" aria-hidden="true"></i>LinkedIn<span class="visually-hidden"
+            >（新しいタブで開く）</span
+          >
+        </p></a
       >
       <a href="https://note.com/atohsaaa/" target="_blank" rel="noopener noreferrer"
-        ><p class="link-item"><i class="fab fa-memo"></i>note</p></a
+        ><p class="link-item">
+          <i class="fas fa-pen-to-square" aria-hidden="true"></i>note<span class="visually-hidden"
+            >（新しいタブで開く）</span
+          >
+        </p></a
       >
       <a href="https://youtrust.jp/users/atohs" target="_blank" rel="noopener noreferrer"
-        ><p class="link-item">YOUTRUST</p></a
+        ><p class="link-item">YOUTRUST<span class="visually-hidden">（新しいタブで開く）</span></p></a
       >
       <a href="https://www.wantedly.com/id/shota_ito_i" target="_blank" rel="noopener noreferrer"
-        ><p class="link-item">Wantedly</p></a
+        ><p class="link-item">Wantedly<span class="visually-hidden">（新しいタブで開く）</span></p></a
       >
-      <a href="https://atohs.press" target="_blank" rel="noopener noreferrer"><p class="link-item">個人ブログ</p></a>
+      <a href="https://atohs.press" target="_blank" rel="noopener noreferrer"
+        ><p class="link-item">個人ブログ<span class="visually-hidden">（新しいタブで開く）</span></p></a
+      >
     </div>
 
     <h2 id="contact">お問い合わせ<br /><span>Contact</span></h2>
     <div>
       <p>
         info@tadeku.netにメールをお送りいただくか、<a href="https://twitter.com/atohsaaa" target="_blank" rel="noopener noreferrer"
-          >TwitterのDM</a
+          >TwitterのDM<span class="visually-hidden">（新しいタブで開く）</span></a
         >でお声がけください。
       </p>
     </div>
-  </div>
+  </main>
 </BaseLayout>
