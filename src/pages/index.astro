@@ -1,7 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import catImage from '../cat.png';
+import mahoImage from '../maho.png';
+import tadekuImage from '../tadeku.png';
 
 const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -19,58 +23,66 @@ const formatDate = (date: Date) =>
   <SiteHeader isHome />
   <main id="main-content" class="main">
     <div class="name-box">
-      <h2 id="real-name">氏名<br /><span>name</span></h2>
-      <span class="name">伊藤 祥太</span><br />
-      <span class="name-detail"
-        >SHOTA ITO<br />
-        Born in November 13, 1993 🎉</span
-      >
-      <h2 id="about">プロフィール<br /><span>Profile</span></h2>
-      <p class="profile-text">
-        熊本大学文学部文学科卒。印刷会社で営業・Webディレクター、IT系ベンチャー企業でPdM・カスタマーサポートとして勤務した後に独立。ことばや文章に関することを中心に、企画・制作を担当します。
-      </p>
+      <img class="profile-icon" src="/src/favicon.ico" alt="" width="128" height="128" />
+      <div class="name-body">
+        <p class="name">伊藤 祥太</p>
+        <p class="name-detail">
+          SHOTA ITO<br />
+          Born in November 13, 1993 🎉 / Live in Kumamoto 🧸<br />
+          Website Developent / Web Marketing / Writing / Editing
+        </p>
+      </div>
     </div>
+    <p class="profile-text">
+      熊本大学文学部文学科卒。印刷会社で営業・Webディレクター、IT系ベンチャー企業でPdM・カスタマーサポートとして勤務した後に独立。ことばや文章に関することを中心に、企画・制作を担当します。
+    </p>
 
-    <h2>職歴<br /><span>My business experience</span></h2>
-    <table class="custom-table">
-      <thead class="visually-hidden">
-        <tr>
-          <th scope="col">期間</th>
-          <th scope="col">内容</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span>2021/09 - 現在</span></td>
-          <td>個人事業主 （屋号：蓼食う本の虫）</td>
-        </tr>
-        <tr>
-          <td><span>2022/07 - 2025/03</span></td>
-          <td>
+    <h2>職歴</h2>
+    <ul class="career-list">
+      <li class="career-item">
+        <span class="date-range">
+          <span class="date-start">2021/09</span>
+          <span class="date-sep" aria-hidden="true">-</span>
+          <span class="date-end date-end--current">現在</span>
+        </span>
+        個人事業主 （屋号：蓼食う本の虫）
+        <ul class="career-list">
+          <li class="career-item">
+            <span class="date-range">
+              <span class="date-start">2022/07</span>
+              <span class="date-sep" aria-hidden="true">-</span>
+              <span class="date-end">2025/03</span>
+            </span>
             <a href="https://tooon.co.jp/" target="_blank" rel="noopener noreferrer"
               >Tooon株式会社<span class="visually-hidden">（新しいタブで開く）</span></a
             >
-            カスタマーサポート・ライターなど （業務委託）
-          </td>
-        </tr>
-        <tr>
-          <td><span>2018/04 - 2021/08</span></td>
-          <td>
-            <a href="https://www.pixiv.co.jp/" target="_blank" rel="noopener noreferrer"
-              >ピクシブ株式会社<span class="visually-hidden">（新しいタブで開く）</span></a
-            >
-            プロダクトマネージャー・カスタマーサポート （正社員）
-          </td>
-        </tr>
-        <tr>
-          <td><span>2016/04 - 2018/03</span></td>
-          <td>印刷会社 営業・Webディレクター （正社員）</td>
-        </tr>
-      </tbody>
-    </table>
+            CS・マーケ （業務委託）
+          </li>
+        </ul>
+      </li>
+      <li class="career-item">
+        <span class="date-range">
+          <span class="date-start">2018/04</span>
+          <span class="date-sep" aria-hidden="true">-</span>
+          <span class="date-end">2021/08</span>
+        </span>
+        <a href="https://www.pixiv.co.jp/" target="_blank" rel="noopener noreferrer"
+          >ピクシブ株式会社<span class="visually-hidden">（新しいタブで開く）</span></a
+        >
+        PdM・CS （正社員）
+      </li>
+      <li class="career-item">
+        <span class="date-range">
+          <span class="date-start">2016/04</span>
+          <span class="date-sep" aria-hidden="true">-</span>
+          <span class="date-end">2018/03</span>
+        </span>
+        印刷会社 営業・Webディレクター （正社員）
+      </li>
+    </ul>
     <a href="/my-business-experience"><p class="more"><span>職歴詳細を見る</span></p></a>
 
-    <h2>ブログ<br /><span>Blog</span></h2>
+    <h2>ブログ</h2>
     {
       latestPosts.length === 0 ? (
         <p>まだ記事はありません。</p>
@@ -87,11 +99,19 @@ const formatDate = (date: Date) =>
     }
     <p class="blog-more"><a href="/blog">ブログをもっと読む</a></p>
 
-    <h2>個人プロジェクト<br /><span>Personal projects</span></h2>
+    <h2>個人プロジェクト</h2>
     <div class="container">
       <div class="item">
         <a class="item-link" href="https://tadeku.net" target="_blank" rel="noopener noreferrer">
-          <img src="/src/tadeku.png" alt="" />
+          <Image
+            src={tadekuImage}
+            alt=""
+            widths={[360, 720]}
+            sizes="(max-width: 720px) 90vw, 346px"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
           <h3>蓼食う本の虫</h3>
           <span class="visually-hidden">（新しいタブで開く）</span>
         </a>
@@ -99,22 +119,46 @@ const formatDate = (date: Date) =>
       </div>
       <div class="item">
         <a class="item-link" href="/cat-in-the-park">
-          <img src="/src/cat.png" alt="" />
+          <Image
+            src={catImage}
+            alt=""
+            widths={[360, 720]}
+            sizes="(max-width: 720px) 90vw, 346px"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
           <h3>Cat in the park.</h3>
         </a>
         <span>作業用の猫動画を投稿するプロジェクトです。</span>
       </div>
       <div class="item">
-        <a class="item-link" href="https://magicology.jp" target="_blank" rel="noopener noreferrer">
-          <img src="/src/magicology.png" alt="" />
-          <h3>日本魔法魔術学会</h3>
+        <a class="item-link" href="https://tools.tadeku.net" target="_blank" rel="noopener noreferrer">
+          <Image
+            src={tadekuImage}
+            alt=""
+            widths={[360, 720]}
+            sizes="(max-width: 720px) 90vw, 346px"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
+          <h3>tadeku-tools</h3>
           <span class="visually-hidden">（新しいタブで開く）</span>
         </a>
-        <span>魔法魔術に関する論文・調査報告を掲載しています。</span>
+        <span>蓼食う本の虫が提供する、執筆に役立つツールをまとめています。</span>
       </div>
       <div class="item">
         <a class="item-link" href="https://maho.online" target="_blank" rel="noopener noreferrer">
-          <img src="/src/maho.png" alt="" />
+          <Image
+            src={mahoImage}
+            alt=""
+            widths={[360, 720]}
+            sizes="(max-width: 720px) 90vw, 346px"
+            format="webp"
+            loading="lazy"
+            decoding="async"
+          />
           <h3>Maho ONLINE</h3>
           <span class="visually-hidden">（新しいタブで開く）</span>
         </a>
@@ -122,7 +166,7 @@ const formatDate = (date: Date) =>
       </div>
     </div>
 
-    <h2>リンク<br /><span>Links</span></h2>
+    <h2>リンク</h2>
     <div class="links">
       <a href="https://twitter.com/atohsaaa" target="_blank" rel="noopener noreferrer"
         ><p class="link-item">
@@ -170,7 +214,7 @@ const formatDate = (date: Date) =>
       >
     </div>
 
-    <h2 id="contact">お問い合わせ<br /><span>Contact</span></h2>
+    <h2 id="contact">お問い合わせ</h2>
     <div>
       <p>
         info@tadeku.netにメールをお送りいただくか、<a href="https://twitter.com/atohsaaa" target="_blank" rel="noopener noreferrer"
