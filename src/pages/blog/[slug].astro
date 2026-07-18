@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import { createPostDescription } from '../../lib/post-description';
+import { formatDate } from '../../lib/format-date';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -18,13 +19,6 @@ const { Content } = await render(post);
 const postUrl = `https://atohs.me/blog/${post.id}`;
 const ogImage = `https://atohs.me/blog/${post.id}/og.png`;
 const description = createPostDescription(post.body ?? '');
-
-const formatDate = (date: Date) =>
-  date.toLocaleDateString('ja-JP', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
 ---
 
 <BaseLayout

@@ -6,9 +6,9 @@ interface Props {
 
 const { url, title } = Astro.props;
 const encodedUrl = encodeURIComponent(url);
-const encodedTitle = encodeURIComponent(title);
+const encodedTitle = encodeURIComponent(`${title}\n`);
 const hatenaUrl = `https://b.hatena.ne.jp/entry/panel/?url=${encodedUrl}`;
-const xUrl = `https://x.com/intent/post?url=${encodedUrl}&text=${encodedTitle}`;
+const xUrl = `https://x.com/intent/post?text=${encodedTitle}&url=${encodedUrl}`;
 ---
 
 <div class="share-buttons">
@@ -30,4 +30,38 @@ const xUrl = `https://x.com/intent/post?url=${encodedUrl}&text=${encodedTitle}`;
   >
     X
   </a>
+  <button
+    type="button"
+    class="share-button share-link"
+    data-share-url={url}
+    aria-label="リンクをコピー"
+  >
+    <i class="fa-solid fa-link" aria-hidden="true"></i>
+  </button>
 </div>
+
+<script>
+  document.querySelectorAll('.share-link').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const url = button.dataset.shareUrl;
+      if (!url) return;
+
+      const originalLabel = button.getAttribute('aria-label') ?? 'リンクをコピー';
+      const originalContent = button.innerHTML;
+
+      try {
+        await navigator.clipboard.writeText(url);
+        button.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i>';
+        button.setAttribute('aria-label', 'リンクをコピーしました');
+      } catch {
+        window.prompt('リンクをコピーしてください', url);
+        return;
+      }
+
+      window.setTimeout(() => {
+        button.innerHTML = originalContent;
+        button.setAttribute('aria-label', originalLabel);
+      }, 1500);
+    });
+  });
+</script>

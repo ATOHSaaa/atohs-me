@@ -308,7 +308,7 @@ p {
 .career-item .date-range {
     display: inline-grid;
     grid-template-columns: max-content max-content 7ch;
-    column-gap: 0.25em;
+    column-gap: 0.5em;
     align-items: center;
     margin-right: 0.5em;
     font-size: 0.8em;
@@ -321,8 +321,8 @@ p {
     text-align: center;
 }
 
-.date-end--current {
-    text-align: center;
+.date-range:has(.date-end--current) {
+    grid-template-columns: max-content max-content max-content;
 }
 
   .table-2 tr td span {
@@ -455,12 +455,9 @@ p {
 }
 
 .blog-list-item time {
-    color: #FBFAF7;
-    background-color: rgb(10, 10, 55);
-    display: inline-block;
-    padding: 0 8px;
-    border-radius: 2px;
+    color: rgb(10, 10, 55);
     font-size: 0.8em;
+    font-weight: 700;
     white-space: nowrap;
     flex-shrink: 0;
 }
@@ -554,9 +551,9 @@ p {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 36px;
-    height: 36px;
-    padding: 0 10px;
+    width: 44px;
+    height: 48px;
+    padding: 0;
     border: rgba(10, 10, 55, 0.8) solid 2px;
     border-radius: 4px;
     text-decoration: none;
@@ -564,6 +561,11 @@ p {
     font-size: 0.85em;
     line-height: 1;
     box-sizing: border-box;
+    background: none;
+    color: rgb(10, 10, 55);
+    cursor: pointer;
+    font-family: inherit;
+    flex-shrink: 0;
 }
 
 .share-hatena {
@@ -572,6 +574,10 @@ p {
 }
 
 .share-x {
+    font-family: 'Roboto', sans-serif;
+}
+
+.share-link {
     font-family: 'Roboto', sans-serif;
 }
 

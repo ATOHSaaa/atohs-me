@@ -6,17 +6,11 @@ import SiteHeader from '../components/SiteHeader.astro';
 import catImage from '../cat.png';
 import mahoImage from '../maho.png';
 import tadekuImage from '../tadeku.png';
+import { formatDate } from '../lib/format-date';
 
 const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
-
-const formatDate = (date: Date) =>
-  date.toLocaleDateString('ja-JP', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
 ---
 
 <BaseLayout title="atohs.me | あとーすのプロフィール">
@@ -40,7 +34,7 @@ const formatDate = (date: Date) =>
     <ul class="career-list">
       <li class="career-item">
         <span class="date-range">
-          <span class="date-start">2021/09</span>
+          <span class="date-start">2021.09</span>
           <span class="date-sep" aria-hidden="true">-</span>
           <span class="date-end date-end--current">現在</span>
         </span>
@@ -48,9 +42,9 @@ const formatDate = (date: Date) =>
         <ul class="career-list">
           <li class="career-item">
             <span class="date-range">
-              <span class="date-start">2022/07</span>
+              <span class="date-start">2022.07</span>
               <span class="date-sep" aria-hidden="true">-</span>
-              <span class="date-end">2025/03</span>
+              <span class="date-end">2025.03</span>
             </span>
             <a href="https://tooon.co.jp/" target="_blank" rel="noopener noreferrer"
               >Tooon株式会社<span class="visually-hidden">（新しいタブで開く）</span></a
@@ -61,9 +55,9 @@ const formatDate = (date: Date) =>
       </li>
       <li class="career-item">
         <span class="date-range">
-          <span class="date-start">2018/04</span>
+          <span class="date-start">2018.04</span>
           <span class="date-sep" aria-hidden="true">-</span>
-          <span class="date-end">2021/08</span>
+          <span class="date-end">2021.08</span>
         </span>
         <a href="https://www.pixiv.co.jp/" target="_blank" rel="noopener noreferrer"
           >ピクシブ株式会社<span class="visually-hidden">（新しいタブで開く）</span></a
@@ -72,9 +66,9 @@ const formatDate = (date: Date) =>
       </li>
       <li class="career-item">
         <span class="date-range">
-          <span class="date-start">2016/04</span>
+          <span class="date-start">2016.04</span>
           <span class="date-sep" aria-hidden="true">-</span>
-          <span class="date-end">2018/03</span>
+          <span class="date-end">2018.03</span>
         </span>
         印刷会社 営業・Webディレクター （正社員）
       </li>
