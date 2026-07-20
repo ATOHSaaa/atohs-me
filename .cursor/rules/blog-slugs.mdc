@@ -1,0 +1,11 @@
+---
+description: Blog post filename and slug conventions
+globs: src/content/blog/**
+alwaysApply: false
+---
+
+# Blog slug naming
+
+- Use English kebab-case for blog post filenames (e.g. `summer-and-fishing.md`).
+- The filename becomes the URL slug (`/blog/summer-and-fishing/`).
+- Titles in frontmatter may be in Japanese; only the filename/slug is English.
