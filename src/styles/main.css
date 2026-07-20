@@ -44,7 +44,7 @@ a {
   color: var(--color-text);
   font-weight: 700;
   text-decoration: underline var(--color-text) 2px;
-  text-underline-offset: 4px;
+  text-underline-offset: 6px;
 }
 
 h2,
@@ -307,6 +307,10 @@ footer {
 .name-detail {
   margin: 4px 0 0;
   line-height: 1.6;
+}
+
+.name-detail-line {
+  display: block;
 }
 
 .name-primary {
@@ -603,6 +607,10 @@ footer {
   text-align: justify;
 }
 
+.blog-body a {
+  text-underline-offset: 4px;
+}
+
 .blog-body p {
   line-height: 1.8;
   margin-bottom: 1.2em;
@@ -748,6 +756,20 @@ footer {
     align-items: center;
     gap: 16px;
     text-align: center;
+  }
+
+  .name-body {
+    width: 100%;
+    container-type: inline-size;
+  }
+
+  .name-detail-line {
+    white-space: nowrap;
+    font-size: clamp(0.625rem, 3.75cqi, 1.1em);
+  }
+
+  .name-detail-line.name-primary {
+    font-size: clamp(0.75rem, 4.6cqi, 1.3em);
   }
 
   .profile-icon {
