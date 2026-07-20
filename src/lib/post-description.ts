@@ -9,6 +9,7 @@ export const createPostDescription = (body: string) => {
 
   const plainText = firstParagraph
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+?)\s+(https?:\/\/[^\s\]]+)\]/g, '$1')
     .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
     .replace(/[`*_~>#]/g, '')
     .replace(/\s+/g, ' ')
