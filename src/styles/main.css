@@ -499,8 +499,18 @@ footer {
 }
 
 .more {
-  width: 30%;
+  width: fit-content;
+  max-width: 100%;
   margin: 40px auto 80px;
+  padding: 0 1.5em;
+  line-height: 2.2em;
+  white-space: nowrap;
+}
+
+a:has(> .more) {
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
 }
 
 .blog-more {
