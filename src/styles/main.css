@@ -104,7 +104,7 @@ header {
     margin: 0;
     width: auto;
     font-weight: 900;
-    font-size: 1em;
+    font-size: 1.25em;
     line-height: 1.5;
 }
 
@@ -544,7 +544,32 @@ p {
 }
 
 .blog-body + .share-buttons {
-    margin: 48px 0 64px;
+    margin: 48px 0 32px;
+}
+
+.profile-section {
+    margin: 0 0 64px;
+}
+
+.profile-box {
+    padding: 32px;
+    border: rgb(10, 10, 55) solid 2px;
+    border-radius: 8px;
+}
+
+.profile-box-title {
+    margin: 0 0 16px;
+    font-size: 1.2em;
+    letter-spacing: 0.1em;
+}
+
+.profile-box .name-box {
+    margin-top: 0;
+}
+
+.profile-box .profile-text {
+    margin-top: 24px;
+    margin-bottom: 0;
 }
 
 .share-button {

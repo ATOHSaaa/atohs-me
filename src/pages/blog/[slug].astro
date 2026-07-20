@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
+import ProfileBox from '../../components/ProfileBox.astro';
 import { createPostDescription } from '../../lib/post-description';
 import { formatDate } from '../../lib/format-date';
 
@@ -43,6 +44,7 @@ const description = createPostDescription(post.body ?? '');
         <Content />
       </div>
       <ShareButtons url={postUrl} title={post.data.title} />
+      <ProfileBox />
     </article>
   </main>
 </BaseLayout>
