@@ -4,14 +4,15 @@
 
 :root {
   --color-text: rgb(10, 10, 55);
-  --color-bg: #fbfaf7;
+  --color-bg: #fffefa;
   --color-text-muted: rgba(10, 10, 55, 0.6);
   --color-border: rgba(10, 10, 55, 0.4);
   --color-border-strong: rgba(10, 10, 55, 0.8);
   --font-sans: YakuHanJP, "Roboto", "Noto Sans JP", sans-serif;
   --font-roboto: "Roboto", sans-serif;
   --font-serif-mincho: TsukuAOldMinPr6N-B, serif;
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --width-content: 720px;
   --width-header: 880px;
   --radius-sm: 4px;
@@ -52,7 +53,8 @@ h2,
   font-weight: 900;
   margin-top: 48px;
   margin-bottom: 0;
-  letter-spacing: 0.2em;
+  font-feature-settings: "palt";
+  letter-spacing: 0.1em;
   animation: slidein 0.5s;
 }
 
