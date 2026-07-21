@@ -20,7 +20,7 @@ pubDate: 2026-07-21
 
 /* 本文をいい感じにする */
 .description {
-  font-family: san-serif !important;
+  font-family: sans-serif !important;
   line-height: 1.8em !important;
   text-align: justify !important;
 }

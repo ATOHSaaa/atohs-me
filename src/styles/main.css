@@ -32,7 +32,7 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   margin: 0;
-  border-top: var(--color-text) solid 12px;
+  border-top: var(--color-text) solid 4px;
 }
 
 p {
@@ -149,7 +149,7 @@ footer {
 .header-top {
   padding: 0 40px;
   font-weight: bold;
-  border-bottom: var(--color-text-muted) solid 1px;
+  border-bottom: var(--color-text-muted) solid 3px;
   margin: 0;
 }
 
