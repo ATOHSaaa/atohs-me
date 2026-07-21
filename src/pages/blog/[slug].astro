@@ -46,5 +46,10 @@ const description = createPostDescription(post.body ?? '');
       <ShareButtons url={postUrl} title={post.data.title} />
       <ProfileBox />
     </article>
+    <script
+      is:inline
+      async
+      src="https://platform.twitter.com/widgets.js"
+      charset="utf-8"></script>
   </main>
 </BaseLayout>

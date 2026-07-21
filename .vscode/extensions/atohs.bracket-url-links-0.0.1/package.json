@@ -1,0 +1,21 @@
+{
+  "name": "bracket-url-links",
+  "displayName": "Bracket URL Links",
+  "description": "Highlight [link text https://example.com] and Twitter/X status URLs in Markdown",
+  "version": "0.0.1",
+  "publisher": "atohs",
+  "private": true,
+  "engines": {
+    "vscode": "^1.89.0"
+  },
+  "categories": ["Other"],
+  "contributes": {
+    "grammars": [
+      {
+        "path": "./syntaxes/bracket-url-links.tmLanguage.json",
+        "scopeName": "markdown.bracket-url-links.injection",
+        "injectTo": ["text.html.markdown"]
+      }
+    ]
+  }
+}

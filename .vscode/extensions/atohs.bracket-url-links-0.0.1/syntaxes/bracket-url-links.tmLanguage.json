@@ -1,0 +1,40 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "scopeName": "markdown.bracket-url-links.injection",
+  "injectionSelector": "L:text.html.markdown - (markup.fenced_code.block.markdown, markup.inline.raw.string.markdown)",
+  "patterns": [
+    {
+      "include": "#bracket-url-link"
+    },
+    {
+      "include": "#twitter-status-url"
+    }
+  ],
+  "repository": {
+    "bracket-url-link": {
+      "name": "meta.link.bracket-url.markdown",
+      "match": "(\\[)([^\\]\\n]+?)(\\s+)(https?:\\/\\/[^\\s\\]]+)(\\])",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.link.begin.markdown"
+        },
+        "2": {
+          "name": "string.other.link.title.markdown"
+        },
+        "3": {
+          "name": "string.other.link.description.markdown"
+        },
+        "4": {
+          "name": "markup.underline.link.markdown"
+        },
+        "5": {
+          "name": "punctuation.definition.link.end.markdown"
+        }
+      }
+    },
+    "twitter-status-url": {
+      "match": "https?://(?:twitter\\.com|x\\.com)/[A-Za-z0-9_]+/status/\\d+(?:\\?[^\\s]*)?",
+      "name": "markup.underline.link.markdown"
+    }
+  }
+}
