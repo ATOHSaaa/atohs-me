@@ -1,4 +1,6 @@
 ---
+import SiteFooter from '../components/SiteFooter.astro';
+
 interface Props {
   title: string;
   description?: string;
@@ -58,6 +60,7 @@ const {
   <body>
     <a class="skip-link" href="#main-content">メインコンテンツへスキップ</a>
     <slot />
+    <SiteFooter />
   </body>
 </html>
 

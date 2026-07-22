@@ -1,0 +1,14 @@
+---
+const pathname = Astro.url.pathname;
+const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
+const isContact = pathname === '/contact';
+---
+
+<footer class="footer-top">
+  <div class="footer-inner">
+    <nav class="footer-links" aria-label="フッターメニュー">
+      <a class="footer-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>blog</a>
+      <a class="footer-link" href="/contact" aria-current={isContact ? 'page' : undefined}>contact</a>
+    </nav>
+  </div>
+</footer>

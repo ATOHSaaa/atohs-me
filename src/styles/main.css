@@ -88,8 +88,35 @@ header {
   font-weight: bold;
 }
 
-footer {
+.footer-top {
   margin-top: 100px;
+  padding: 0 40px;
+  border-top: var(--color-text-muted) solid 3px;
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: flex-end;
+  max-width: var(--width-header);
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  font-size: 0.85em;
+  font-family: var(--font-roboto);
+  letter-spacing: 0.05em;
+}
+
+.footer-link {
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.footer-link:hover {
+  cursor: pointer;
 }
 
 @keyframes slidein {
@@ -838,6 +865,19 @@ a:has(> .more) {
   }
 
   .header-links {
+    gap: 16px;
+    font-size: 0.8em;
+  }
+
+  .footer-top {
+    padding: 0 20px;
+  }
+
+  .footer-inner {
+    padding: 20px 0;
+  }
+
+  .footer-links {
     gap: 16px;
     font-size: 0.8em;
   }
