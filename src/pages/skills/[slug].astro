@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import { skills } from '../../lib/skills';
+
+export function getStaticPaths() {
+  return skills.map((skill) => ({
+    params: { slug: skill.slug },
+    props: { skill },
+  }));
+}
+
+const { skill } = Astro.props;
+---
+
+<BaseLayout
+  title={`${skill.label} | Skills | atohs.me`}
+  description={`atohs(あとーす)の${skill.label}に関する実績・経験です。`}
+  ogUrl={`https://atohs.me/skills/${skill.slug}`}
+>
+  <SiteHeader />
+  <main id="main-content" class="main skills">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+      <a href="/skills">Skills</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="blog-title">{skill.label}</h1>
+  </main>
+</BaseLayout>

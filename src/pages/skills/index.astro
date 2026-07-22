@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import { skillCategories, getSkillsByCategory } from '../../lib/skills';
+---
+
+<BaseLayout
+  title="Skills | atohs.me"
+  description="atohs(あとーす)が仕事や自主制作で触っているスキル・ツールの一覧です。"
+  ogUrl="https://atohs.me/skills"
+>
+  <SiteHeader />
+  <main id="main-content" class="main skills">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="blog-title">Skills</h1>
+
+    {
+      skillCategories.map((category) => (
+        <section class="skills-section" aria-labelledby={`skills-${category.id}`}>
+          <h2 id={`skills-${category.id}`}>{category.title}</h2>
+          <ul class="tag-cloud" role="list">
+            {getSkillsByCategory(category.id).map((skill) => (
+              <li>
+                <a class={`tag tag--${skill.size}`} href={`/skills/${skill.slug}`}>
+                  {skill.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </main>
+</BaseLayout>
