@@ -50,7 +50,7 @@ p {
 
 a {
   color: var(--color-text);
-  font-weight: 700;
+  font-weight: 500;
   text-decoration: underline var(--color-text) 2px;
   text-underline-offset: 6px;
 }
@@ -203,15 +203,14 @@ header:not(.header-top) {
   justify-content: space-between;
   max-width: var(--width-header);
   margin: 0 auto;
-  padding: 32px 0;
+  padding: 20px 0;
 }
 
 .header-logo {
   margin: 0;
   width: auto;
-  font-weight: 900;
-  font-size: 1.25em;
-  line-height: 1.5;
+  font-size: 2em;
+  line-height: 1;
 }
 
 .header-logo a {
@@ -219,6 +218,8 @@ header:not(.header-top) {
   align-items: center;
   gap: 10px;
   text-decoration: none;
+  font-weight: 900;
+  line-height: 1;
 }
 
 .header-logo-icon {
@@ -231,10 +232,12 @@ header:not(.header-top) {
 
 .header-links {
   display: flex;
+  align-items: center;
   gap: 24px;
   font-size: 0.85em;
   font-family: var(--font-roboto);
   letter-spacing: 0.05em;
+  line-height: 1;
 }
 
 .header-link {
@@ -245,6 +248,14 @@ header:not(.header-top) {
 
 .header-link:hover {
   cursor: pointer;
+}
+
+.header-social,
+.footer-social {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.1em;
+  text-transform: none;
 }
 
 .logo {
@@ -725,7 +736,7 @@ a:has(> .more) + h2 {
 
 .blog-list-item {
   display: flex;
-  gap: 10px;
+  gap: 18px;
   align-items: baseline;
   margin-bottom: 20px;
   line-height: 2;
@@ -967,7 +978,7 @@ a:has(> .more) + h2 {
   }
 
   .header-inner {
-    padding: 20px 0;
+    padding: 12px 0;
   }
 
   .header-logo {
@@ -1009,6 +1020,16 @@ a:has(> .more) + h2 {
   .main {
     width: 90%;
     margin: 0 auto;
+  }
+
+  .container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .item {
+    width: 100%;
+    margin-bottom: 0;
   }
 
   .name-box {

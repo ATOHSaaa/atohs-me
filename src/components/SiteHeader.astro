@@ -31,6 +31,15 @@ const isContact = pathname === '/contact';
     <nav class="header-links" aria-label="メニュー">
       <a class="header-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>blog</a>
       <a class="header-link" href="/contact" aria-current={isContact ? 'page' : undefined}>contact</a>
+      <a
+        class="header-link header-social"
+        href="https://twitter.com/atohsaaa"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Twitter @atohsaaa（新しいタブで開く）"
+      >
+        <i class="fab fa-twitter" aria-hidden="true"></i>
+      </a>
     </nav>
   </div>
 </header>
