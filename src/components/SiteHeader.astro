@@ -9,7 +9,7 @@ const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
 const isContact = pathname === '/contact';
 ---
 
-<div class="header-top">
+<header class="header-top">
   <div class="header-inner">
     {
       isHome ? (
@@ -33,4 +33,4 @@ const isContact = pathname === '/contact';
       <a class="header-link" href="/contact" aria-current={isContact ? 'page' : undefined}>contact</a>
     </nav>
   </div>
-</div>
+</header>

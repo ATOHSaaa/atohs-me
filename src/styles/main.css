@@ -6,8 +6,8 @@
   --color-text: rgb(10, 10, 55);
   --color-bg: #fffefa;
   --color-text-muted: rgba(10, 10, 55, 0.6);
-  --color-border: rgba(10, 10, 55, 0.4);
-  --color-border-strong: rgba(10, 10, 55, 0.8);
+  --color-border: rgba(10, 10, 55, 0.8);
+  --color-border-strong: rgba(10, 10, 55, 1);
   --font-sans: YakuHanJP, "Roboto", "Noto Sans JP", sans-serif;
   --font-roboto: "Roboto", sans-serif;
   --font-serif-mincho: TsukuAOldMinPr6N-B, serif;
@@ -15,9 +15,10 @@
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --width-content: 720px;
   --width-header: 880px;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
+  --header-height: 101px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 32px;
 }
 
 /* ==========================================================================
@@ -32,7 +33,14 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   margin: 0;
-  border-top: var(--color-text) solid 4px;
+}
+
+body:has(.header-top) {
+  padding-top: var(--header-height);
+}
+
+html:has(.header-top) {
+  scroll-padding-top: var(--header-height);
 }
 
 p {
@@ -81,7 +89,7 @@ li {
   line-height: 28px;
 }
 
-header {
+header:not(.header-top) {
   height: 30px;
   width: 100%;
   margin: 0;
@@ -91,7 +99,7 @@ header {
 .footer-top {
   margin-top: 100px;
   padding: 0 40px;
-  border-top: var(--color-text-muted) solid 3px;
+  border-top: var(--color-text) solid 3px;
 }
 
 .footer-inner {
@@ -113,6 +121,7 @@ header {
 .footer-link {
   text-decoration: none;
   font-weight: 700;
+  text-transform: uppercase;
 }
 
 .footer-link:hover {
@@ -156,7 +165,7 @@ header {
   position: absolute;
   top: -100px;
   left: 16px;
-  z-index: 100;
+  z-index: 110;
   padding: 8px 16px;
   background-color: var(--color-text);
   color: var(--color-bg);
@@ -174,10 +183,18 @@ header {
    ========================================================================== */
 
 .header-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: auto;
   padding: 0 40px;
   font-weight: bold;
-  border-bottom: var(--color-text-muted) solid 3px;
+  border-top: none;
+  border-bottom: var(--color-text) solid 3px;
   margin: 0;
+  background-color: var(--color-bg);
 }
 
 .header-inner {
@@ -223,6 +240,7 @@ header {
 .header-link {
   text-decoration: none;
   font-weight: 700;
+  text-transform: uppercase;
 }
 
 .header-link:hover {
@@ -359,7 +377,7 @@ header {
   font-weight: 500;
   margin-top: 40px;
   line-height: 1.5em;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   text-align: justify;
 }
 
@@ -369,7 +387,7 @@ header {
 
 .profile-box {
   padding: 32px;
-  border: var(--color-text) solid 2px;
+  border: var(--color-border-strong) solid 3px;
   border-radius: var(--radius-md);
 }
 
@@ -377,6 +395,7 @@ header {
   margin: 0 0 16px;
   font-size: 1.2em;
   letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .profile-box .name-box {
@@ -419,7 +438,6 @@ header {
   column-gap: 0.5em;
   align-items: center;
   margin-right: 0.5em;
-  font-size: 0.8em;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   vertical-align: middle;
@@ -452,25 +470,27 @@ header {
 .item {
   width: 48%;
   margin-bottom: 40px;
-  border: var(--color-border) solid 1px;
-  border-radius: var(--radius-sm);
+  border: var(--color-border-strong) solid 3px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
 }
 
 .item img {
+  display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border-bottom: var(--color-border-strong) solid 3px;
 }
 
 .item h3 {
-  margin: 8px;
+  margin: 12px 16px 8px;
 }
 
 .item span {
   display: block;
   font-weight: 400;
   font-size: 0.9em;
-  margin: 0 8px 16px;
+  margin: 0 16px 16px;
 }
 
 .item a {
@@ -513,11 +533,11 @@ header {
 
 .links a {
   text-decoration: none;
-  font-weight: 600;
+  font-weight: inherit;
 }
 
 .link-item {
-  border: var(--color-border-strong) solid 2px;
+  border: var(--color-border-strong) solid 3px;
   margin-right: 8px;
   border-radius: var(--radius-sm);
   padding: 0 8px;
@@ -539,7 +559,7 @@ header {
 .more {
   width: fit-content;
   max-width: 100%;
-  margin: 40px auto 80px;
+  margin: 40px auto 48px;
   padding: 0 1.5em;
   line-height: 2.2em;
   white-space: nowrap;
@@ -551,10 +571,18 @@ a:has(> .more) {
   text-decoration: none;
 }
 
+a:has(> .more) + h2 {
+  margin-top: 24px;
+}
+
 .blog-more {
   text-align: center;
   margin-top: 48px;
-  margin-bottom: 80px;
+  margin-bottom: 48px;
+}
+
+.blog-more + h2 {
+  margin-top: 24px;
 }
 
 .blog-more a {
@@ -673,7 +701,8 @@ a:has(> .more) {
   margin: 0 0.35em;
 }
 
-.blog-title {
+.blog-title,
+.breadcrumb + .page-title {
   font-size: 2em;
   font-weight: 900;
   letter-spacing: 0.1em;
@@ -709,7 +738,6 @@ a:has(> .more) {
 
 .blog-list-item time {
   color: var(--color-text);
-  font-size: 0.8em;
   font-weight: 700;
   white-space: nowrap;
   flex-shrink: 0;
@@ -766,7 +794,7 @@ a:has(> .more) {
   max-width: 550px;
   height: auto;
   margin: 2.5em auto 3.2em;
-  border: var(--color-text) solid 1px;
+  border: var(--color-border-strong) solid 3px;
   border-radius: var(--radius-md);
 }
 
@@ -893,7 +921,7 @@ a:has(> .more) {
   width: 44px;
   height: 48px;
   padding: 0;
-  border: var(--color-border-strong) solid 2px;
+  border: var(--color-border-strong) solid 3px;
   border-radius: var(--radius-sm);
   text-decoration: none;
   font-weight: 700;
@@ -922,6 +950,10 @@ a:has(> .more) {
    ========================================================================== */
 
 @media (max-width: 720px) {
+  :root {
+    --header-height: 73px;
+  }
+
   body {
     font-size: 1em;
   }
@@ -946,6 +978,15 @@ a:has(> .more) {
   .header-links {
     gap: 16px;
     font-size: 0.8em;
+  }
+
+  .blog-list-item,
+  .blog-list-item a {
+    line-height: 2.4;
+  }
+
+  .blog-list-item {
+    margin-bottom: 24px;
   }
 
   .footer-top {
@@ -974,6 +1015,7 @@ a:has(> .more) {
     flex-direction: column;
     align-items: center;
     gap: 16px;
+    margin-top: 24px;
     text-align: center;
   }
 
@@ -998,8 +1040,8 @@ a:has(> .more) {
 
   h2,
   .page-title {
-    font-size: 2em;
-    letter-spacing: 0.2em;
+    font-size: 1.6em;
+    letter-spacing: 0.1em;
   }
 
   .top-links {
@@ -1011,10 +1053,11 @@ a:has(> .more) {
   }
 
   .experience .page-title {
-    font-size: 2em;
+    font-size: 1.6em;
   }
 
-  .blog-title {
+  .blog-title,
+  .breadcrumb + .page-title {
     font-size: 1.7em;
   }
 }

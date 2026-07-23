@@ -30,6 +30,23 @@ const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
       熊本大学文学部文学科卒。印刷会社で営業・Webディレクター、IT系ベンチャー企業でPdM・カスタマーサポートとして勤務した後に独立。ことばや文章に関することを中心に、企画・制作を担当します。
     </p>
 
+    <h2>ブログ</h2>
+    {
+      latestPosts.length === 0 ? (
+        <p>まだ記事はありません。</p>
+      ) : (
+        <ul class="blog-list">
+          {latestPosts.map((post) => (
+            <li class="blog-list-item">
+              <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+              <a href={`/blog/${post.id}`}>{post.data.title}</a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    <p class="blog-more"><a href="/blog">ブログをもっと読む</a></p>
+
     <h2>職歴</h2>
     <ul class="career-list">
       <li class="career-item">
@@ -74,23 +91,6 @@ const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
       </li>
     </ul>
     <a href="/my-business-experience"><p class="more"><span>職歴詳細を見る</span></p></a>
-
-    <h2>ブログ</h2>
-    {
-      latestPosts.length === 0 ? (
-        <p>まだ記事はありません。</p>
-      ) : (
-        <ul class="blog-list">
-          {latestPosts.map((post) => (
-            <li class="blog-list-item">
-              <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-              <a href={`/blog/${post.id}`}>{post.data.title}</a>
-            </li>
-          ))}
-        </ul>
-      )
-    }
-    <p class="blog-more"><a href="/blog">ブログをもっと読む</a></p>
 
     <h2>個人プロジェクト</h2>
     <div class="container">
