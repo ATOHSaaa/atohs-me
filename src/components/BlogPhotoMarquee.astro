@@ -1,0 +1,62 @@
+---
+import { Image } from 'astro:assets';
+import type { BlogPhoto } from '../lib/blog-photos';
+
+interface Props {
+  photos: BlogPhoto[];
+}
+
+const { photos } = Astro.props;
+if (photos.length === 0) return;
+
+const durationSeconds = Math.max(28, photos.length * 5);
+---
+
+<section
+  class="blog-photo-marquee"
+  aria-label="ブログ記事の写真"
+  style={`--marquee-duration: ${durationSeconds}s`}
+>
+  <div class="blog-photo-marquee-viewport">
+    <div class="blog-photo-marquee-track">
+      <ul class="blog-photo-marquee-list">
+        {
+          photos.map((photo) => (
+            <li class="blog-photo-marquee-item">
+              <a href={`/blog/${photo.postId}`} title={photo.postTitle}>
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  width={586}
+                  densities={[1, 2]}
+                  format="webp"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="blog-photo-marquee-list" aria-hidden="true">
+        {
+          photos.map((photo) => (
+            <li class="blog-photo-marquee-item">
+              <a href={`/blog/${photo.postId}`} tabindex="-1">
+                <Image
+                  src={photo.src}
+                  alt=""
+                  width={586}
+                  densities={[1, 2]}
+                  format="webp"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

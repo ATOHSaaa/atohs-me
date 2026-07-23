@@ -2,11 +2,14 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
+import BlogPhotoMarquee from '../../components/BlogPhotoMarquee.astro';
 import { formatDate } from '../../lib/format-date';
+import { collectBlogPhotos } from '../../lib/blog-photos';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+const photos = collectBlogPhotos(posts);
 ---
 
 <BaseLayout
@@ -35,5 +38,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
         </ul>
       )
     }
+
+    <BlogPhotoMarquee photos={photos} />
   </main>
 </BaseLayout>
