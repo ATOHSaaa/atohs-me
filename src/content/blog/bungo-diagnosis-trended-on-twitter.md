@@ -1,6 +1,7 @@
 ---
 title: 「文豪診断」を作ったらTwitterのトレンド2位になったし5日で10万PVを超えた
 pubDate: 2026-07-23
+draft: true
 ---
 
 7月初めに [文豪診断 https://tools.tadeku.net/bungo-analysis/] というWebツールを [tadeku-tools https://tools.tadeku.net] で公開したのですが、想像以上に広がってしまいました。
