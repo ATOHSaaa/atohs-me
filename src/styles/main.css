@@ -739,6 +739,10 @@ a:has(> .more) + h2 {
   padding: 0;
 }
 
+h2 + .blog-list {
+  margin-top: 16px;
+}
+
 .blog-list-item {
   display: flex;
   gap: 18px;
