@@ -427,7 +427,7 @@ header:not(.header-top) {
   list-style-type: disc;
   margin: 24px 0 0;
   padding-left: 1.25em;
-  line-height: 2.2em;
+  line-height: 1.8;
 }
 
 .career-list > .career-item + .career-item {
@@ -436,6 +436,7 @@ header:not(.header-top) {
 
 .career-list li {
   margin-bottom: 0;
+  line-height: inherit;
 }
 
 .career-list .career-list {
@@ -449,22 +450,15 @@ header:not(.header-top) {
 }
 
 .career-item .date-range {
-  display: inline-grid;
-  grid-template-columns: max-content max-content 7ch;
-  column-gap: 0.5em;
-  align-items: center;
+  display: inline;
   margin-right: 0.5em;
-  font-weight: 500;
+  font: inherit;
   font-variant-numeric: tabular-nums;
-  vertical-align: middle;
+  white-space: nowrap;
 }
 
 .date-sep {
-  text-align: center;
-}
-
-.date-range:has(.date-end--current) {
-  grid-template-columns: max-content max-content max-content;
+  margin: 0 0.35em;
 }
 
 .table-2 tr td span {
