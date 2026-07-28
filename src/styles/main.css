@@ -63,7 +63,6 @@ h2,
   margin-bottom: 0;
   font-feature-settings: "palt";
   letter-spacing: 0.1em;
-  animation: slidein 0.5s;
 }
 
 h2 span,
@@ -126,22 +125,6 @@ header:not(.header-top) {
 
 .footer-link:hover {
   cursor: pointer;
-}
-
-@keyframes slidein {
-  from {
-    transform: translateY(16px);
-  }
-  to {
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  h2,
-  .page-title {
-    animation: none;
-  }
 }
 
 /* ==========================================================================
@@ -614,7 +597,6 @@ a:has(> .more) + h2 {
   font-size: 1.2em;
   letter-spacing: 0.05em;
   margin-top: 0;
-  animation: none;
 }
 
 .tag-cloud {
@@ -674,7 +656,6 @@ a:has(> .more) + h2 {
 .experience h2 {
   font-size: 1.2em;
   letter-spacing: 0.05em;
-  animation: none;
 }
 
 .experience .page-title {
