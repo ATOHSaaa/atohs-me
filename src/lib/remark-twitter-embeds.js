@@ -35,7 +35,7 @@ function getStandaloneTwitterUrl(paragraph) {
 function createTwitterEmbed(url) {
   return {
     type: 'html',
-    value: `<div class="twitter-embed"><blockquote class="twitter-tweet"><a href="${url}"></a></blockquote></div>`,
+    value: `<div class="twitter-embed"><blockquote class="twitter-tweet" data-align="center"><a href="${url}"></a></blockquote></div>`,
   };
 }
 

@@ -365,6 +365,7 @@ header:not(.header-top) {
 
 .name-primary {
   font-weight: 700;
+  font-size: 1.2em;
 }
 
 .profile-text {
@@ -804,6 +805,18 @@ h2 + .blog-list {
   .twitter-embed
   :is(blockquote.twitter-tweet, twitter-widget, iframe) {
   margin: 0 !important;
+}
+
+.blog-body
+  :is(
+    blockquote.twitter-tweet,
+    twitter-widget,
+    iframe.twitter-tweet-rendered,
+    iframe[id^="twitter-widget"]
+  ) {
+  display: block;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .blog-back {
