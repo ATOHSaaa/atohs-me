@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import { formatDate } from '../lib/format-date';
+
+const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 10);
+---
+
+<BaseLayout
+  title="ページが見つかりません | atohs.me"
+  description="お探しのページは見つかりませんでした。"
+  ogUrl="https://atohs.me/404"
+>
+  <SiteHeader />
+  <main id="main-content" class="main not-found">
+    <div class="not-found-hero">
+      <p class="not-found-code" aria-hidden="true">404</p>
+      <h1 class="not-found-title">このページはないみたいです</h1>
+      <p class="not-found-text">
+        URLが間違っているか、もう消えたページかもしれません。<br />
+        ホームに戻るか、下の記事から探してみてください。
+      </p>
+      <div class="not-found-actions">
+        <a class="not-found-button" href="/">ホームへ戻る</a>
+      </div>
+    </div>
+    {
+      latestPosts.length > 0 && (
+        <section class="not-found-posts" aria-labelledby="not-found-posts-heading">
+          <h2 id="not-found-posts-heading">最近の記事</h2>
+          <ul class="blog-list">
+            {latestPosts.map((post) => (
+              <li class="blog-list-item">
+                <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+                <a href={`/blog/${post.id}`}>{post.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </main>
+</BaseLayout>

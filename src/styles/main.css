@@ -900,6 +900,113 @@ h2 + .blog-list {
   }
 }
 
+/* ==========================================================================
+   404
+   ========================================================================== */
+
+.not-found {
+  padding-top: 48px;
+  padding-bottom: 24px;
+}
+
+.not-found-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.not-found-code {
+  margin: 0;
+  font-family: var(--font-roboto);
+  font-size: clamp(6rem, 22vw, 9rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  animation: not-found-rise 0.7s ease-out both;
+}
+
+.not-found-title {
+  margin: 28px 0 0;
+  font-size: 1.7em;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  font-feature-settings: "palt";
+  animation: not-found-rise 0.7s ease-out 0.08s both;
+}
+
+.not-found-text {
+  margin-top: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 40em;
+  line-height: 1.8;
+  animation: not-found-rise 0.7s ease-out 0.16s both;
+}
+
+.not-found-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  animation: not-found-rise 0.7s ease-out 0.24s both;
+}
+
+.not-found-button {
+  display: inline-block;
+  padding: 0 1.5em;
+  line-height: 2.2em;
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.not-found-button:hover {
+  opacity: 0.88;
+}
+
+.not-found-posts {
+  margin-top: 72px;
+  padding-top: 40px;
+  border-top: 3px solid var(--color-text);
+  animation: not-found-rise 0.7s ease-out 0.32s both;
+}
+
+.not-found-posts h2 {
+  margin-top: 0;
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+}
+
+.not-found-posts .blog-list {
+  margin-top: 16px;
+  margin-bottom: 0;
+}
+
+@keyframes not-found-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .not-found-code,
+  .not-found-title,
+  .not-found-text,
+  .not-found-actions,
+  .not-found-posts {
+    animation: none;
+  }
+}
+
 @media (max-width: 720px) {
   .blog-photo-marquee-item img {
     height: 149px;
@@ -1079,5 +1186,18 @@ h2 + .blog-list {
   .blog-title,
   .breadcrumb + .page-title {
     font-size: 1.7em;
+  }
+
+  .not-found {
+    padding-top: 32px;
+  }
+
+  .not-found-title {
+    font-size: 1.45em;
+  }
+
+  .not-found-posts {
+    margin-top: 56px;
+    padding-top: 32px;
   }
 }
