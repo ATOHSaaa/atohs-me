@@ -767,6 +767,32 @@ h2 + .blog-list {
   margin-left: 0;
 }
 
+.blog-body ul ul,
+.blog-body ol ol,
+.blog-body ul ol,
+.blog-body ol ul {
+  margin-top: 8px;
+  margin-bottom: 0;
+}
+
+.blog-body ul ul li,
+.blog-body ol ol li,
+.blog-body ul ol li,
+.blog-body ol ul li {
+  margin-bottom: 8px;
+}
+
+.blog-body ul ul li:last-child,
+.blog-body ol ol li:last-child,
+.blog-body ul ol li:last-child,
+.blog-body ol ul li:last-child {
+  margin-bottom: 0;
+}
+
+.blog-body li:has(> ul, > ol) {
+  margin-bottom: 8px;
+}
+
 .blog-body pre,
 .blog-body pre.astro-code {
   padding: 20px 24px;
