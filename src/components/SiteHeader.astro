@@ -6,6 +6,7 @@ interface Props {
 const { isHome = false } = Astro.props;
 const pathname = Astro.url.pathname;
 const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
+const isWorks = pathname === '/works' || pathname.startsWith('/works/');
 const isContact = pathname === '/contact';
 ---
 
@@ -30,6 +31,7 @@ const isContact = pathname === '/contact';
     }
     <nav class="header-links" aria-label="メニュー">
       <a class="header-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>blog</a>
+      <a class="header-link" href="/works" aria-current={isWorks ? 'page' : undefined}>works</a>
       <a class="header-link" href="/contact" aria-current={isContact ? 'page' : undefined}>contact</a>
       <a
         class="header-link header-social"

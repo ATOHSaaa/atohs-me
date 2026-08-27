@@ -1,0 +1,50 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  image?: ImageMetadata;
+  imagePublic?: string;
+  external?: boolean;
+}
+
+const { title, description, href, image, imagePublic, external = false } = Astro.props;
+---
+
+<div class="item">
+  <a
+    class="item-link"
+    href={href}
+    target={external ? '_blank' : undefined}
+    rel={external ? 'noopener noreferrer' : undefined}
+  >
+    {
+      image ? (
+        <Image
+          src={image}
+          alt=""
+          widths={[360, 720]}
+          sizes="(max-width: 720px) 90vw, 346px"
+          format="webp"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : imagePublic ? (
+        <img
+          src={imagePublic}
+          alt=""
+          width="346"
+          height="195"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : null
+    }
+    <h3>{title}</h3>
+    {external && <span class="visually-hidden">（新しいタブで開く）</span>}
+  </a>
+  <span>{description}</span>
+</div>

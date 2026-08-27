@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import { works } from '../../lib/works';
+---
+
+<BaseLayout
+  title="Works | atohs.me"
+  description="atohs(あとーす)の個人プロジェクト・自主制作の一覧です。"
+  ogUrl="https://atohs.me/works"
+>
+  <SiteHeader />
+  <main id="main-content" class="main">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="blog-title">Works</h1>
+    <p>個人プロジェクトや自主制作をまとめています。</p>
+
+    <div class="container">
+      {
+        works.map((work) => (
+          <WorkCard
+            title={work.title}
+            description={work.description}
+            href={work.href}
+            image={work.image}
+            imagePublic={work.imagePublic}
+            external={work.external}
+          />
+        ))
+      }
+    </div>
+  </main>
+</BaseLayout>

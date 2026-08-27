@@ -1,16 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
-import catImage from '../cat.png';
-import mahoImage from '../maho.png';
-import tadekuImage from '../tadeku.png';
+import WorkCard from '../components/WorkCard.astro';
 import { formatDate } from '../lib/format-date';
+import { getFeaturedWorks } from '../lib/works';
 
 const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 5);
+
+const featuredWorks = getFeaturedWorks();
 ---
 
 <BaseLayout title="atohs.me | あとーすのプロフィール">
@@ -105,69 +105,19 @@ const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
 
     <h2>個人プロジェクト</h2>
     <div class="container">
-      <div class="item">
-        <a class="item-link" href="https://tadeku.net" target="_blank" rel="noopener noreferrer">
-          <Image
-            src={tadekuImage}
-            alt=""
-            widths={[360, 720]}
-            sizes="(max-width: 720px) 90vw, 346px"
-            format="webp"
-            loading="lazy"
-            decoding="async"
+      {
+        featuredWorks.map((work) => (
+          <WorkCard
+            title={work.title}
+            description={work.description}
+            href={work.href}
+            image={work.image}
+            imagePublic={work.imagePublic}
+            external={work.external}
           />
-          <h3>蓼食う本の虫</h3>
-          <span class="visually-hidden">（新しいタブで開く）</span>
-        </a>
-        <span>読む・書くを身近にする文芸Webメディア。2016年3月から運営しています。</span>
-      </div>
-      <div class="item">
-        <a class="item-link" href="/cat-in-the-park">
-          <Image
-            src={catImage}
-            alt=""
-            widths={[360, 720]}
-            sizes="(max-width: 720px) 90vw, 346px"
-            format="webp"
-            loading="lazy"
-            decoding="async"
-          />
-          <h3>Cat in the park.</h3>
-        </a>
-        <span>作業用の猫動画を投稿するプロジェクトです。</span>
-      </div>
-      <div class="item">
-        <a class="item-link" href="https://tools.tadeku.net" target="_blank" rel="noopener noreferrer">
-          <Image
-            src={tadekuImage}
-            alt=""
-            widths={[360, 720]}
-            sizes="(max-width: 720px) 90vw, 346px"
-            format="webp"
-            loading="lazy"
-            decoding="async"
-          />
-          <h3>tadeku-tools</h3>
-          <span class="visually-hidden">（新しいタブで開く）</span>
-        </a>
-        <span>蓼食う本の虫が提供する、執筆に役立つツールをまとめています。</span>
-      </div>
-      <div class="item">
-        <a class="item-link" href="https://maho.online" target="_blank" rel="noopener noreferrer">
-          <Image
-            src={mahoImage}
-            alt=""
-            widths={[360, 720]}
-            sizes="(max-width: 720px) 90vw, 346px"
-            format="webp"
-            loading="lazy"
-            decoding="async"
-          />
-          <h3>Maho ONLINE</h3>
-          <span class="visually-hidden">（新しいタブで開く）</span>
-        </a>
-        <span>賢い魔法使いのためのニュースメディアです。</span>
-      </div>
+        ))
+      }
     </div>
+    <p class="blog-more"><a href="/works">プロジェクトをもっと見る</a></p>
   </main>
 </BaseLayout>

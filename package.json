@@ -8,7 +8,8 @@
     "prebuild": "node scripts/ensure-og-font.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "ensure-og-font": "node scripts/ensure-og-font.mjs"
+    "ensure-og-font": "node scripts/ensure-og-font.mjs",
+    "sync:hanoi-clicker": "node scripts/sync-hanoi-clicker.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ハノイクリッカー</title>
+    <meta name="description" content="ハノイの塔のクッキークリッカー。円盤を移して功徳を積め。" />
+    <link rel="canonical" href="https://atohs.me/works/hanoi-clicker/" />
+    <meta property="og:url" content="https://atohs.me/works/hanoi-clicker/" />
+    <link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🛕</text></svg>' />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+    <header class="topbar">
+      <div class="brand">
+        <h1 data-i18n="ui.title">ハノイクリッカー</h1>
+        <p class="tagline" data-i18n="ui.tagline">円盤を移し、功徳を積む</p>
+      </div>
+      <p class="ticker" id="ticker">僧侶たちは今日も円盤を移している。</p>
+      <div class="top-actions">
+        <div class="lang-toggle" id="lang-toggle" role="group" data-i18n-aria="ui.language">
+          <button type="button" class="lang-btn is-on" data-lang="ja">JP</button>
+          <button type="button" class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <button type="button" class="icon-btn" id="btn-mute" data-i18n-aria="ui.sound" data-i18n-title="ui.sound">♪</button>
+        <button type="button" class="icon-btn" id="btn-achievements" data-i18n="labels.achievements" data-i18n-aria="labels.achievements">実績</button>
+        <button type="button" class="icon-btn" id="btn-options" data-i18n="ui.settings" data-i18n-aria="ui.settings">設定</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="stage-col">
+        <div class="merit-display">
+          <div class="merit-line">
+            <span class="merit-value" id="merit">0</span>
+            <span class="merit-unit" data-i18n="ui.merit">功徳</span>
+          </div>
+          <p class="mps" id="mps">毎秒 0 手</p>
+        </div>
+
+        <div class="board-wrap">
+          <button type="button" class="board" id="board" data-i18n-aria="ui.moveDisk">
+            <div class="pegs">
+              <div class="peg" data-peg="0">
+                <div class="rod"></div>
+                <div class="stack" id="stack-0"></div>
+              </div>
+              <div class="peg" data-peg="1">
+                <div class="rod"></div>
+                <div class="stack" id="stack-1"></div>
+              </div>
+              <div class="peg" data-peg="2">
+                <div class="rod"></div>
+                <div class="stack" id="stack-2"></div>
+              </div>
+            </div>
+            <div class="plinth"></div>
+          </button>
+          <p class="click-hint" id="click-hint">塔をクリックして一手移す · スペースキーでも可</p>
+        </div>
+
+        <div class="progress-block">
+          <div class="progress" aria-hidden="true">
+            <div class="progress-bar" id="progress-bar"></div>
+          </div>
+          <p class="progress-label" id="progress-label">3枚の塔 · 0 / 7 手</p>
+        </div>
+
+        <div class="meta-grid" id="tower-meta"></div>
+
+        <div class="stage-actions">
+          <button type="button" class="prestige-btn" id="btn-prestige" hidden></button>
+        </div>
+
+        <p class="legend" id="legend">伝説では、100枚の黄金の円盤を移し終えたとき、世界は終わる。</p>
+      </section>
+
+      <section class="store-col">
+        <div class="store-head">
+          <h2 data-i18n="ui.temple">伽藍</h2>
+          <div class="buy-mode" id="buy-mode" role="group" data-i18n-aria="ui.buyAmount">
+            <button type="button" data-buy="1" class="is-on">1</button>
+            <button type="button" data-buy="10">10</button>
+            <button type="button" data-buy="100">100</button>
+            <button type="button" data-buy="max" data-i18n="ui.buyMax">最大</button>
+          </div>
+        </div>
+        <div class="upgrades-strip" id="upgrades" data-i18n-aria="ui.upgrades"></div>
+        <div class="buildings" id="buildings"></div>
+      </section>
+    </main>
+
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+    <div id="floaters" aria-hidden="true"></div>
+    <button type="button" id="golden" class="golden" hidden data-i18n-aria="ui.goldenDisk"></button>
+
+    <dialog class="options" id="options">
+      <form method="dialog" class="options-form">
+        <h2 data-i18n="ui.optionsTitle">設定</h2>
+        <dl class="stats" id="stats"></dl>
+        <label class="check">
+          <input type="checkbox" id="opt-mute" />
+          <span data-i18n="ui.mute">音声をオフ</span>
+        </label>
+        <div class="option-row">
+          <button type="button" id="btn-export" data-i18n="ui.exportSave">セーブをコピー</button>
+          <button type="button" id="btn-import" data-i18n="ui.importSave">セーブを読み込む</button>
+        </div>
+        <textarea id="save-box" rows="4" data-i18n-placeholder="ui.savePlaceholder" placeholder="セーブデータを貼り付け"></textarea>
+        <div class="option-row">
+          <button type="button" class="danger" id="btn-wipe" data-i18n="ui.wipe">データを消す</button>
+          <button value="close" class="primary" data-i18n="ui.close">閉じる</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="options achievements-dialog" id="achievements">
+      <form method="dialog" class="options-form achievements-form">
+        <header class="achievements-header">
+          <div class="achievements-head">
+            <h2 id="achievement-title">実績</h2>
+            <span class="achievement-count" id="achievement-count">0</span>
+          </div>
+        </header>
+        <ul class="achievement-list" id="achievement-list" aria-labelledby="achievement-title"></ul>
+        <div class="option-row achievements-footer">
+          <button value="close" class="primary" data-i18n="ui.close">閉じる</button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="i18n.js"></script>
+    <script src="game.js"></script>
+  </body>
+</html>

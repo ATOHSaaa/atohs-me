@@ -32,6 +32,7 @@ export default defineConfig({
   output: 'static',
   integrations: [
     sitemap({
+      customPages: ['https://atohs.me/works/hanoi-clicker/'],
       filter: (page) => !page.endsWith('/og.png'),
       serialize(item) {
         const path = new URL(item.url).pathname;
