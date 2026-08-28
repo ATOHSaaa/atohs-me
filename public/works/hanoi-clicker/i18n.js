@@ -95,7 +95,7 @@
         ended: "塔は完成した。もう動かすものはない。",
       },
       legend: {
-        live: "伝説では、100枚の黄金の円盤を移し終えたとき、世界は終わる。",
+        live: "伝説では、64枚の黄金の円盤を移し終えたとき、世界は終わる。",
         ended: "僧侶たちは手を置いた。世界は終わった。",
       },
       prestige: {
@@ -187,7 +187,7 @@
         "クリックは祈り。自動は信仰。円盤は世界。",
       ],
       ticker: {
-        ended: "100枚が丙に重なった。世界は終わった。",
+        ended: "64枚が丙に重なった。世界は終わった。",
         towerInfo: "いまの塔は{n}枚。最短{moves}手。",
         horinBoost: "法輪 {horin} が功徳を底上げしている。",
         mpsOffering: "伽藍は毎秒 {mps} 手を捧げている。",
@@ -270,7 +270,7 @@
         ended: "The tower is complete. Nothing left to move.",
       },
       legend: {
-        live: "Legend says the world ends when all 100 golden disks are moved.",
+        live: "Legend says the world ends when all 64 golden disks are moved.",
         ended: "The monks set down their hands. The world is over.",
       },
       prestige: {
@@ -362,7 +362,7 @@
         "Click is prayer. Automation is faith. Disks are the world.",
       ],
       ticker: {
-        ended: "All 100 disks rest on the far peg. The world is over.",
+        ended: "All 64 disks rest on the far peg. The world is over.",
         towerInfo: "Current tower: {n} disks. Minimum {moves} moves.",
         horinBoost: "{horin} dharma wheel(s) boost merit.",
         mpsOffering: "The temple offers {mps} moves per second.",

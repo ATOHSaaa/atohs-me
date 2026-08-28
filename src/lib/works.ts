@@ -25,14 +25,6 @@ export const works: Work[] = [
     featured: true,
   },
   {
-    slug: 'hanoi-clicker',
-    title: 'ハノイクリッカー',
-    description: 'ハノイの塔を題材にした放置系ゲームです。円盤を移して功徳を積みます。',
-    href: '/works/hanoi-clicker/',
-    imagePublic: '/works/hanoi-clicker/preview.svg',
-    featured: true,
-  },
-  {
     slug: 'cat-in-the-park',
     title: 'Cat in the park.',
     description: '作業用の猫動画を投稿するプロジェクトです。',
@@ -56,6 +48,14 @@ export const works: Work[] = [
     href: 'https://maho.online',
     image: mahoImage,
     external: true,
+    featured: true,
+  },
+  {
+    slug: 'hanoi-clicker',
+    title: 'ハノイクリッカー',
+    description: 'ハノイの塔を題材にした放置系ゲームです。円盤を移して功徳を積みます。',
+    href: '/works/hanoi-clicker/',
+    imagePublic: '/works/hanoi-clicker/preview.svg',
     featured: true,
   },
 ];
