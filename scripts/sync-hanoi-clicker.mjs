@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const sourceDir = join(root, '..', '..', '..', 'Projects', 'hanoi-clicker');
 const targetDir = join(root, 'public', 'works', 'hanoi-clicker');
-const files = ['index.html', 'game.js', 'i18n.js', 'styles.css', 'preview.svg'];
+const files = ['index.html', 'game.js', 'i18n.js', 'styles.css', 'preview.png'];
 
 mkdirSync(targetDir, { recursive: true });
 

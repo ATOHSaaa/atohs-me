@@ -55,7 +55,7 @@ export const works: Work[] = [
     title: 'ハノイクリッカー',
     description: 'ハノイの塔を題材にした放置系ゲームです。円盤を移して功徳を積みます。',
     href: '/works/hanoi-clicker/',
-    imagePublic: '/works/hanoi-clicker/preview.svg',
+    imagePublic: '/works/hanoi-clicker/preview.png',
     featured: true,
   },
 ];
