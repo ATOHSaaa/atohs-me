@@ -21,10 +21,62 @@ function titleFontSize(title: string) {
   return 104;
 }
 
+function estimateLineCount(title: string, fontSize: number, contentWidth: number) {
+  const chars = [...title].length;
+  const charsPerLine = Math.max(4, Math.floor(contentWidth / (fontSize * 0.92)));
+  return Math.max(1, Math.ceil(chars / charsPerLine));
+}
+
+function wrapBalancedTitle(title: string, lineCount: number) {
+  const chars = [...title];
+  if (lineCount <= 1) return title;
+
+  const lines: string[] = [];
+  let start = 0;
+  const breakAfter = new Set(['、', '。', 'を', 'に', 'で', 'と', 'が', 'は', 'の', 'ら', '！', '？', ' ']);
+
+  for (let i = 0; i < lineCount - 1; i++) {
+    const remainingLines = lineCount - i;
+    const remainingChars = chars.length - start;
+    const idealLen = remainingChars / remainingLines;
+    let bestBreak = start + Math.round(idealLen);
+    bestBreak = Math.max(start + 1, Math.min(chars.length - (remainingLines - 1), bestBreak));
+
+    for (let offset = 0; offset <= 4; offset++) {
+      for (const delta of [0, offset, -offset]) {
+        const candidate = bestBreak + delta;
+        if (
+          candidate > start &&
+          candidate < chars.length - (remainingLines - 1) &&
+          breakAfter.has(chars[candidate - 1])
+        ) {
+          bestBreak = candidate;
+          break;
+        }
+      }
+    }
+
+    const minLen = Math.ceil(idealLen);
+    if (bestBreak - start < minLen) {
+      bestBreak = Math.min(start + minLen, chars.length - (remainingLines - 1));
+    }
+
+    lines.push(chars.slice(start, bestBreak).join(''));
+    start = bestBreak;
+  }
+
+  lines.push(chars.slice(start).join(''));
+  return lines.join('\n');
+}
+
 export async function generateOgImage(title: string): Promise<Buffer> {
   const font = await loadFont();
   const titleSize = titleFontSize(title);
   const contentWidth = WIDTH - PAD_X * 2;
+  const wrappedTitle = wrapBalancedTitle(
+    title,
+    estimateLineCount(title, titleSize, contentWidth),
+  );
 
   const svg = await satori(
     {
@@ -66,9 +118,9 @@ export async function generateOgImage(title: string): Promise<Buffer> {
                 fontSize: titleSize,
                 fontWeight: 700,
                 lineHeight: 1.3,
-                textWrap: 'balance',
+                whiteSpace: 'pre-wrap',
               },
-              children: title,
+              children: wrappedTitle,
             },
           },
         ],
