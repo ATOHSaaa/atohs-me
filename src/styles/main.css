@@ -845,6 +845,11 @@ h2 + .blog-list {
   margin-right: auto !important;
 }
 
+.blog-body .twitter-embed .twitter-tweet-rendered,
+.blog-body .twitter-embed iframe[id^="twitter-widget"] {
+  height: 680px !important;
+}
+
 .blog-back {
   margin-top: 64px;
   margin-bottom: 48px;
