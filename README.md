@@ -29,6 +29,8 @@ npm run preview
 title: 記事タイトル
 description: 概要
 pubDate: 2026-07-17
+# 同日に複数公開する場合は時刻も指定できる（並び順の制御用。表示は日付のみ）
+# pubDate: 2026-08-31T23:00:00+09:00
 draft: false
 ---
 

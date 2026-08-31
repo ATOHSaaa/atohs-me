@@ -17,14 +17,14 @@ alwaysApply: true
 `src/content/blog/<slug>.md` に以下の frontmatter で作成する。
 
 - `title`: 日本語タイトル
-- `pubDate`: 当日の日付（`YYYY-MM-DD`）
+- `pubDate`: 公開日時（`YYYY-MM-DD` または `YYYY-MM-DDTHH:mm:ss+09:00`）。同日に複数公開する場合は時刻で並び順を制御する
 - `draft` は書かない（デフォルト `false` = 公開状態）
 - 本文は空でよい
 
 ```md
 ---
 title: 記事タイトル
-pubDate: 2026-08-31
+pubDate: 2026-08-31T00:14:00+09:00
 ---
 
 ```

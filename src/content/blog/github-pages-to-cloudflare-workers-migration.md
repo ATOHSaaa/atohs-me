@@ -1,6 +1,6 @@
 ---
 title: GitHub Pages → Cloudflare Workersに移行したので、失敗したこととか書く
-pubDate: 2026-08-31
+pubDate: 2026-09-01T00:14:00+09:00
 ---
 
 [tadeku-tools https://tools.tadeku.net/] という、小説創作を支援するツールをまとめているサイトを運営しているのですが、これをGitHub PagesからCloudflare Workersに移行しました。
