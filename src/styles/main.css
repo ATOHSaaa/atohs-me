@@ -673,7 +673,7 @@ a:has(> .more) + h2 {
    ========================================================================== */
 
 .breadcrumb {
-  margin-top: 40px;
+  margin-top: 24px;
   margin-bottom: 20px;
   font-size: 0.85em;
 }
@@ -761,9 +761,18 @@ h2 + .blog-list {
   font-feature-settings: "palt";
 }
 
+.blog-body h3 {
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  font-feature-settings: "palt";
+}
+
 .blog-body ul,
 .blog-body ol {
-  margin-bottom: 1.2em;
+  margin-top: 1em;
+  margin-bottom: 1.8em;
   margin-left: 0;
 }
 
@@ -1054,7 +1063,7 @@ h2 + .blog-list {
   justify-content: flex-end;
   align-items: center;
   gap: 8px;
-  margin: 0 0 42px;
+  margin: 0 0 28px;
 }
 
 .blog-body + .share-buttons {
@@ -1230,5 +1239,9 @@ h2 + .blog-list {
   .not-found-posts {
     margin-top: 56px;
     padding-top: 32px;
+  }
+
+  .share-buttons {
+    margin-bottom: 42px;
   }
 }

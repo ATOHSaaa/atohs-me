@@ -1,0 +1,43 @@
+---
+description: ブログ記事を新規作成して Cursor で開く
+alwaysApply: true
+---
+
+# ブログを書く
+
+ユーザーが「ブログ書く」「記事書く」などと言ったら、以下の手順で新規記事を作成する。
+
+## 1. タイトルを確認
+
+- タイトルが指定されていなければ聞く
+- ファイル名（slug）は英語の kebab-case（例: `summer-and-fishing.md`）。`blog-slugs` ルールに従う
+
+## 2. Markdown ファイルを作成
+
+`src/content/blog/<slug>.md` に以下の frontmatter で作成する。
+
+- `title`: 日本語タイトル
+- `pubDate`: 当日の日付（`YYYY-MM-DD`）
+- `draft` は書かない（デフォルト `false` = 公開状態）
+- 本文は空でよい
+
+```md
+---
+title: 記事タイトル
+pubDate: 2026-08-31
+---
+
+```
+
+## 3. Cursor でファイルを開く
+
+作成したファイルをエディタで開く。
+
+```bash
+/Applications/Cursor.app/Contents/Resources/app/bin/cursor "src/content/blog/<slug>.md"
+```
+
+## 注意
+
+- 既存 slug と重複しないこと
+- 画像は `src/content/blog/<slug>/` に置く
