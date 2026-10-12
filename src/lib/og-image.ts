@@ -5,7 +5,7 @@ import { Resvg } from '@resvg/resvg-js';
 
 const WIDTH = 1200;
 const HEIGHT = 630;
-const PAD_X = 96;
+const PAD_X = 48;
 const PAD_Y = 72;
 
 async function loadFont() {
@@ -21,51 +21,58 @@ function titleFontSize(title: string) {
   return 104;
 }
 
-function estimateLineCount(title: string, fontSize: number, contentWidth: number) {
-  const chars = [...title].length;
-  const charsPerLine = Math.max(4, Math.floor(contentWidth / (fontSize * 0.92)));
-  return Math.max(1, Math.ceil(chars / charsPerLine));
+/** 行末で切ってよい直前の文字（幅いっぱいまで詰め、ここで折る） */
+const BREAK_AFTER = new Set([
+  '、',
+  '。',
+  'を',
+  'に',
+  'で',
+  'と',
+  'が',
+  'は',
+  'の',
+  'ら',
+  '！',
+  '？',
+  ' ',
+]);
+
+function charWidth(ch: string, fontSize: number) {
+  if (ch === ' ') return fontSize * 0.3;
+  if (/[\x00-\x7F]/.test(ch)) return fontSize * 0.56;
+  return fontSize;
 }
 
-function wrapBalancedTitle(title: string, lineCount: number) {
+/** 1 行をできるだけ長く使い、句読点・助詞の後で折る */
+function wrapTitleGreedy(title: string, fontSize: number, contentWidth: number) {
   const chars = [...title];
-  if (lineCount <= 1) return title;
-
   const lines: string[] = [];
   let start = 0;
-  const breakAfter = new Set(['、', '。', 'を', 'に', 'で', 'と', 'が', 'は', 'の', 'ら', '！', '？', ' ']);
 
-  for (let i = 0; i < lineCount - 1; i++) {
-    const remainingLines = lineCount - i;
-    const remainingChars = chars.length - start;
-    const idealLen = remainingChars / remainingLines;
-    let bestBreak = start + Math.round(idealLen);
-    bestBreak = Math.max(start + 1, Math.min(chars.length - (remainingLines - 1), bestBreak));
+  while (start < chars.length) {
+    let width = 0;
+    let lastBreak = -1;
+    let end = start;
 
-    for (let offset = 0; offset <= 4; offset++) {
-      for (const delta of [0, offset, -offset]) {
-        const candidate = bestBreak + delta;
-        if (
-          candidate > start &&
-          candidate < chars.length - (remainingLines - 1) &&
-          breakAfter.has(chars[candidate - 1])
-        ) {
-          bestBreak = candidate;
-          break;
-        }
-      }
+    for (let i = start; i < chars.length; i++) {
+      const nextWidth = width + charWidth(chars[i], fontSize);
+      if (nextWidth > contentWidth && i > start) break;
+
+      width = nextWidth;
+      end = i + 1;
+      if (BREAK_AFTER.has(chars[i])) lastBreak = i + 1;
     }
 
-    const minLen = Math.ceil(idealLen);
-    if (bestBreak - start < minLen) {
-      bestBreak = Math.min(start + minLen, chars.length - (remainingLines - 1));
+    let breakAt = end;
+    if (end < chars.length && lastBreak > start) {
+      breakAt = lastBreak;
     }
 
-    lines.push(chars.slice(start, bestBreak).join(''));
-    start = bestBreak;
+    lines.push(chars.slice(start, breakAt).join(''));
+    start = breakAt;
   }
 
-  lines.push(chars.slice(start).join(''));
   return lines.join('\n');
 }
 
@@ -73,10 +80,7 @@ export async function generateOgImage(title: string): Promise<Buffer> {
   const font = await loadFont();
   const titleSize = titleFontSize(title);
   const contentWidth = WIDTH - PAD_X * 2;
-  const wrappedTitle = wrapBalancedTitle(
-    title,
-    estimateLineCount(title, titleSize, contentWidth),
-  );
+  const wrappedTitle = wrapTitleGreedy(title, titleSize, contentWidth);
 
   const svg = await satori(
     {
