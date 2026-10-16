@@ -4,6 +4,8 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { remarkBracketUrlLinks } from './src/lib/remark-bracket-url-links.js';
 import { remarkTwitterEmbeds } from './src/lib/remark-twitter-embeds.js';
+import { remarkQuoteSource } from './src/lib/remark-quote-source.js';
+import { remarkAmazonCards } from './src/lib/remark-amazon-cards.js';
 
 function getBlogLastmodByPath() {
   const blogDir = './src/content/blog';
@@ -45,7 +47,12 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [remarkBracketUrlLinks, remarkTwitterEmbeds],
+    remarkPlugins: [
+      remarkBracketUrlLinks,
+      remarkTwitterEmbeds,
+      remarkAmazonCards,
+      remarkQuoteSource,
+    ],
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,

@@ -754,6 +754,32 @@ h2 + .blog-list {
   margin-bottom: 1.2em;
 }
 
+.blog-body blockquote:not(.twitter-tweet) {
+  margin: 1.8em 0 2em 1em;
+  padding: 0.15em 0 0.15em 1.1em;
+  border-left: 3px solid var(--color-border);
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+.blog-body blockquote:not(.twitter-tweet) p {
+  margin: 0 0 0.75em;
+  line-height: 1.85;
+  white-space: pre-line;
+}
+
+.blog-body blockquote:not(.twitter-tweet) p:last-child {
+  margin-bottom: 0;
+}
+
+.blog-body .quote-source {
+  margin: -0.35em 0 2em 1em;
+  padding-left: 1.1em;
+  font-size: 0.92em;
+  letter-spacing: 0.05em;
+  text-align: right;
+}
+
 .blog-body h2 {
   font-size: 1.35em;
   margin-top: 40px;
@@ -828,6 +854,77 @@ h2 + .blog-list {
   margin: 2.5em auto 3.2em;
   border: var(--color-border-strong) solid 3px;
   border-radius: var(--radius-md);
+}
+
+.blog-body .amazon-card {
+  margin: 2em 0 2.4em;
+}
+
+.blog-body .amazon-card-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 20px;
+  border: var(--color-border-strong) solid 3px;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+.blog-body .amazon-card-link:hover {
+  background-color: rgba(10, 10, 55, 0.04);
+}
+
+.blog-body .amazon-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  font-size: 1.6em;
+  line-height: 1;
+}
+
+.blog-body .amazon-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+  letter-spacing: 0.04em;
+}
+
+.blog-body .amazon-card-label {
+  font-family: var(--font-roboto);
+  font-size: 0.72em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.blog-body .amazon-card-title {
+  font-weight: 700;
+  line-height: 1.5;
+  font-style: normal;
+}
+
+.blog-body .amazon-card-meta {
+  font-size: 0.78em;
+  color: var(--color-text-muted);
+  font-style: normal;
+}
+
+.blog-body .amazon-card-arrow {
+  flex-shrink: 0;
+  font-family: var(--font-roboto);
+  font-size: 1.25em;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .blog-body .twitter-embed {
