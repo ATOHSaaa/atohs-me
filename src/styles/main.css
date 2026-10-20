@@ -31,6 +31,17 @@
    Base
    ========================================================================== */
 
+html {
+  box-sizing: border-box;
+  overflow-x: clip;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 body {
   font-family: var(--font-sans);
   font-size: 18px;
@@ -120,7 +131,7 @@ header:not(.header-top) {
 
 .footer-top {
   margin-top: auto;
-  padding: 100px 40px 0;
+  padding: 0 40px;
   border-top: var(--color-text) solid 3px;
   flex-shrink: 0;
 }
@@ -503,6 +514,7 @@ a.profile-box:hover {
   border: var(--color-border-strong) solid 3px;
   border-radius: var(--radius-md);
   overflow: hidden;
+  max-width: 100%;
 }
 
 .item img {
@@ -1014,11 +1026,20 @@ a.blog-tag:hover {
 
 .blog-body-tags {
   margin: 0 0 28px;
-  text-align: left;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.blog-body-tags .blog-tags {
+  justify-content: flex-end;
+  max-width: 100%;
 }
 
 .blog-body-tags .blog-tag {
   font-size: 0.85em;
+  padding: 0;
+  letter-spacing: 0;
 }
 
 .blog-body a {
@@ -1670,7 +1691,7 @@ a.blog-tag:hover {
   }
 
   .footer-top {
-    padding: 100px 20px 0;
+    padding: 0 20px;
   }
 
   .footer-inner {
