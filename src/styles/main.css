@@ -1628,7 +1628,7 @@ a.blog-tag:hover {
   align-items: stretch;
   justify-content: stretch;
   width: 44px;
-  height: 48px;
+  height: 44px;
   padding: 0;
   border: none;
   text-decoration: none;
@@ -1640,9 +1640,8 @@ a.blog-tag:hover {
 }
 
 .share-button-face {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   width: 100%;
   height: 100%;
   padding: 0;
@@ -1650,7 +1649,7 @@ a.blog-tag:hover {
   border-radius: var(--radius-sm);
   box-sizing: border-box;
   font-weight: 700;
-  font-size: 0.85em;
+  font-size: 14px;
   line-height: 1;
   background-color: var(--color-bg);
   transition:
@@ -1677,8 +1676,21 @@ a.blog-tag:hover {
   font-family: var(--font-roboto);
 }
 
-.share-hatena {
-  letter-spacing: 0.02em;
+.share-button-mark {
+  display: block;
+  width: 100%;
+  text-align: center;
+  line-height: 1;
+  transform: translateY(1px);
+}
+
+.share-button-face > i {
+  display: block;
+  width: 1em;
+  font-size: 15px;
+  line-height: 1;
+  text-align: center;
+  transform: translateY(1px);
 }
 
 /* ==========================================================================
