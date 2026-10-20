@@ -418,19 +418,32 @@ header:not(.header-top) {
 
 .profile-box {
   display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.profile-box-face {
+  display: block;
   padding: 32px;
   border: var(--color-border-strong) solid 2px;
   border-radius: var(--radius-md);
-  text-decoration: none;
-  color: inherit;
+  background-color: var(--color-bg);
   transition:
-    transform 0.15s ease,
-    background-color 0.15s ease;
+    transform 0.07s ease-out,
+    background-color 0.12s ease;
 }
 
-a.profile-box:hover {
+a.profile-box:hover .profile-box-face {
   background-color: #ffeb3b;
   transform: translate(-3px, -3px);
+}
+
+a.profile-box:active .profile-box-face {
+  transform: translate(0, 0);
+  background-color: #ffeb3b;
+  transition:
+    transform 0.03s ease-in,
+    background-color 0.03s ease;
 }
 
 .profile-box-title {
@@ -834,7 +847,7 @@ a:has(> .more) + h2 {
     flex-shrink: 0;
   }
 
-  .blog-sidebar .profile-box {
+  .blog-sidebar .profile-box-face {
     padding: 16px;
   }
 
@@ -1558,13 +1571,15 @@ a.blog-tag:hover {
     animation: none;
   }
 
-  .profile-box,
-  .share-button {
+  .profile-box-face,
+  .share-button-face {
     transition: background-color 0.15s ease;
   }
 
-  a.profile-box:hover,
-  .share-button:hover {
+  a.profile-box:hover .profile-box-face,
+  a.profile-box:active .profile-box-face,
+  .share-button:hover .share-button-face,
+  .share-button:active .share-button-face {
     transform: none;
   }
 }
@@ -1610,31 +1625,50 @@ a.blog-tag:hover {
 
 .share-button {
   display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: stretch;
   width: 44px;
   height: 48px;
   padding: 0;
-  border: var(--color-border-strong) solid 2px;
-  border-radius: var(--radius-sm);
+  border: none;
   text-decoration: none;
-  font-weight: 700;
-  font-size: 0.85em;
-  line-height: 1;
-  box-sizing: border-box;
   background: none;
   color: var(--color-text);
   cursor: pointer;
   font-family: inherit;
   flex-shrink: 0;
-  transition:
-    transform 0.15s ease,
-    background-color 0.15s ease;
 }
 
-.share-button:hover {
+.share-button-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: var(--color-border-strong) solid 2px;
+  border-radius: var(--radius-sm);
+  box-sizing: border-box;
+  font-weight: 700;
+  font-size: 0.85em;
+  line-height: 1;
+  background-color: var(--color-bg);
+  transition:
+    transform 0.07s ease-out,
+    background-color 0.12s ease;
+}
+
+.share-button:hover .share-button-face {
   background-color: #ffeb3b;
   transform: translate(-3px, -3px);
+}
+
+.share-button:active .share-button-face {
+  transform: translate(0, 0);
+  background-color: #ffeb3b;
+  transition:
+    transform 0.03s ease-in,
+    background-color 0.03s ease;
 }
 
 .share-hatena,
@@ -1811,7 +1845,7 @@ a.blog-tag:hover {
     pointer-events: auto;
   }
 
-  .blog-share-float .share-button {
+  .blog-share-float .share-button-face {
     background-color: var(--color-bg);
   }
 
