@@ -1037,17 +1037,11 @@ a:has(> .more) + h2 {
     max-width: none;
   }
 
-  .main:not(.blog-main):not(.main-home) {
+  .main:not(.blog-main) {
     width: min(calc(100% - 2 * var(--site-gutter)), var(--width-blog-layout));
     max-width: none;
     padding-left: calc(var(--width-blog-share-rail) + 40px);
     box-sizing: border-box;
-  }
-
-  .main.main-home {
-    width: min(calc(100% - 2 * var(--site-gutter)), var(--width-content));
-    max-width: var(--width-content);
-    padding-left: 0;
   }
 
   .main.blog-main .blog-layout {
