@@ -10,27 +10,29 @@ const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 5);
 
-const featuredWorks = getFeaturedWorks();
+const featuredWorks = getFeaturedWorks().slice(0, 4);
 ---
 
 <BaseLayout title="atohs.me | あとーすのプロフィール">
   <SiteHeader isHome />
   <main id="main-content" class="main">
-    <div class="name-box">
-      <img class="profile-icon" src="/src/favicon.ico" alt="" width="128" height="128" />
-      <div class="name-body">
-        <p class="name-detail">
-          <span class="name-detail-line name-primary">あとーす（atohs）, 伊藤祥太（ITO SHOTA）</span>
-          <span class="name-detail-line">Born on November 13, 1993 🎉 / Live in Kumamoto 🧸</span>
-          <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
-        </p>
+    <div class="home-profile">
+      <div class="name-box">
+        <img class="profile-icon" src="/src/favicon.ico" alt="" width="128" height="128" />
+        <div class="name-body">
+          <p class="name-detail">
+            <span class="name-detail-line name-primary">あとーす（atohs）, 伊藤祥太（ITO SHOTA）</span>
+            <span class="name-detail-line">Born on November 13, 1993 🎉 / Live in Kumamoto 🧸</span>
+            <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
+          </p>
+        </div>
       </div>
+      <p class="profile-text">
+        熊本大学文学部文学科卒。印刷会社で営業・Webディレクター、IT系ベンチャー企業でPdM・カスタマーサポートとして勤務した後に独立。ことばや文章に関することを中心に、企画・制作を担当します。
+      </p>
     </div>
-    <p class="profile-text">
-      熊本大学文学部文学科卒。印刷会社で営業・Webディレクター、IT系ベンチャー企業でPdM・カスタマーサポートとして勤務した後に独立。ことばや文章に関することを中心に、企画・制作を担当します。
-    </p>
 
-    <h2>ブログ</h2>
+    <h2>Blog</h2>
     {
       latestPosts.length === 0 ? (
         <p>まだ記事はありません。</p>
@@ -44,12 +46,12 @@ const featuredWorks = getFeaturedWorks();
     }
     <p class="blog-more"><a href="/blog">ブログをもっと読む</a></p>
 
-    <h2>職歴</h2>
+    <h2>Career</h2>
     <ul class="career-list">
       <li class="career-item">
         <span class="date-range">
           <span class="date-start">2021.09</span>
-          <span class="date-sep" aria-hidden="true">-</span>
+          <span class="date-sep" aria-hidden="true">〜</span>
           <span class="date-end date-end--current">現在</span>
         </span>
         個人事業主 （屋号：<a href="https://tadeku.net" target="_blank" rel="noopener noreferrer">蓼食う本の虫</a>）
@@ -57,7 +59,7 @@ const featuredWorks = getFeaturedWorks();
           <li class="career-item">
             <span class="date-range">
               <span class="date-start">2025.10</span>
-              <span class="date-sep" aria-hidden="true">-</span>
+              <span class="date-sep" aria-hidden="true">〜</span>
               <span class="date-end date-end--current">現在</span>
             </span>
             <a href="https://anan-mark.com/" target="_blank" rel="noopener noreferrer"
@@ -68,7 +70,7 @@ const featuredWorks = getFeaturedWorks();
           <li class="career-item">
             <span class="date-range">
               <span class="date-start">2022.07</span>
-              <span class="date-sep" aria-hidden="true">-</span>
+              <span class="date-sep" aria-hidden="true">〜</span>
               <span class="date-end">2025.03</span>
             </span>
             <a href="https://tooon.co.jp/" target="_blank" rel="noopener noreferrer"
@@ -81,7 +83,7 @@ const featuredWorks = getFeaturedWorks();
       <li class="career-item">
         <span class="date-range">
           <span class="date-start">2018.04</span>
-          <span class="date-sep" aria-hidden="true">-</span>
+          <span class="date-sep" aria-hidden="true">〜</span>
           <span class="date-end">2021.08</span>
         </span>
         <a href="https://www.pixiv.co.jp/" target="_blank" rel="noopener noreferrer"
@@ -92,7 +94,7 @@ const featuredWorks = getFeaturedWorks();
       <li class="career-item">
         <span class="date-range">
           <span class="date-start">2016.04</span>
-          <span class="date-sep" aria-hidden="true">-</span>
+          <span class="date-sep" aria-hidden="true">〜</span>
           <span class="date-end">2018.03</span>
         </span>
         印刷会社 営業・Webディレクター （正社員）
@@ -100,7 +102,7 @@ const featuredWorks = getFeaturedWorks();
     </ul>
     <a href="/my-business-experience"><p class="more"><span>職歴詳細を見る</span></p></a>
 
-    <h2>個人プロジェクト</h2>
+    <h2>Works</h2>
     <div class="container">
       {
         featuredWorks.map((work) => (

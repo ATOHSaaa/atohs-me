@@ -1,63 +1,24 @@
 ---
+import { getEntry, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+
+const career = await getEntry('career', 'index');
+if (!career) {
+  throw new Error('Career content not found');
+}
+const { Content } = await render(career);
 ---
 
-<BaseLayout title="atohs.me | あとーすの職歴詳細">
+<BaseLayout title={`${career.data.title} | atohs.me`} ogUrl="https://atohs.me/my-business-experience">
   <SiteHeader />
   <main id="main-content" class="main experience">
-    <h1 class="page-title">職歴詳細</h1>
-    <h2>Tooon株式会社（業務委託 2022.07〜）</h2>
-    <ul>
-      <li>
-        <a href="https://tooon.jp/magazine" target="_blank" rel="noopener noreferrer"
-          >Tooon Mag.<span class="visually-hidden">（新しいタブで開く）</span></a
-        >
-        執筆・編集（主にSEO対策・カスタマーサクセスを意識した記事の制作）
-      </li>
-      <li>
-        <a href="https://dooodles.jp" target="_blank" rel="noopener noreferrer"
-          >Dooodles<span class="visually-hidden">（新しいタブで開く）</span></a
-        >
-        執筆・編集（主にインタビュー記事・コラム記事の制作）
-      </li>
-      <li>
-        <a href="https://prtimes.jp/main/html/searchrlp/company_id/85768" target="_blank" rel="noopener noreferrer"
-          >プレスリリース<span class="visually-hidden">（新しいタブで開く）</span></a
-        > 執筆・編集
-      </li>
-      <li>GA4、Search Console、GTMなどを用いたアクセス解析・改善策の提案</li>
-      <li>個人ユーザー、法人ユーザーからの問い合わせに回答するカスタマーサポート業務</li>
-      <li>STUDIOで制作されたメディアサイトのデザイン調整</li>
-    </ul>
-    <h2>蓼食う本の虫（個人事業 2021.09〜）</h2>
-    <ul>
-      <li>
-        Webメディア<a href="https://tadeku.net" target="_blank" rel="noopener noreferrer"
-          >蓼食う本の虫<span class="visually-hidden">（新しいタブで開く）</span></a
-        >の運営・執筆・編集
-      </li>
-      <li>バナー広告の掲載受付・ディレクション</li>
-      <li>WordPressを用いたWebサイト制作</li>
-      <li>ノベルゲームシナリオの校正</li>
-    </ul>
-    <h2>ピクシブ株式会社（正社員 2018.04〜2021.08）</h2>
-    <ul>
-      <li>pixiv小説 開発ディレクション</li>
-      <li>小説コンテスト運営・作品読み</li>
-      <li>
-        <a href="https://www.pixivision.net/ja/" target="_blank" rel="noopener noreferrer"
-          >pixivision<span class="visually-hidden">（新しいタブで開く）</span></a
-        >でおすすめ小説まとめ記事の作成
-      </li>
-      <li>投稿作品の検査・ユーザーへの警告送信</li>
-      <li>お問い合わせ対応・アルバイト社員の問い合わせ返信内容レビュー</li>
-    </ul>
-    <h2>印刷会社（正社員 2016.04〜2018.03）</h2>
-    <ul>
-      <li>WordPressを用いたコーポレートサイトの制作ディレクション</li>
-      <li>EC CUBEを用いたコーポレートサイトの制作ディレクション</li>
-      <li>印刷物制作のフロント対応、制作部・生産管理部との折衝</li>
-    </ul>
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="page-title">{career.data.title}</h1>
+    <div class="experience-body">
+      <Content />
+    </div>
   </main>
 </BaseLayout>

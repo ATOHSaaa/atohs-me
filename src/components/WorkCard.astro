@@ -27,7 +27,7 @@ const { title, description, href, image, imagePublic, external = false } = Astro
           src={image}
           alt=""
           widths={[360, 720]}
-          sizes="(max-width: 720px) 90vw, 346px"
+          sizes="(max-width: 720px) 90vw, min(33vw, 220px)"
           format="webp"
           loading="lazy"
           decoding="async"

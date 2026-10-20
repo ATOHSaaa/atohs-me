@@ -20,7 +20,7 @@
     var(--width-blog-share-rail) + 40px + var(--width-content) + 40px +
       var(--width-blog-toc)
   );
-  --width-header: 880px;
+  --site-gutter: 16px;
   --header-height: 101px;
   --radius-sm: 8px;
   --radius-md: 16px;
@@ -131,7 +131,7 @@ header:not(.header-top) {
 
 .footer-top {
   margin-top: auto;
-  padding: 0 40px;
+  padding: 0;
   border-top: var(--color-text) solid 3px;
   flex-shrink: 0;
 }
@@ -139,7 +139,8 @@ header:not(.header-top) {
 .footer-inner {
   display: flex;
   justify-content: flex-end;
-  max-width: var(--width-header);
+  width: min(calc(100% - 2 * var(--site-gutter)), var(--width-content));
+  max-width: none;
   margin: 0 auto;
   padding: 32px 0;
 }
@@ -155,7 +156,6 @@ header:not(.header-top) {
 .footer-link {
   text-decoration: none;
   font-weight: 700;
-  text-transform: uppercase;
 }
 
 .footer-link:hover {
@@ -219,7 +219,7 @@ header:not(.header-top) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(100% - 32px, var(--width-content));
+  width: min(calc(100% - 2 * var(--site-gutter)), var(--width-content));
   max-width: none;
   margin: 0 auto;
   padding: 20px 0;
@@ -262,7 +262,6 @@ header:not(.header-top) {
 .header-link {
   text-decoration: none;
   font-weight: 700;
-  text-transform: uppercase;
 }
 
 .header-link:hover {
@@ -334,7 +333,13 @@ header:not(.header-top) {
 
 .main {
   margin: 0 auto;
-  width: var(--width-content);
+  width: min(calc(100% - 2 * var(--site-gutter)), var(--width-content));
+  max-width: var(--width-content);
+  box-sizing: border-box;
+}
+
+.main:not(.blog-main) p {
+  line-height: 1.65;
 }
 
 .date {
@@ -412,6 +417,16 @@ header:not(.header-top) {
   text-align: justify;
 }
 
+.home-profile {
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.home-profile .profile-text {
+  margin-top: 40px;
+}
+
 .profile-section {
   margin: 0 0 64px;
 }
@@ -428,22 +443,12 @@ header:not(.header-top) {
   border: var(--color-border-strong) solid 2px;
   border-radius: var(--radius-md);
   background-color: var(--color-bg);
-  transition:
-    transform 0.07s ease-out,
-    background-color 0.12s ease;
+  transition: background-color 0.12s ease;
 }
 
-a.profile-box:hover .profile-box-face {
-  background-color: #ffeb3b;
-  transform: translate(-3px, -3px);
-}
-
+a.profile-box:hover .profile-box-face,
 a.profile-box:active .profile-box-face {
-  transform: translate(0, 0);
   background-color: #ffeb3b;
-  transition:
-    transform 0.03s ease-in,
-    background-color 0.03s ease;
 }
 
 .profile-box-title {
@@ -502,7 +507,8 @@ a.profile-box:active .profile-box-face {
 }
 
 .date-sep {
-  margin: 0 0.35em;
+  margin: 0 0.08em;
+  letter-spacing: 0;
 }
 
 .table-2 tr td span {
@@ -514,16 +520,29 @@ a.profile-box:active .profile-box-face {
    ========================================================================== */
 
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
   width: 100%;
-  flex-wrap: wrap;
-  justify-content: space-between;
   margin-top: 20px;
 }
 
+@media (min-width: 640px) {
+  .container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 16px;
+  }
+}
+
+@media (min-width: 900px) {
+  .container {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 .item {
-  width: 48%;
-  margin-bottom: 40px;
+  width: auto;
+  margin-bottom: 0;
   border: var(--color-border-strong) solid 3px;
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -623,6 +642,7 @@ a.profile-box:active .profile-box-face {
 a:has(> .more) {
   display: flex;
   justify-content: center;
+  width: 100%;
   text-decoration: none;
 }
 
@@ -631,7 +651,8 @@ a:has(> .more) + h2 {
 }
 
 .blog-more {
-  text-align: center;
+  display: flex;
+  justify-content: center;
   margin-top: 48px;
   margin-bottom: 48px;
 }
@@ -716,7 +737,15 @@ a:has(> .more) + h2 {
 }
 
 .experience h2 {
-  font-size: 1.2em;
+  font-size: 1.35em;
+  letter-spacing: 0.05em;
+}
+
+.experience h3 {
+  font-size: 1.15em;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 0;
   letter-spacing: 0.05em;
 }
 
@@ -784,12 +813,23 @@ a:has(> .more) + h2 {
 }
 
 @media (min-width: 1080px) {
-  .main.blog-main {
-    width: min(100% - 32px, var(--width-blog-layout));
+  .header-inner,
+  .footer-inner {
+    width: min(calc(100% - 2 * var(--site-gutter)), var(--width-blog-layout));
   }
 
-  body:has(.blog-main) .header-inner {
-    width: min(100% - 32px, var(--width-blog-layout));
+  .main.blog-main {
+    width: min(calc(100% - 2 * var(--site-gutter)), var(--width-blog-layout));
+    max-width: none;
+  }
+
+  .main:not(.blog-main) {
+    width: min(calc(100% - 2 * var(--site-gutter)), var(--width-content));
+    max-width: var(--width-content);
+  }
+
+  .main.blog-main .blog-layout {
+    width: 100%;
   }
 
   .blog-layout {
@@ -1575,13 +1615,6 @@ a.blog-tag:hover {
   .share-button-face {
     transition: background-color 0.15s ease;
   }
-
-  a.profile-box:hover .profile-box-face,
-  a.profile-box:active .profile-box-face,
-  .share-button:hover .share-button-face,
-  .share-button:active .share-button-face {
-    transform: none;
-  }
 }
 
 @media (max-width: 720px) {
@@ -1652,22 +1685,12 @@ a.blog-tag:hover {
   font-size: 14px;
   line-height: 1;
   background-color: var(--color-bg);
-  transition:
-    transform 0.07s ease-out,
-    background-color 0.12s ease;
+  transition: background-color 0.12s ease;
 }
 
-.share-button:hover .share-button-face {
-  background-color: #ffeb3b;
-  transform: translate(-3px, -3px);
-}
-
+.share-button:hover .share-button-face,
 .share-button:active .share-button-face {
-  transform: translate(0, 0);
   background-color: #ffeb3b;
-  transition:
-    transform 0.03s ease-in,
-    background-color 0.03s ease;
 }
 
 .share-hatena,
@@ -1711,8 +1734,6 @@ a.blog-tag:hover {
   }
 
   .header-inner {
-    width: 90%;
-    max-width: var(--width-content);
     padding: 12px 0;
   }
 
@@ -1736,10 +1757,6 @@ a.blog-tag:hover {
     margin-bottom: 24px;
   }
 
-  .footer-top {
-    padding: 0 20px;
-  }
-
   .footer-inner {
     padding: 20px 0;
   }
@@ -1753,20 +1770,6 @@ a.blog-tag:hover {
     margin-left: 10px;
   }
 
-  .main {
-    width: 90%;
-    margin: 0 auto;
-  }
-
-  .container {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .item {
-    width: 100%;
-    margin-bottom: 0;
-  }
 
   .name-box {
     flex-direction: column;
