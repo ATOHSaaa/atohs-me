@@ -725,6 +725,10 @@ a:has(> .more) + h2 {
   justify-content: flex-end;
 }
 
+.blog-share-float {
+  display: none;
+}
+
 @media (min-width: 1080px) {
   .main.blog-main {
     width: min(100% - 32px, var(--width-blog-layout));
@@ -1662,7 +1666,33 @@ h2 + .blog-list {
     padding-top: 32px;
   }
 
+  .blog-layout-share-rail {
+    display: none;
+  }
+
+  .blog-layout-footer > .share-buttons:first-child {
+    display: none;
+  }
+
+  .blog-share-float {
+    display: block;
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right, 0px));
+    bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    z-index: 90;
+    pointer-events: none;
+  }
+
+  .blog-share-float .share-buttons {
+    margin: 0;
+    pointer-events: auto;
+  }
+
   .share-buttons {
     margin-bottom: 42px;
+  }
+
+  .blog-layout-footer .share-buttons {
+    margin-bottom: 0;
   }
 }

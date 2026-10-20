@@ -65,6 +65,9 @@ const otherPosts = await getOtherBlogPosts(post.id, 5);
         </div>
       </div>
     </article>
+    <div class="blog-share-float" aria-label="記事をシェア">
+      <ShareButtons url={postUrl} title={post.data.title} />
+    </div>
     <script
       is:inline
       async
