@@ -444,12 +444,16 @@ header:not(.header-top) {
   border: var(--color-border-strong) solid 2px;
   border-radius: var(--radius-md);
   background-color: var(--color-bg);
-  transition: background-color 0.12s ease;
+  transform: scale(1);
+  transition:
+    background-color 0.12s ease,
+    transform 0.2s cubic-bezier(0.34, 1.2, 0.64, 1);
 }
 
 a.profile-box:hover .profile-box-face,
 a.profile-box:active .profile-box-face {
   background-color: #ffeb3b;
+  transform: scale(1.015);
 }
 
 .profile-box-title {
@@ -890,7 +894,6 @@ a:has(> .more) + h2 {
 
   .blog-sidebar .profile-box-face {
     padding: 16px;
-    border: 1px solid var(--color-border-subtle);
   }
 
   .blog-sidebar .profile-box-title {
@@ -936,7 +939,7 @@ a:has(> .more) + h2 {
     width: 100%;
     box-sizing: border-box;
     padding: 16px 16px 14px;
-    border: 1px solid var(--color-border-subtle);
+    border: var(--color-border-strong) solid 2px;
     border-radius: var(--radius-sm);
     font-size: 0.76em;
     letter-spacing: 0.04em;
@@ -1616,6 +1619,14 @@ a.blog-tag:hover {
   .profile-box-face,
   .share-button-face {
     transition: background-color 0.15s ease;
+    transform: none;
+  }
+
+  a.profile-box:hover .profile-box-face,
+  a.profile-box:active .profile-box-face,
+  .share-button:hover .share-button-face,
+  .share-button:active .share-button-face {
+    transform: none;
   }
 }
 
@@ -1687,12 +1698,16 @@ a.blog-tag:hover {
   font-size: 14px;
   line-height: 1;
   background-color: var(--color-bg);
-  transition: background-color 0.12s ease;
+  transform: scale(1);
+  transition:
+    background-color 0.12s ease,
+    transform 0.2s cubic-bezier(0.34, 1.2, 0.64, 1);
 }
 
 .share-button:hover .share-button-face,
 .share-button:active .share-button-face {
   background-color: #ffeb3b;
+  transform: scale(1.03);
 }
 
 .share-hatena,
