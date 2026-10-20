@@ -1674,6 +1674,10 @@ h2 + .blog-list {
     display: none;
   }
 
+  .blog-layout-footer-profile {
+    margin-top: 64px;
+  }
+
   .blog-share-float {
     display: block;
     position: fixed;
