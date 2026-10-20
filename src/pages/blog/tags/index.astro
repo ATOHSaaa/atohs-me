@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import { blogTagHref, getBlogTagsWithCounts } from '../../../lib/blog-tags';
+
+const tagEntries = await getBlogTagsWithCounts();
+---
+
+<BaseLayout
+  title="タグ一覧 | Blog | atohs.me"
+  description="atohs(あとーす)のブログ記事のタグ一覧です。"
+  ogUrl="https://atohs.me/blog/tags"
+>
+  <SiteHeader />
+  <main id="main-content" class="main">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span><a href="/blog">blog</a><span
+        class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="blog-title">タグ一覧</h1>
+
+    {
+      tagEntries.length === 0 ? (
+        <p>まだタグはありません。</p>
+      ) : (
+        <ul class="blog-tag-index">
+          {tagEntries.map(({ tag, count }) => (
+            <li class="blog-tag-index-item">
+              <a class="blog-tag" href={blogTagHref(tag)}>#{tag}</a>
+              <span class="blog-tag-index-count">{count}件</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </main>
+</BaseLayout>

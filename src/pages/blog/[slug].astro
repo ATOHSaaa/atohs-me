@@ -6,6 +6,7 @@ import ShareButtons from '../../components/ShareButtons.astro';
 import ProfileBox from '../../components/ProfileBox.astro';
 import BlogToc from '../../components/BlogToc.astro';
 import BlogOtherPosts from '../../components/BlogOtherPosts.astro';
+import BlogPostTags from '../../components/BlogPostTags.astro';
 import { createPostDescription } from '../../lib/post-description';
 import { extractBlogTocItems } from '../../lib/blog-toc';
 import { getOtherBlogPosts } from '../../lib/blog-posts';
@@ -51,6 +52,13 @@ const otherPosts = await getOtherBlogPosts(post.id, 5);
         <ShareButtons url={postUrl} title={post.data.title} />
       </div>
       <div class="blog-body">
+        {
+          post.data.tags.length > 0 && (
+            <div class="blog-body-tags">
+              <BlogPostTags tags={post.data.tags} />
+            </div>
+          )
+        }
         <Content />
       </div>
       <aside class="blog-sidebar" aria-label="サイドバー">

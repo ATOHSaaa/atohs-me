@@ -1,0 +1,19 @@
+---
+import { blogTagHref } from '../lib/blog-tags';
+
+interface Props {
+  tags?: string[];
+}
+
+const { tags = [] } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <span class="blog-tags">
+      {tags.map((tag) => (
+        <a class="blog-tag" href={blogTagHref(tag)}>#{tag}</a>
+      ))}
+    </span>
+  )
+}

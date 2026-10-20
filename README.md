@@ -40,6 +40,7 @@ draft: false
 - 一覧: `/blog`
 - 記事: `/blog/<ファイル名>`（例: `blog-open.md` → `/blog/blog-open`）
 - OGP画像: 記事タイトルからビルド時に自動生成（`/blog/<slug>/og.png`）
+- 本文用画像: `src/content/blog/img/` に置き、Markdown で `![](./img/ファイル名.png)` と書く
 
 ## デプロイ（GitHub Pages）
 

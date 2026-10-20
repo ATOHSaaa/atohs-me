@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import BlogListItem from '../../../components/BlogListItem.astro';
+import {
+  blogTagHref,
+  blogTagSlug,
+  getBlogPostsByTag,
+  getBlogTagsWithCounts,
+} from '../../../lib/blog-tags';
+
+export async function getStaticPaths() {
+  const tagEntries = await getBlogTagsWithCounts();
+  return tagEntries.map(({ tag }) => ({
+    params: { slug: blogTagSlug(tag) },
+    props: { tag },
+  }));
+}
+
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+const posts = await getBlogPostsByTag(tag);
+const pageHeading = `タグ「${tag}」の記事一覧`;
+const ogUrl = `https://atohs.me${blogTagHref(tag)}`;
+---
+
+<BaseLayout
+  title={`${pageHeading} | Blog | atohs.me`}
+  description={`${pageHeading}です。`}
+  ogUrl={ogUrl}
+>
+  <SiteHeader />
+  <main id="main-content" class="main">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span><a href="/blog">blog</a><span
+        class="breadcrumb-slash">/</span><a href="/blog/tags">tags</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="blog-title">{pageHeading}</h1>
+
+    {
+      posts.length === 0 ? (
+        <p>このタグの記事はまだありません。</p>
+      ) : (
+        <ul class="blog-list">
+          {posts.map((post) => (
+            <BlogListItem post={post} />
+          ))}
+        </ul>
+      )
+    }
+  </main>
+</BaseLayout>

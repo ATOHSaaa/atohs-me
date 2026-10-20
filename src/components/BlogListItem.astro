@@ -1,0 +1,15 @@
+---
+import type { BlogPostEntry } from '../lib/blog-posts';
+import { formatDate } from '../lib/format-date';
+
+interface Props {
+  post: BlogPostEntry;
+}
+
+const { post } = Astro.props;
+---
+
+<li class="blog-list-item">
+  <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+  <a href={`/blog/${post.id}`}>{post.data.title}</a>
+</li>

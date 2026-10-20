@@ -1,6 +1,6 @@
 ---
 import type { BlogPostEntry } from '../lib/blog-posts';
-import { formatDate } from '../lib/format-date';
+import BlogListItem from './BlogListItem.astro';
 
 interface Props {
   posts: BlogPostEntry[];
@@ -15,10 +15,7 @@ const { posts } = Astro.props;
       <h2 id="blog-other-posts-heading" class="blog-other-posts-heading">最近書いた記事</h2>
       <ul class="blog-list blog-other-posts-list">
         {posts.map((post) => (
-          <li class="blog-list-item">
-            <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-            <a href={`/blog/${post.id}`}>{post.data.title}</a>
-          </li>
+          <BlogListItem post={post} />
         ))}
       </ul>
     </section>

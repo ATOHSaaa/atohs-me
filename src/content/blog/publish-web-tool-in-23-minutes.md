@@ -1,6 +1,7 @@
 ---
 title: 小説の登場人物の呼び方を整理するWebツールを23分で開発・リリースした
 pubDate: 2026-07-21
+tags: 開発
 ---
 
 今日は、朝から [Yobikata https://tools.tadeku.net/yobikata] というWebツールを [tadeku-tools https://tadeku.net] で公開しました。

@@ -57,9 +57,11 @@ const {
       gtag('config', 'G-3S8S7JGPEZ');
     </script>
   </head>
-  <body>
+  <body class="site">
     <a class="skip-link" href="#main-content">メインコンテンツへスキップ</a>
-    <slot />
+    <div class="site-content">
+      <slot />
+    </div>
     <SiteFooter />
   </body>
 </html>

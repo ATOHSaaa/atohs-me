@@ -1,6 +1,7 @@
 ---
 title: 自作のキャラクターを図鑑形式でまとめるツールを作ったら、24時間で1万人の方に使っていただけた話
 pubDate: 2026-08-30
+tags: 開発
 ---
 
 [Chara-Zukan https://tools.tadeku.net/chara-zukan/] という、自分専用のキャラクター図鑑を作成できるWebツールを [tadeku-tools https://tools.tadeku.net] で公開しました。

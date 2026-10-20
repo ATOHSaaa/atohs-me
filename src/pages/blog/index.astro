@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import BlogPhotoMarquee from '../../components/BlogPhotoMarquee.astro';
-import { formatDate } from '../../lib/format-date';
+import BlogListItem from '../../components/BlogListItem.astro';
 import { collectBlogPhotos } from '../../lib/blog-photos';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
@@ -30,10 +30,7 @@ const photos = collectBlogPhotos(posts);
       ) : (
         <ul class="blog-list">
           {posts.map((post) => (
-            <li class="blog-list-item">
-              <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-              <a href={`/blog/${post.id}`}>{post.data.title}</a>
-            </li>
+            <BlogListItem post={post} />
           ))}
         </ul>
       )

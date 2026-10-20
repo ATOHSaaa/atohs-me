@@ -41,6 +41,22 @@ body {
   margin: 0;
 }
 
+.site {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-content {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-content > .main {
+  flex: 1 0 auto;
+}
+
 body:has(.header-top) {
   padding-top: var(--header-height);
 }
@@ -103,9 +119,10 @@ header:not(.header-top) {
 }
 
 .footer-top {
-  margin-top: 100px;
-  padding: 0 40px;
+  margin-top: auto;
+  padding: 100px 40px 0;
   border-top: var(--color-text) solid 3px;
+  flex-shrink: 0;
 }
 
 .footer-inner {
@@ -179,7 +196,7 @@ header:not(.header-top) {
   right: 0;
   z-index: 100;
   height: auto;
-  padding: 0 40px;
+  padding: 0;
   font-weight: bold;
   border-top: none;
   border-bottom: var(--color-text) solid 2px;
@@ -191,7 +208,8 @@ header:not(.header-top) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: var(--width-header);
+  width: min(100% - 32px, var(--width-content));
+  max-width: none;
   margin: 0 auto;
   padding: 20px 0;
 }
@@ -340,7 +358,7 @@ header:not(.header-top) {
   display: flex;
   align-items: flex-start;
   gap: 32px;
-  margin-top: 48px;
+  margin-top: 24px;
   /* 詳細（3行）の高さ */
   --name-block-height: calc(1em * 1.6 * 3);
 }
@@ -388,9 +406,20 @@ header:not(.header-top) {
 }
 
 .profile-box {
+  display: block;
   padding: 32px;
   border: var(--color-border-strong) solid 2px;
   border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease;
+}
+
+a.profile-box:hover {
+  background-color: #ffeb3b;
+  transform: translate(-3px, -3px);
 }
 
 .profile-box-title {
@@ -734,16 +763,8 @@ a:has(> .more) + h2 {
     width: min(100% - 32px, var(--width-blog-layout));
   }
 
-  body:has(.blog-main) .header-top {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
   body:has(.blog-main) .header-inner {
     width: min(100% - 32px, var(--width-blog-layout));
-    max-width: none;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .blog-layout {
@@ -926,6 +947,58 @@ h2 + .blog-list {
   min-width: 0;
 }
 
+.blog-tags {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.blog-tag {
+  display: inline-block;
+  padding: 0 6px;
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  background-color: #fff;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+a.blog-tag {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.blog-tag:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.blog-tag-index {
+  list-style: none;
+  margin: 32px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+  align-items: baseline;
+}
+
+.blog-tag-index-item {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.blog-tag-index-count {
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
 .blog-list-item time {
   color: var(--color-text);
   font-weight: 500;
@@ -937,6 +1010,15 @@ h2 + .blog-list {
   font-weight: 400;
   letter-spacing: 0.05em;
   text-align: justify;
+}
+
+.blog-body-tags {
+  margin: 0 0 28px;
+  text-align: left;
+}
+
+.blog-body-tags .blog-tag {
+  font-size: 0.85em;
 }
 
 .blog-body a {
@@ -1454,6 +1536,16 @@ h2 + .blog-list {
   .not-found-posts {
     animation: none;
   }
+
+  .profile-box,
+  .share-button {
+    transition: background-color 0.15s ease;
+  }
+
+  a.profile-box:hover,
+  .share-button:hover {
+    transform: none;
+  }
 }
 
 @media (max-width: 720px) {
@@ -1514,6 +1606,14 @@ h2 + .blog-list {
   cursor: pointer;
   font-family: inherit;
   flex-shrink: 0;
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.share-button:hover {
+  background-color: #ffeb3b;
+  transform: translate(-3px, -3px);
 }
 
 .share-hatena,
@@ -1543,11 +1643,9 @@ h2 + .blog-list {
     margin-top: 50px;
   }
 
-  .header-top {
-    padding: 0 20px;
-  }
-
   .header-inner {
+    width: 90%;
+    max-width: var(--width-content);
     padding: 12px 0;
   }
 
@@ -1572,7 +1670,7 @@ h2 + .blog-list {
   }
 
   .footer-top {
-    padding: 0 20px;
+    padding: 100px 20px 0;
   }
 
   .footer-inner {
