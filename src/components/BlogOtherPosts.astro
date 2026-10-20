@@ -1,0 +1,26 @@
+---
+import type { BlogPostEntry } from '../lib/blog-posts';
+import { formatDate } from '../lib/format-date';
+
+interface Props {
+  posts: BlogPostEntry[];
+}
+
+const { posts } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    <section class="blog-other-posts" aria-labelledby="blog-other-posts-heading">
+      <h2 id="blog-other-posts-heading" class="blog-other-posts-heading">最近書いた記事</h2>
+      <ul class="blog-list blog-other-posts-list">
+        {posts.map((post) => (
+          <li class="blog-list-item">
+            <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+            <a href={`/blog/${post.id}`}>{post.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
