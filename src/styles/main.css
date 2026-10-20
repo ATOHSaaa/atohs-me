@@ -93,7 +93,7 @@ a {
 h2,
 .page-title {
   font-size: 1.5em;
-  font-weight: 900;
+  font-weight: 700;
   margin-top: 48px;
   margin-bottom: 0;
   font-feature-settings: "palt";
@@ -787,7 +787,7 @@ a:has(> .more) + h2 {
 .blog-title,
 .breadcrumb + .page-title {
   font-size: 2em;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 0.05em;
   margin: 0 0 8px;
   line-height: 1.4;
