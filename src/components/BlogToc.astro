@@ -1,0 +1,31 @@
+---
+import type { BlogTocItem } from '../lib/blog-toc';
+
+interface Props {
+  items: BlogTocItem[];
+}
+
+const { items } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <div class="blog-sidebar-toc-slot">
+      <nav class="blog-toc" aria-label="目次">
+        <h2 class="blog-toc-label">目次</h2>
+        <ul class="blog-toc-list">
+          {items.map((item) => (
+            <li
+              class:list={[
+                'blog-toc-item',
+                { 'blog-toc-item--sub': item.depth === 3 },
+              ]}
+            >
+              <a class="blog-toc-link" href={`#${item.slug}`}>{item.text}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  )
+}

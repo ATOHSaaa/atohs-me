@@ -6,6 +6,9 @@ import { remarkBracketUrlLinks } from './src/lib/remark-bracket-url-links.js';
 import { remarkTwitterEmbeds } from './src/lib/remark-twitter-embeds.js';
 import { remarkQuoteSource } from './src/lib/remark-quote-source.js';
 import { remarkAmazonCards } from './src/lib/remark-amazon-cards.js';
+import { remarkLinkCards } from './src/lib/remark-link-cards.js';
+import rehypeSlug from 'rehype-slug';
+import { rehypeExternalLinks } from './src/lib/rehype-external-links.js';
 
 function getBlogLastmodByPath() {
   const blogDir = './src/content/blog';
@@ -51,8 +54,10 @@ export default defineConfig({
       remarkBracketUrlLinks,
       remarkTwitterEmbeds,
       remarkAmazonCards,
+      remarkLinkCards,
       remarkQuoteSource,
     ],
+    rehypePlugins: [rehypeSlug, rehypeExternalLinks],
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,

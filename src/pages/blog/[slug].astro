@@ -4,7 +4,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import ProfileBox from '../../components/ProfileBox.astro';
+import BlogToc from '../../components/BlogToc.astro';
 import { createPostDescription } from '../../lib/post-description';
+import { extractBlogTocItems } from '../../lib/blog-toc';
 import { formatDate } from '../../lib/format-date';
 
 export async function getStaticPaths() {
@@ -20,6 +22,7 @@ const { Content } = await render(post);
 const postUrl = `https://atohs.me/blog/${post.id}`;
 const ogImage = `https://atohs.me/blog/${post.id}/og.png`;
 const description = createPostDescription(post.body ?? '');
+const tocItems = extractBlogTocItems(post.body ?? '');
 ---
 
 <BaseLayout
@@ -29,22 +32,34 @@ const description = createPostDescription(post.body ?? '');
   ogImage={ogImage}
 >
   <SiteHeader />
-  <main id="main-content" class="main">
-    <article class="blog-post">
-      <nav class="breadcrumb" aria-label="パンくずリスト">
-        <a href="/">Home</a><span class="breadcrumb-slash">/</span><a href="/blog">blog</a><span
-          class="breadcrumb-slash">/</span>
-      </nav>
-      <h1 class="blog-title">{post.data.title}</h1>
-      <p class="blog-meta">
-        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-      </p>
-      <ShareButtons url={postUrl} title={post.data.title} />
+  <main id="main-content" class="main blog-main">
+    <article class="blog-post blog-layout">
+      <div class="blog-layout-intro">
+        <nav class="breadcrumb" aria-label="パンくずリスト">
+          <a href="/">Home</a><span class="breadcrumb-slash">/</span><a href="/blog">blog</a><span
+            class="breadcrumb-slash">/</span>
+        </nav>
+        <h1 class="blog-title">{post.data.title}</h1>
+        <p class="blog-meta">
+          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        </p>
+      </div>
+      <div class="blog-layout-share-rail">
+        <ShareButtons url={postUrl} title={post.data.title} />
+      </div>
       <div class="blog-body">
         <Content />
       </div>
-      <ShareButtons url={postUrl} title={post.data.title} />
-      <ProfileBox />
+      <aside class="blog-sidebar" aria-label="サイドバー">
+        <ProfileBox />
+        <BlogToc items={tocItems} />
+      </aside>
+      <div class="blog-layout-footer">
+        <ShareButtons url={postUrl} title={post.data.title} />
+        <div class="blog-layout-footer-profile">
+          <ProfileBox />
+        </div>
+      </div>
     </article>
     <script
       is:inline

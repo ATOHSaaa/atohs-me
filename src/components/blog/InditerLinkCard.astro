@@ -1,0 +1,13 @@
+---
+import { getLinkCardOgpMetadata } from '../../lib/link-card-ogp-cache.js';
+import { LINK_CARD_DEFINITIONS } from '../../lib/link-cards.config.js';
+import { renderOgpLinkCardHtml } from '../../lib/link-card-html.js';
+
+const definition =
+  LINK_CARD_DEFINITIONS.find((item) => item.id === 'inditer') ??
+  LINK_CARD_DEFINITIONS[0];
+
+const metadata = getLinkCardOgpMetadata(definition.url, definition.fallback);
+---
+
+<div set:html={renderOgpLinkCardHtml(metadata)} />
