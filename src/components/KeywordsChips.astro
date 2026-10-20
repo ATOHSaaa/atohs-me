@@ -1,0 +1,20 @@
+---
+import { getKeywordEntries, keywordHref } from '../lib/keywords';
+
+interface Props {
+  excludeSlug?: string;
+}
+
+const { excludeSlug } = Astro.props;
+const entries = (await getKeywordEntries()).filter((entry) => entry.id !== excludeSlug);
+---
+
+<ul class="keywords-list">
+  {
+    entries.map((entry) => (
+      <li>
+        <a class="keywords-chip" href={keywordHref(entry.id)}>{entry.data.title}</a>
+      </li>
+    ))
+  }
+</ul>

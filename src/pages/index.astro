@@ -1,21 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
-import WorkCard from '../components/WorkCard.astro';
-import BlogListItem from '../components/BlogListItem.astro';
-import { getFeaturedWorks } from '../lib/works';
-
-const latestPosts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 5);
-
-const featuredWorks = getFeaturedWorks().slice(0, 4);
+import Keywords from '../components/Keywords.astro';
 ---
 
 <BaseLayout title="atohs.me | あとーすのプロフィール">
   <SiteHeader isHome />
-  <main id="main-content" class="main">
+  <main id="main-content" class="main main-home">
     <div class="home-profile">
       <div class="name-box">
         <img class="profile-icon" src="/src/favicon.ico" alt="" width="128" height="128" />
@@ -27,96 +18,31 @@ const featuredWorks = getFeaturedWorks().slice(0, 4);
           </p>
         </div>
       </div>
-      <p class="profile-text">
-        熊本大学文学部文学科卒。印刷会社で営業・Webディレクター、IT系ベンチャー企業でPdM・カスタマーサポートとして勤務した後に独立。ことばや文章に関することを中心に、企画・制作を担当します。
-      </p>
     </div>
 
-    <h2>Blog</h2>
-    {
-      latestPosts.length === 0 ? (
-        <p>まだ記事はありません。</p>
-      ) : (
-        <ul class="blog-list">
-          {latestPosts.map((post) => (
-            <BlogListItem post={post} />
-          ))}
-        </ul>
-      )
-    }
-    <p class="blog-more"><a href="/blog">ブログをもっと読む</a></p>
+    <nav class="home-links" aria-label="サイトメニュー">
+      <a class="home-link" href="/blog">Blog</a><span class="home-links-sep" aria-hidden="true">/</span>
+      <a class="home-link" href="/my-business-experience">Career</a><span class="home-links-sep" aria-hidden="true">/</span>
+      <a class="home-link" href="/works">Works</a><span class="home-links-sep" aria-hidden="true">/</span>
+      <a class="home-link" href="/contact">Contact</a>
+    </nav>
 
-    <h2>Career</h2>
-    <ul class="career-list">
-      <li class="career-item">
-        <span class="date-range">
-          <span class="date-start">2021.09</span>
-          <span class="date-sep" aria-hidden="true">〜</span>
-          <span class="date-end date-end--current">現在</span>
-        </span>
-        個人事業主 （屋号：<a href="https://tadeku.net" target="_blank" rel="noopener noreferrer">蓼食う本の虫</a>）
-        <ul class="career-list">
-          <li class="career-item">
-            <span class="date-range">
-              <span class="date-start">2025.10</span>
-              <span class="date-sep" aria-hidden="true">〜</span>
-              <span class="date-end date-end--current">現在</span>
-            </span>
-            <a href="https://anan-mark.com/" target="_blank" rel="noopener noreferrer"
-              >ANANMARK<span class="visually-hidden">（新しいタブで開く）</span></a
-            >
-            制作・開発・マーケ （業務委託）
-          </li>
-          <li class="career-item">
-            <span class="date-range">
-              <span class="date-start">2022.07</span>
-              <span class="date-sep" aria-hidden="true">〜</span>
-              <span class="date-end">2025.03</span>
-            </span>
-            <a href="https://tooon.co.jp/" target="_blank" rel="noopener noreferrer"
-              >Tooon株式会社<span class="visually-hidden">（新しいタブで開く）</span></a
-            >
-            CS・マーケ （業務委託）
-          </li>
+    <div class="home-blocks">
+      <section class="home-block home-block--card" aria-labelledby="home-education-heading">
+        <h2 id="home-education-heading" class="home-section-heading">Education</h2>
+        <ul class="home-block-list">
+          <li>Bachelor of Literature, Kumamoto University, Graduated: March 2016</li>
         </ul>
-      </li>
-      <li class="career-item">
-        <span class="date-range">
-          <span class="date-start">2018.04</span>
-          <span class="date-sep" aria-hidden="true">〜</span>
-          <span class="date-end">2021.08</span>
-        </span>
-        <a href="https://www.pixiv.co.jp/" target="_blank" rel="noopener noreferrer"
-          >ピクシブ株式会社<span class="visually-hidden">（新しいタブで開く）</span></a
-        >
-        PdM・CS （正社員）
-      </li>
-      <li class="career-item">
-        <span class="date-range">
-          <span class="date-start">2016.04</span>
-          <span class="date-sep" aria-hidden="true">〜</span>
-          <span class="date-end">2018.03</span>
-        </span>
-        印刷会社 営業・Webディレクター （正社員）
-      </li>
-    </ul>
-    <a href="/my-business-experience"><p class="more"><span>職歴詳細を見る</span></p></a>
+      </section>
 
-    <h2>Works</h2>
-    <div class="container">
-      {
-        featuredWorks.map((work) => (
-          <WorkCard
-            title={work.title}
-            description={work.description}
-            href={work.href}
-            image={work.image}
-            imagePublic={work.imagePublic}
-            external={work.external}
-          />
-        ))
-      }
+      <section class="home-block home-block--card" aria-labelledby="home-qualification-heading">
+        <h2 id="home-qualification-heading" class="home-section-heading">Qualification</h2>
+        <ul class="home-block-list">
+          <li>1st grade Driver's License</li>
+        </ul>
+      </section>
     </div>
-    <p class="blog-more"><a href="/works">プロジェクトをもっと見る</a></p>
+
+    <Keywords />
   </main>
 </BaseLayout>

@@ -31,4 +31,13 @@ const career = defineCollection({
   }),
 });
 
-export const collections = { blog, career };
+const keywords = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/keywords' }),
+  schema: z.object({
+    title: z.string(),
+    /** 一覧での並び順（小さいほど先） */
+    order: z.number().default(0),
+  }),
+});
+
+export const collections = { blog, career, keywords };

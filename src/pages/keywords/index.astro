@@ -1,0 +1,35 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import KeywordsChips from '../../components/KeywordsChips.astro';
+import { getKeywordIndexEntry, keywordsIndexHref } from '../../lib/keywords';
+
+const indexEntry = await getKeywordIndexEntry();
+const { Content } = await render(indexEntry);
+const description =
+  indexEntry.body?.trim().split('\n').find((line) => line.trim()) ??
+  'atohs(あとーす)のスキル・ツールキーワード一覧です。';
+---
+
+<BaseLayout
+  title={`${indexEntry.data.title} | atohs.me`}
+  description={description}
+  ogUrl={`https://atohs.me${keywordsIndexHref}`}
+>
+  <SiteHeader />
+  <main id="main-content" class="main">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="page-title">{indexEntry.data.title}</h1>
+    {
+      indexEntry.body?.trim() ? (
+        <div class="blog-body keywords-body">
+          <Content />
+        </div>
+      ) : null
+    }
+    <KeywordsChips />
+  </main>
+</BaseLayout>

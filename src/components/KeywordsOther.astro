@@ -1,0 +1,20 @@
+---
+import KeywordsChips from './KeywordsChips.astro';
+import { getKeywordEntries } from '../lib/keywords';
+
+interface Props {
+  currentSlug: string;
+}
+
+const { currentSlug } = Astro.props;
+const hasOthers = (await getKeywordEntries()).some((entry) => entry.id !== currentSlug);
+---
+
+{
+  hasOthers && (
+    <section class="keywords-other" aria-labelledby="keywords-other-heading">
+      <h2 id="keywords-other-heading" class="keywords-heading">そのほかのキーワード</h2>
+      <KeywordsChips excludeSlug={currentSlug} />
+    </section>
+  )
+}

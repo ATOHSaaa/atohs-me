@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import KeywordsOther from '../../components/KeywordsOther.astro';
+import {
+  getKeywordIndexEntry,
+  isKeywordIndexEntry,
+  keywordHref,
+  keywordsDocumentTitle,
+  keywordsIndexHref,
+} from '../../lib/keywords';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('keywords');
+  return entries
+    .filter((entry) => !isKeywordIndexEntry(entry))
+    .map((entry) => ({
+      params: { slug: entry.id },
+      props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const indexEntry = await getKeywordIndexEntry();
+const pageUrl = `https://atohs.me${keywordHref(entry.id)}`;
+---
+
+<BaseLayout
+  title={`${entry.data.title} | ${keywordsDocumentTitle}`}
+  description={`${entry.data.title} — ${indexEntry.data.title}`}
+  ogUrl={pageUrl}
+>
+  <SiteHeader />
+  <main id="main-content" class="main">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span><a href={keywordsIndexHref}
+        >{indexEntry.data.title}</a
+      ><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="page-title">{entry.data.title}</h1>
+    <div class="blog-body keywords-body">
+      <Content />
+    </div>
+    <KeywordsOther currentSlug={entry.id} />
+  </main>
+</BaseLayout>
