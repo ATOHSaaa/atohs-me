@@ -214,7 +214,7 @@ header:not(.header-top) {
 .header-logo-icon {
   width: 1.5em;
   height: 1.5em;
-  border-radius: 50%;
+  border-radius: var(--radius-sm);
   object-fit: cover;
   flex-shrink: 0;
 }
@@ -815,6 +815,7 @@ a:has(> .more) + h2 {
   .blog-sidebar .profile-icon {
     width: 72px;
     height: 72px;
+    border-radius: var(--radius-md);
   }
 
   .blog-sidebar .name-detail-line {

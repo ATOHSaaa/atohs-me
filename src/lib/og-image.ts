@@ -6,37 +6,56 @@ import { Resvg } from '@resvg/resvg-js';
 const WIDTH = 1200;
 const HEIGHT = 630;
 const PAD_X = 48;
-const PAD_Y = 72;
+const PAD_TOP = 56;
+const PAD_BOTTOM = 72;
+const MAX_LINES = 3;
+const MIN_TITLE_FONT = 56;
+const LINE_HEIGHT = 1.35;
 
 async function loadFont() {
   const fontPath = join(process.cwd(), 'src/assets/fonts/NotoSansCJKjp-Bold.otf');
   return readFile(fontPath);
 }
 
-function titleFontSize(title: string) {
+function baseTitleFontSize(title: string) {
   const len = [...title].length;
-  if (len > 36) return 72;
-  if (len > 28) return 84;
+  if (len > 40) return 64;
+  if (len > 32) return 72;
+  if (len > 24) return 80;
   if (len > 18) return 92;
   return 104;
 }
 
-/** 行末で切ってよい直前の文字（幅いっぱいまで詰め、ここで折る） */
-const BREAK_AFTER = new Set([
-  '、',
-  '。',
-  'を',
-  'に',
-  'で',
-  'と',
-  'が',
-  'は',
-  'の',
-  'ら',
-  '！',
-  '？',
-  ' ',
-]);
+/** 改行で分割しない塊（引用符付き固有名・英数字） */
+function tokenizeTitle(title: string): string[] {
+  const tokens: string[] = [];
+  const chars = [...title];
+  let i = 0;
+
+  while (i < chars.length) {
+    if (chars[i] === '「') {
+      let j = i + 1;
+      while (j < chars.length && chars[j] !== '」') j += 1;
+      if (j < chars.length) j += 1;
+      tokens.push(chars.slice(i, j).join(''));
+      i = j;
+      continue;
+    }
+
+    if (/[A-Za-z0-9]/.test(chars[i])) {
+      let j = i;
+      while (j < chars.length && /[A-Za-z0-9]/.test(chars[j])) j += 1;
+      tokens.push(chars.slice(i, j).join(''));
+      i = j;
+      continue;
+    }
+
+    tokens.push(chars[i]);
+    i += 1;
+  }
+
+  return tokens;
+}
 
 function charWidth(ch: string, fontSize: number) {
   if (ch === ' ') return fontSize * 0.3;
@@ -44,43 +63,108 @@ function charWidth(ch: string, fontSize: number) {
   return fontSize;
 }
 
-/** 1 行をできるだけ長く使い、句読点・助詞の後で折る */
-function wrapTitleGreedy(title: string, fontSize: number, contentWidth: number) {
-  const chars = [...title];
+function tokenWidth(token: string, fontSize: number) {
+  return [...token].reduce((sum, ch) => sum + charWidth(ch, fontSize), 0);
+}
+
+function lineWidth(line: string, fontSize: number) {
+  return [...line].reduce((sum, ch) => sum + charWidth(ch, fontSize), 0);
+}
+
+/** トークン単位で折り返し（英数字・「」内は分割しない） */
+function wrapTitleWithTokens(
+  title: string,
+  fontSize: number,
+  contentWidth: number,
+): string[] {
+  const tokens = tokenizeTitle(title);
   const lines: string[] = [];
-  let start = 0;
+  let currentLine = '';
+  let currentWidth = 0;
 
-  while (start < chars.length) {
-    let width = 0;
-    let lastBreak = -1;
-    let end = start;
+  for (const token of tokens) {
+    const width = tokenWidth(token, fontSize);
 
-    for (let i = start; i < chars.length; i++) {
-      const nextWidth = width + charWidth(chars[i], fontSize);
-      if (nextWidth > contentWidth && i > start) break;
-
-      width = nextWidth;
-      end = i + 1;
-      if (BREAK_AFTER.has(chars[i])) lastBreak = i + 1;
+    if (currentLine && currentWidth + width > contentWidth) {
+      lines.push(currentLine);
+      currentLine = token;
+      currentWidth = width;
+      continue;
     }
 
-    let breakAt = end;
-    if (end < chars.length && lastBreak > start) {
-      breakAt = lastBreak;
+    if (!currentLine && width > contentWidth) {
+      lines.push(token);
+      currentLine = '';
+      currentWidth = 0;
+      continue;
     }
 
-    lines.push(chars.slice(start, breakAt).join(''));
-    start = breakAt;
+    currentLine += token;
+    currentWidth += width;
   }
 
-  return lines.join('\n');
+  if (currentLine) lines.push(currentLine);
+
+  return lines;
+}
+
+function truncateWithEllipsis(
+  line: string,
+  fontSize: number,
+  contentWidth: number,
+): string {
+  const ellipsis = '…';
+  const ellipsisWidth = tokenWidth(ellipsis, fontSize);
+  let text = line;
+
+  while (text.length > 0 && lineWidth(text, fontSize) + ellipsisWidth > contentWidth) {
+    text = text.slice(0, -1);
+  }
+
+  return text.length > 0 ? `${text}${ellipsis}` : ellipsis;
+}
+
+function fitTitleLayout(title: string, contentWidth: number) {
+  for (
+    let fontSize = baseTitleFontSize(title);
+    fontSize >= MIN_TITLE_FONT;
+    fontSize -= 4
+  ) {
+    const lines = wrapTitleWithTokens(title, fontSize, contentWidth);
+    const overflow = lines.some((line) => lineWidth(line, fontSize) > contentWidth);
+
+    if (lines.length <= MAX_LINES && !overflow) {
+      return { fontSize, text: lines.join('\n') };
+    }
+  }
+
+  const fontSize = MIN_TITLE_FONT;
+  let lines = wrapTitleWithTokens(title, fontSize, contentWidth);
+
+  if (lines.length > MAX_LINES) {
+    const kept = lines.slice(0, MAX_LINES - 1);
+    kept.push(
+      truncateWithEllipsis(lines[MAX_LINES - 1], fontSize, contentWidth),
+    );
+    lines = kept;
+  } else {
+    lines = lines.map((line) =>
+      lineWidth(line, fontSize) > contentWidth
+        ? truncateWithEllipsis(line, fontSize, contentWidth)
+        : line,
+    );
+  }
+
+  return { fontSize, text: lines.join('\n') };
 }
 
 export async function generateOgImage(title: string): Promise<Buffer> {
   const font = await loadFont();
-  const titleSize = titleFontSize(title);
   const contentWidth = WIDTH - PAD_X * 2;
-  const wrappedTitle = wrapTitleGreedy(title, titleSize, contentWidth);
+  const { fontSize: titleSize, text: wrappedTitle } = fitTitleLayout(
+    title,
+    contentWidth,
+  );
 
   const svg = await satori(
     {
@@ -91,12 +175,12 @@ export async function generateOgImage(title: string): Promise<Buffer> {
           height: `${HEIGHT}px`,
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           backgroundColor: '#FBFAF7',
           color: 'rgb(10, 10, 55)',
           borderTop: '24px solid rgb(10, 10, 55)',
-          paddingTop: `${PAD_Y}px`,
-          paddingBottom: `${PAD_Y}px`,
+          paddingTop: `${PAD_TOP}px`,
+          paddingBottom: `${PAD_BOTTOM}px`,
           paddingLeft: `${PAD_X}px`,
           paddingRight: `${PAD_X}px`,
           boxSizing: 'border-box',
@@ -107,9 +191,10 @@ export async function generateOgImage(title: string): Promise<Buffer> {
             props: {
               style: {
                 width: `${contentWidth}px`,
-                fontSize: 52,
+                fontSize: 48,
                 fontWeight: 700,
-                marginBottom: 40,
+                marginBottom: 32,
+                flexShrink: 0,
               },
               children: 'atohs.me/blog',
             },
@@ -121,8 +206,9 @@ export async function generateOgImage(title: string): Promise<Buffer> {
                 width: `${contentWidth}px`,
                 fontSize: titleSize,
                 fontWeight: 700,
-                lineHeight: 1.3,
+                lineHeight: LINE_HEIGHT,
                 whiteSpace: 'pre-wrap',
+                flexGrow: 1,
               },
               children: wrappedTitle,
             },

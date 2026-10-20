@@ -1,6 +1,7 @@
 ---
 title: 小説執筆用のWebアプリケーション「Inditer」を作りはじめました
-pubDate: 2026-10-20T18:02:00+09:00
+ogTitle: 小説執筆アプリ「Inditer」を作りはじめた
+pubDate: 2026-10-20T18:12:00+09:00
 ---
 
 昨日くらいから、小説執筆用のWebアプリケーション「[Inditer](https://tools.tadeku.net/inditer/)」を作りはじめました。「インダイター」と読むつもりです。
