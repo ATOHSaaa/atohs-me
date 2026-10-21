@@ -12,8 +12,6 @@ const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
-    /** OGP 画像用の短いタイトル（省略時は title） */
-    ogTitle: z.string().optional(),
     pubDate: z.coerce.date(),
     /** 記事一覧などで表示するタグ（`a, b` または YAML 配列。先頭の # は表示側で付与） */
     tags: z

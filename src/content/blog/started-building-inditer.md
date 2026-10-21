@@ -1,6 +1,5 @@
 ---
 title: 小説執筆用のWebアプリケーション「Inditer」を作りはじめました
-ogTitle: 小説執筆アプリ「Inditer」を作りはじめた
 pubDate: 2026-10-20T18:12:00+09:00
 tags: 開発
 ---

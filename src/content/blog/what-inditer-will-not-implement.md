@@ -1,6 +1,5 @@
 ---
 title: 小説執筆用のWebアプリケーション「Inditer」に、何を実装しないか
-ogTitle: Inditerに実装しない機能について
 pubDate: 2026-10-21T12:10:00+09:00
 tags: 開発
 ---
