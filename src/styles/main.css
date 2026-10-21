@@ -243,6 +243,7 @@ header:not(.header-top) {
 }
 
 .header-logo-icon {
+  display: block;
   width: 1.5em;
   height: 1.5em;
   border-radius: var(--radius-sm);
@@ -326,6 +327,13 @@ header:not(.header-top) {
 
 .top-link ul {
   text-align: center;
+}
+
+/* Astro client navigation: keep swaps instant (no fade) */
+::view-transition-group(root),
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none !important;
 }
 
 /* ==========================================================================
@@ -567,6 +575,28 @@ header:not(.header-top) {
 
 .keywords-heading {
   margin-bottom: 20px;
+}
+
+.keywords-heading-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.keywords-heading-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.keywords-last-updated {
+  margin: 32px 0 0;
+  font-size: 0.85em;
+  font-weight: 500;
+  text-align: right;
+  color: var(--color-text-muted);
+}
+
+.keywords-last-updated + .keywords-other {
+  margin-top: 40px;
 }
 
 .keywords-other {

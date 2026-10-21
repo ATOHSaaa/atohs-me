@@ -1,4 +1,6 @@
 ---
+import { SITE_LOGO_SRC } from '../lib/site-logo';
+
 interface Props {
   isHome?: boolean;
 }
@@ -9,27 +11,28 @@ const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
 const isWorks = pathname === '/works' || pathname.startsWith('/works/');
 const isCareer = pathname === '/my-business-experience';
 const isContact = pathname === '/contact';
+
+const LogoTag = isHome ? 'h1' : 'p';
 ---
 
 <header class="header-top">
   <div class="header-inner">
-    {
-      isHome ? (
-        <h1 class="header-logo">
-          <a href="/">
-            <img class="header-logo-icon" src="/src/favicon.ico" alt="" width="28" height="28" />
-            atohs.me
-          </a>
-        </h1>
-      ) : (
-        <p class="header-logo">
-          <a href="/">
-            <img class="header-logo-icon" src="/src/favicon.ico" alt="" width="28" height="28" />
-            atohs.me
-          </a>
-        </p>
-      )
-    }
+    <LogoTag class="header-logo">
+      <a href="/">
+        <img
+          class="header-logo-icon"
+          src={SITE_LOGO_SRC}
+          alt=""
+          width="28"
+          height="28"
+          decoding="sync"
+          loading="eager"
+          fetchpriority="high"
+          transition:persist="site-logo"
+        />
+        atohs.me
+      </a>
+    </LogoTag>
     <nav class="header-links" aria-label="メニュー">
       <a class="header-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>Blog</a>
       <a class="header-link" href="/works" aria-current={isWorks ? 'page' : undefined}>Works</a>

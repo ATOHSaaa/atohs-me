@@ -1,3 +1,6 @@
+import { stat } from 'node:fs/promises';
+import path from 'node:path';
+
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
 export const KEYWORDS_INDEX_ID = 'index';
@@ -34,4 +37,13 @@ export async function getKeywordIndexEntry(): Promise<KeywordEntry> {
     throw new Error('Keywords index content not found (src/content/keywords/index.md)');
   }
   return entry;
+}
+
+export async function getKeywordLastUpdated(entry: KeywordEntry): Promise<Date> {
+  if (entry.data.updated) {
+    return entry.data.updated;
+  }
+  const filePath = path.join(process.cwd(), 'src/content/keywords', `${entry.id}.md`);
+  const { mtime } = await stat(filePath);
+  return mtime;
 }

@@ -37,6 +37,8 @@ const keywords = defineCollection({
     title: z.string(),
     /** 一覧での並び順（小さいほど先） */
     order: z.number().default(0),
+    /** 表示用の最終更新日（省略時は Markdown ファイルの更新日時） */
+    updated: z.coerce.date().optional(),
   }),
 });
 

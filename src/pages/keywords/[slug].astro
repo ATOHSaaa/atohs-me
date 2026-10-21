@@ -3,8 +3,10 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import KeywordsOther from '../../components/KeywordsOther.astro';
+import { formatDate } from '../../lib/format-date';
 import {
   getKeywordIndexEntry,
+  getKeywordLastUpdated,
   isKeywordIndexEntry,
   keywordHref,
   keywordsDocumentTitle,
@@ -24,6 +26,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const indexEntry = await getKeywordIndexEntry();
+const lastUpdated = await getKeywordLastUpdated(entry);
 const pageUrl = `https://atohs.me${keywordHref(entry.id)}`;
 ---
 
@@ -43,6 +46,9 @@ const pageUrl = `https://atohs.me${keywordHref(entry.id)}`;
     <div class="blog-body keywords-body">
       <Content />
     </div>
+    <p class="keywords-last-updated">
+      Last updated: <time datetime={lastUpdated.toISOString()}>{formatDate(lastUpdated)}</time>
+    </p>
     <KeywordsOther currentSlug={entry.id} />
   </main>
 </BaseLayout>

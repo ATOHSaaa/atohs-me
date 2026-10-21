@@ -1,5 +1,7 @@
 ---
+import ClientRouter from 'astro/components/ClientRouter.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { SITE_LOGO_SRC } from '../lib/site-logo';
 
 interface Props {
   title: string;
@@ -39,7 +41,9 @@ const {
     <meta name="twitter:site" content="@atohsaaa" />
     <meta name="twitter:image" content={ogImage} />
 
-    <link rel="icon" href="/src/favicon.ico" />
+    <link rel="icon" href={SITE_LOGO_SRC} />
+    <link rel="preload" href={SITE_LOGO_SRC} as="image" type="image/x-icon" />
+    <ClientRouter fallback="none" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet" />
