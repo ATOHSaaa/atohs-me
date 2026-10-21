@@ -39,6 +39,39 @@ export async function getKeywordIndexEntry(): Promise<KeywordEntry> {
   return entry;
 }
 
+function markdownLineToPlain(text: string): string {
+  return text
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+?)\s+(https?:\/\/[^\s\]]+)\]/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/[`*_~]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** 一覧用に Markdown 本文のトップレベル箇条書きをすべて取り出す（表示は CSS で高さ切り詰め） */
+export function getKeywordTopLevelBullets(body: string): string[] {
+  const bullets: string[] = [];
+
+  for (const line of body.split('\n')) {
+    if (!line.trim() || line.trim().startsWith('#')) continue;
+
+    if (/^\s+[-*+]\s/.test(line) || /^\s+\d+\.\s/.test(line)) continue;
+
+    const unordered = /^[-*+]\s+(.*)$/.exec(line);
+    const ordered = /^\d+\.\s+(.*)$/.exec(line);
+    const raw = unordered?.[1] ?? ordered?.[1];
+    if (!raw) continue;
+
+    const plain = markdownLineToPlain(raw);
+    if (!plain) continue;
+
+    bullets.push(plain);
+  }
+
+  return bullets;
+}
+
 export async function getKeywordLastUpdated(entry: KeywordEntry): Promise<Date> {
   if (entry.data.updated) {
     return entry.data.updated;

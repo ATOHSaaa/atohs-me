@@ -628,8 +628,108 @@ header:not(.header-top) {
 }
 
 .keywords-body + .keywords-list,
-.main .page-title + .keywords-list {
+.keywords-body + .keywords-index-list,
+.main .page-title + .keywords-list,
+.main .page-title + .keywords-index-list {
   margin-top: 24px;
+}
+
+.keywords-index-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .keywords-index-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .keywords-index-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .keywords-index-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px 10px;
+  }
+}
+
+.keywords-index-item {
+  margin: 0;
+  min-width: 0;
+}
+
+.keywords-index-link {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 11.5rem;
+  padding: 12px 14px;
+  border: var(--color-border-strong) solid 2px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--color-bg);
+  transition: background-color 0.12s ease;
+}
+
+a.keywords-index-link:hover,
+a.keywords-index-link:active {
+  background-color: #ffeb3b;
+}
+
+.keywords-index-title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.95em;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  text-align: center;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.keywords-index-preview-wrap {
+  position: relative;
+  flex: 1 1 auto;
+  margin-top: 8px;
+  min-height: calc(5 * 1.5em + 12px);
+  max-height: calc(5 * 1.5em + 12px);
+  overflow: hidden;
+}
+
+.keywords-index-preview {
+  margin: 0;
+  padding-left: 1.15em;
+  font-size: 0.78em;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  list-style-type: disc;
+}
+
+.keywords-index-preview li {
+  margin: 0 0 4px;
+}
+
+.keywords-index-preview li:last-child {
+  margin-bottom: 0;
+}
+
+.keywords-index-preview li.is-truncated::after {
+  content: '...';
 }
 
 .keywords-list li {

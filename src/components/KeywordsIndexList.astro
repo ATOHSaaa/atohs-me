@@ -1,0 +1,120 @@
+---
+import { getKeywordEntries, getKeywordTopLevelBullets, keywordHref } from '../lib/keywords';
+
+const entries = await getKeywordEntries();
+---
+
+<ul class="keywords-index-list">
+  {
+    entries.map((entry) => {
+      const previewBullets = getKeywordTopLevelBullets(entry.body ?? '');
+      return (
+        <li class="keywords-index-item">
+          <a class="keywords-index-link" href={keywordHref(entry.id)}>
+            <span class="keywords-index-title">{entry.data.title}</span>
+            {
+              previewBullets.length > 0 ? (
+                <div class="keywords-index-preview-wrap">
+                  <ul class="keywords-index-preview">
+                    {previewBullets.map((item) => (
+                      <li data-full-text={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null
+            }
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>
+
+<script>
+  function truncateKeywordPreviews() {
+    document.querySelectorAll('.keywords-index-preview-wrap').forEach((wrap) => {
+      const list = wrap.querySelector('.keywords-index-preview');
+      if (!list) return;
+
+      const items = [...list.querySelectorAll('li')];
+      if (items.length === 0) return;
+
+      const fullTexts = items.map((li) => li.dataset.fullText ?? li.textContent ?? '');
+
+      items.forEach((li, index) => {
+        li.textContent = fullTexts[index];
+        li.classList.remove('is-truncated');
+        li.hidden = false;
+      });
+
+      const fits = () => list.scrollHeight <= wrap.clientHeight + 1;
+
+      const setVisibleCount = (count) => {
+        for (let i = 0; i < items.length; i++) {
+          const visible = i < count;
+          items[i].hidden = !visible;
+          if (visible) {
+            items[i].textContent = fullTexts[i];
+            items[i].classList.remove('is-truncated');
+          }
+        }
+      };
+
+      let visibleCount = items.length;
+      setVisibleCount(visibleCount);
+      if (fits()) return;
+
+      while (visibleCount > 0) {
+        const lastIndex = visibleCount - 1;
+        const last = items[lastIndex];
+        const full = fullTexts[lastIndex];
+        const hasHiddenItems = visibleCount < items.length;
+
+        const applyPreview = (length) => {
+          const text = full.slice(0, length).trimEnd();
+          last.textContent = text;
+          const needsEllipsis = hasHiddenItems || text.length < full.length;
+          last.classList.toggle('is-truncated', needsEllipsis);
+          return fits();
+        };
+
+        let low = 0;
+        let high = full.length;
+        let best = -1;
+
+        while (low <= high) {
+          const mid = Math.floor((low + high) / 2);
+          if (applyPreview(mid)) {
+            best = mid;
+            low = mid + 1;
+          } else {
+            high = mid - 1;
+          }
+        }
+
+        if (best >= 0) {
+          applyPreview(best);
+          return;
+        }
+
+        if (visibleCount === 1) {
+          applyPreview(0);
+          return;
+        }
+
+        visibleCount -= 1;
+        setVisibleCount(visibleCount);
+      }
+    });
+  }
+
+  function scheduleTruncateKeywordPreviews() {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(truncateKeywordPreviews);
+    });
+  }
+
+  scheduleTruncateKeywordPreviews();
+  document.addEventListener('astro:page-load', scheduleTruncateKeywordPreviews);
+  window.addEventListener('resize', scheduleTruncateKeywordPreviews);
+</script>
