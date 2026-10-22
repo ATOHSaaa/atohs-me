@@ -1,4 +1,4 @@
-@import './google-fonts.css';
+@import './site-fonts.css';
 
 /* ==========================================================================
    Design tokens
@@ -11,8 +11,8 @@
   --color-border: rgba(10, 10, 55, 0.8);
   --color-border-strong: rgba(10, 10, 55, 1);
   --color-border-subtle: rgba(10, 10, 55, 0.8);
-  --font-sans: "Roboto", "Roboto fallback", "Noto Sans JP", "Noto Sans JP fallback",
-    sans-serif;
+  --font-sans: "Roboto", "Roboto fallback", "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+    "Yu Gothic UI", "Yu Gothic", "Meiryo", sans-serif;
   --font-roboto: "Roboto", "Roboto fallback", sans-serif;
   --font-serif-mincho: TsukuAOldMinPr6N-B, serif;
   --font-mono:

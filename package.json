@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "predev": "node scripts/ensure-og-font.mjs && node scripts/update-link-card-ogp.mjs && node scripts/split-site-css.mjs",
-    "prebuild": "node scripts/ensure-og-font.mjs && node scripts/update-link-card-ogp.mjs && node scripts/split-site-css.mjs",
+    "predev": "node scripts/ensure-og-font.mjs && node scripts/update-link-card-ogp.mjs && node scripts/copy-site-fonts.mjs && node scripts/split-site-css.mjs",
+    "prebuild": "node scripts/ensure-og-font.mjs && node scripts/update-link-card-ogp.mjs && node scripts/copy-site-fonts.mjs && node scripts/split-site-css.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "ensure-og-font": "node scripts/ensure-og-font.mjs",
@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
+    "@fontsource/roboto": "^5.3.0",
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-brands-svg-icons": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
