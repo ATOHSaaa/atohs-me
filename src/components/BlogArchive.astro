@@ -10,7 +10,7 @@ interface Props {
 const { archive } = Astro.props;
 ---
 
-<div class="blog-archive blog-archive-tree">
+<div class="blog-archive-tree">
   {
     archive.map(({ year, months }) => {
       const yearCount = months.reduce((sum, { posts }) => sum + posts.length, 0);
