@@ -1,5 +1,5 @@
 ---
-import { ICONS, type IconName } from '../lib/icons';
+import { iconSvg, type IconName } from '../lib/icons';
 
 interface Props {
   name: IconName;
@@ -7,14 +7,7 @@ interface Props {
 }
 
 const { name, class: className } = Astro.props;
+const html = iconSvg(name, className ?? '');
 ---
 
-<svg
-  class:list={['icon', className]}
-  xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 24 24"
-  aria-hidden="true"
-  fill="currentColor"
->
-  <Fragment set:html={ICONS[name]} />
-</svg>
+<Fragment set:html={html} />
