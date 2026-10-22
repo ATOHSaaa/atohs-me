@@ -1,0 +1,23 @@
+---
+import { getDaysSinceBirth } from '../lib/age-since-birth';
+
+const daysLabel = getDaysSinceBirth().toLocaleString('en-US');
+---
+
+<p class="home-days-since-birth">
+  Day <span class="home-days-since-birth-num" data-profile-days-since-birth>{daysLabel}</span> since birth
+</p>
+
+<script>
+  import { getDaysSinceBirth } from '../lib/age-since-birth';
+
+  function updateProfileDaysSinceBirth() {
+    const daysLabel = getDaysSinceBirth().toLocaleString('en-US');
+    document.querySelectorAll('[data-profile-days-since-birth]').forEach((el) => {
+      el.textContent = daysLabel;
+    });
+  }
+
+  updateProfileDaysSinceBirth();
+  document.addEventListener('astro:page-load', updateProfileDaysSinceBirth);
+</script>
