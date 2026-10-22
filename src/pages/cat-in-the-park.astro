@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
 ---
 
 <BaseLayout
@@ -28,21 +29,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="links" style="justify-content: center;">
       <a href="https://www.youtube.com/@Catinthepark" target="_blank" rel="noopener noreferrer"
         ><p class="link-item">
-          <i class="fab fa-youtube" aria-hidden="true"></i>YouTube<span class="visually-hidden"
+          <Icon name="youtube" class="link-item-icon" />YouTube<span class="visually-hidden"
             >（新しいタブで開く）</span
           >
         </p></a
       >
       <a href="https://twitter.com/atohsaaa" target="_blank" rel="noopener noreferrer"
         ><p class="link-item">
-          <i class="fab fa-twitter" aria-hidden="true"></i>Twitter<span class="visually-hidden"
+          <Icon name="twitter" class="link-item-icon" />Twitter<span class="visually-hidden"
             >（新しいタブで開く）</span
           >
         </p></a
       >
       <a href="https://www.tiktok.com/@cat_in_the_park" target="_blank" rel="noopener noreferrer"
         ><p class="link-item">
-          <i class="fab fa-tiktok" aria-hidden="true"></i>TikTok<span class="visually-hidden"
+          <Icon name="tiktok" class="link-item-icon" />TikTok<span class="visually-hidden"
             >（新しいタブで開く）</span
           >
         </p></a

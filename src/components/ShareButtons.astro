@@ -1,10 +1,14 @@
 ---
+import { iconSvg } from '../lib/icons';
+
 interface Props {
   url: string;
   title: string;
 }
 
 const { url, title } = Astro.props;
+const linkIconHtml = iconSvg('link', 'share-button-icon');
+const checkIconHtml = iconSvg('check', 'share-button-icon');
 const encodedUrl = encodeURIComponent(url);
 const encodedTitle = encodeURIComponent(`${title}\n`);
 const hatenaUrl = `https://b.hatena.ne.jp/entry/panel/?url=${encodedUrl}`;
@@ -36,11 +40,11 @@ const xUrl = `https://x.com/intent/post?text=${encodedTitle}&url=${encodedUrl}`;
     data-share-url={url}
     aria-label="リンクをコピー"
   >
-    <span class="share-button-face"><i class="fa-solid fa-link" aria-hidden="true"></i></span>
+    <span class="share-button-face" set:html={linkIconHtml} />
   </button>
 </div>
 
-<script>
+<script define:vars={{ checkIconHtml }}>
   document.querySelectorAll('.share-link').forEach((button) => {
     button.addEventListener('click', async () => {
       const url = button.dataset.shareUrl;
@@ -53,9 +57,9 @@ const xUrl = `https://x.com/intent/post?text=${encodedTitle}&url=${encodedUrl}`;
       try {
         await navigator.clipboard.writeText(url);
         if (face) {
-          face.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i>';
+          face.innerHTML = checkIconHtml;
         } else {
-          button.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i>';
+          button.innerHTML = checkIconHtml;
         }
         button.setAttribute('aria-label', 'リンクをコピーしました');
       } catch {

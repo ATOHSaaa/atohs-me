@@ -60,6 +60,14 @@ body {
   margin: 0;
 }
 
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+}
+
 .site {
   min-height: 100dvh;
   display: flex;
@@ -764,7 +772,7 @@ a.home-block--card:focus-visible {
   transition: box-shadow 0.12s ease;
 }
 
-.keywords-random-button i {
+.keywords-random-button .icon {
   transform: translateY(0.08em);
 }
 
@@ -1200,8 +1208,7 @@ a.profile-box:active .profile-box-face {
    Links / Social
    ========================================================================== */
 
-.fab,
-.fas {
+.link-item-icon {
   margin-right: 4px;
 }
 
@@ -2576,12 +2583,12 @@ a.blog-tag:hover {
   transform: translateY(1px);
 }
 
-.share-button-face > i {
+.share-button-face > .icon,
+.share-button-icon {
   display: block;
-  width: 1em;
-  font-size: 15px;
-  line-height: 1;
-  text-align: center;
+  width: 15px;
+  height: 15px;
+  margin-inline: auto;
   transform: translateY(1px);
 }
 

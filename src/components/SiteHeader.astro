@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import SiteLogo from './SiteLogo.astro';
 
 interface Props {
@@ -50,7 +51,7 @@ const LogoTag = isHome ? 'h1' : 'p';
         rel="noopener noreferrer"
         aria-label="Twitter @atohsaaa（新しいタブで開く）"
       >
-        <i class="fab fa-twitter" aria-hidden="true"></i>
+        <Icon name="twitter" />
       </a>
     </nav>
   </div>

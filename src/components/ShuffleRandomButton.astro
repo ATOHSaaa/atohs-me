@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro';
+
 interface Props {
   hrefs: string[];
   tooltip: string;
@@ -16,7 +18,7 @@ const { hrefs, tooltip } = Astro.props;
         data-random-hrefs={JSON.stringify(hrefs)}
         aria-label={tooltip}
       >
-        <i class="fa-solid fa-shuffle" aria-hidden="true"></i>
+        <Icon name="shuffle" />
       </button>
       <span class="keywords-random-tooltip" role="tooltip">{tooltip}</span>
     </span>
