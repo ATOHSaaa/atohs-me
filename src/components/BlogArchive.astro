@@ -1,0 +1,48 @@
+---
+import BlogListItem from './BlogListItem.astro';
+import type { BlogArchiveYearGroup } from '../lib/blog-posts';
+import { formatArchiveMonth } from '../lib/format-date';
+
+interface Props {
+  archive: BlogArchiveYearGroup[];
+}
+
+const { archive } = Astro.props;
+---
+
+<div class="blog-archive blog-archive-tree">
+  {
+    archive.map(({ year, months }) => {
+      const yearCount = months.reduce((sum, { posts }) => sum + posts.length, 0);
+      const yearLabel = `${year}年（${yearCount}）`;
+      return (
+        <details class="blog-archive-node blog-archive-node--year" open>
+          <summary class="blog-archive-toggle" aria-label={`${yearLabel}を開閉`}>
+            <span class="blog-archive-chevron" aria-hidden="true" />
+          </summary>
+          <span class="blog-archive-label blog-archive-label--year">{yearLabel}</span>
+          <div class="blog-archive-children">
+            {months.map(({ month, posts }) => {
+              const monthLabel = `${formatArchiveMonth(month)}（${posts.length}）`;
+              return (
+                <details class="blog-archive-node blog-archive-node--month" open>
+                  <summary class="blog-archive-toggle" aria-label={`${monthLabel}を開閉`}>
+                    <span class="blog-archive-chevron" aria-hidden="true" />
+                  </summary>
+                  <span class="blog-archive-label blog-archive-label--month">{monthLabel}</span>
+                  <div class="blog-archive-children blog-archive-children--leaves">
+                    <ul class="blog-list blog-list--archive">
+                      {posts.map((post) => (
+                        <BlogListItem post={post} />
+                      ))}
+                    </ul>
+                  </div>
+                </details>
+              );
+            })}
+          </div>
+        </details>
+      );
+    })
+  }
+</div>

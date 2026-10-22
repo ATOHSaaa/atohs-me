@@ -3,12 +3,14 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import BlogPhotoMarquee from '../../components/BlogPhotoMarquee.astro';
-import BlogListItem from '../../components/BlogListItem.astro';
+import BlogArchive from '../../components/BlogArchive.astro';
 import { collectBlogPhotos } from '../../lib/blog-photos';
+import { groupBlogPostsByYearMonth } from '../../lib/blog-posts';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+const archive = groupBlogPostsByYearMonth(posts);
 const photos = collectBlogPhotos(posts);
 ---
 
@@ -18,7 +20,7 @@ const photos = collectBlogPhotos(posts);
   ogUrl="https://atohs.me/blog"
 >
   <SiteHeader />
-  <main id="main-content" class="main">
+  <main id="main-content" class="main main--blog-index">
     <nav class="breadcrumb" aria-label="パンくずリスト">
       <a href="/">Home</a><span class="breadcrumb-slash">/</span>
     </nav>
@@ -28,14 +30,12 @@ const photos = collectBlogPhotos(posts);
       posts.length === 0 ? (
         <p>まだ記事はありません。</p>
       ) : (
-        <ul class="blog-list">
-          {posts.map((post) => (
-            <BlogListItem post={post} />
-          ))}
-        </ul>
+        <BlogArchive archive={archive} />
       )
     }
 
-    <BlogPhotoMarquee photos={photos} />
   </main>
+  <div class="blog-photo-marquee-shell">
+    <BlogPhotoMarquee photos={photos} />
+  </div>
 </BaseLayout>
