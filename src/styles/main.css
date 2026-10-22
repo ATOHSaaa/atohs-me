@@ -9,7 +9,7 @@
   --color-border: rgba(10, 10, 55, 0.8);
   --color-border-strong: rgba(10, 10, 55, 1);
   --color-border-subtle: rgba(10, 10, 55, 0.8);
-  --font-sans: YakuHanJP, "Roboto", "Noto Sans JP", sans-serif;
+  --font-sans: "Roboto", "Noto Sans JP", sans-serif;
   --font-roboto: "Roboto", sans-serif;
   --font-serif-mincho: TsukuAOldMinPr6N-B, serif;
   --font-mono:
@@ -53,6 +53,8 @@ body {
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 0;
+  /* Chrome/Edge: 行頭の開き括弧などの余白を詰める（Safari/Firefox は未対応） */
+  text-spacing-trim: trim-start;
   color: var(--color-text);
   background-color: var(--color-bg);
   margin: 0;
