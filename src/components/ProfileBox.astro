@@ -1,9 +1,13 @@
+---
+import SiteLogo from './SiteLogo.astro';
+---
+
 <section class="profile-section">
   <h2 class="profile-box-title">Profile</h2>
   <a class="profile-box" href="/" aria-label="トップページへ">
     <span class="profile-box-face">
       <span class="name-box">
-        <img class="profile-icon" src="/src/favicon.ico" alt="" width="128" height="128" />
+        <SiteLogo class="profile-icon" loading="eager" fetchpriority="high" decoding="sync" />
         <span class="name-body">
           <p class="name-detail">
             <span class="name-detail-line name-primary">あとーす（atohs）, 伊藤祥太（ITO SHOTA）</span>

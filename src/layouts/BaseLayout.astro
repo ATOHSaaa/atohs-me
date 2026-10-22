@@ -1,7 +1,15 @@
 ---
 import ClientRouter from 'astro/components/ClientRouter.astro';
+import { getImage } from 'astro:assets';
 import SiteFooter from '../components/SiteFooter.astro';
-import { SITE_LOGO_SRC } from '../lib/site-logo';
+import { SITE_FAVICON_SRC, siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
+
+const siteLogoPreload = await getImage({
+  src: siteLogo,
+  format: 'webp',
+  width: SITE_LOGO_DISPLAY_SIZE,
+  height: SITE_LOGO_DISPLAY_SIZE,
+});
 
 interface Props {
   title: string;
@@ -41,8 +49,14 @@ const {
     <meta name="twitter:site" content="@atohsaaa" />
     <meta name="twitter:image" content={ogImage} />
 
-    <link rel="icon" href={SITE_LOGO_SRC} />
-    <link rel="preload" href={SITE_LOGO_SRC} as="image" type="image/x-icon" />
+    <link rel="icon" href={SITE_FAVICON_SRC} />
+    <link
+      rel="preload"
+      href={siteLogoPreload.src}
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+    />
     <ClientRouter fallback="none" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
