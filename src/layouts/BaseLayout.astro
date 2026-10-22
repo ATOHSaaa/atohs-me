@@ -2,7 +2,6 @@
 import { getImage } from 'astro:assets';
 import SiteFooter from '../components/SiteFooter.astro';
 import { SITE_FAVICON_SRC, siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
-
 const siteLogoPreload = await getImage({
   src: siteLogo,
   format: 'webp',
@@ -16,8 +15,8 @@ interface Props {
   ogUrl?: string;
   ogImage?: string;
   ogSiteName?: string;
-  /** false のときグローバル CSS を読み込まない（BlogLayout が blog-layout.css を読む） */
-  includeSiteStyles?: boolean;
+  /** ブログは blog-layout（core 込み）。それ以外は core のみ */
+  stylesheet?: 'core' | 'blog-layout';
 }
 
 const {
@@ -26,8 +25,14 @@ const {
   ogUrl = 'https://atohs.me',
   ogImage = 'https://atohs.me/src/ogp.png',
   ogSiteName = 'atohs.me',
-  includeSiteStyles = true,
+  stylesheet = 'core',
 } = Astro.props;
+
+if (stylesheet === 'blog-layout') {
+  await import('../styles/blog-layout.css');
+} else {
+  await import('../styles/core.css');
+}
 ---
 
 <!doctype html>
@@ -77,9 +82,3 @@ const {
     <SiteFooter />
   </body>
 </html>
-
-{includeSiteStyles ? (
-  <style is:global>
-    @import '../styles/core.css';
-  </style>
-) : null}

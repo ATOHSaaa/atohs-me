@@ -36,7 +36,7 @@ export default defineConfig({
   site: 'https://atohs.me',
   output: 'static',
   build: {
-    inlineStylesheets: 'auto',
+    inlineStylesheets: 'never',
   },
   redirects: {
     '/my-business-experience': '/career',
