@@ -1,15 +1,8 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import robotoMetrics from '@capsizecss/metrics/roboto';
-import notoSansJpMetrics from '@capsizecss/metrics/notoSansJP';
 import arialMetrics from '@capsizecss/metrics/arial';
 import { generateFontFace } from 'fontaine';
-
-/** `src/lib/google-fonts.ts` と同じ URL（display=swap） */
-const GOOGLE_FONT_WEIGHTS = [400, 500, 600, 700, 800, 900];
-const googleFontsHref =
-  `https://fonts.googleapis.com/css2?family=Roboto:wght@${GOOGLE_FONT_WEIGHTS.join(';')}` +
-  `&family=Noto+Sans+JP:wght@${GOOGLE_FONT_WEIGHTS.join(';')}&display=swap`;
 
 const stylesDir = join(process.cwd(), 'src/styles');
 const main = readFileSync(join(stylesDir, 'main.css'), 'utf8');
@@ -32,36 +25,50 @@ const blogStart = indexOfOrThrow(main, sectionHeader('Blog'), 'blog');
 const notFoundStart = indexOfOrThrow(main, sectionHeader('404'), '404');
 const shareStart = indexOfOrThrow(main, sectionHeader('Share buttons'), 'share');
 const responsiveStart = indexOfOrThrow(main, sectionHeader('Responsive'), 'responsive');
+const responsiveBlogStart = indexOfOrThrow(
+  main,
+  sectionHeader('Responsive (blog)'),
+  'responsive-blog',
+);
+const blogListStart = indexOfOrThrow(
+  main,
+  '.blog-list {\n  list-style: none;',
+  'blog-list',
+);
+const blogBodyStart = indexOfOrThrow(
+  main,
+  '.blog-body {\n  font-weight: 400;',
+  'blog-body',
+);
 
 const home = main.slice(homeStart, keywordsStart);
-const blog = main.slice(blogStart, notFoundStart) + main.slice(shareStart, responsiveStart);
+const blogListEssentials = main.slice(blogListStart, blogBodyStart);
+const blog =
+  main.slice(blogStart, blogListStart) +
+  main.slice(blogBodyStart, notFoundStart) +
+  main.slice(shareStart, responsiveStart) +
+  main.slice(responsiveBlogStart);
 
-const core =
-  `@import './google-fonts.css';\n\n` +
+const coreBody =
   main.slice(0, homeStart) +
+  home +
   main.slice(keywordsStart, blogStart) +
+  blogListEssentials +
   main.slice(notFoundStart, shareStart) +
-  main.slice(responsiveStart);
+  main.slice(responsiveStart, responsiveBlogStart);
 
-const fontFallbacks =
-  generateFontFace(robotoMetrics, {
-    name: 'Roboto fallback',
-    font: 'Arial',
-    metrics: arialMetrics,
-    'font-display': 'swap',
-  }) +
-  generateFontFace(notoSansJpMetrics, {
-    name: 'Noto Sans JP fallback',
-    font: 'Hiragino Sans',
-    metrics: arialMetrics,
-    'font-display': 'swap',
-  });
+const siteFontsImport = `@import './site-fonts.css';\n\n`;
+
+const core = siteFontsImport + coreBody;
+const blogLayout = siteFontsImport + coreBody + blog;
+
+const fontFallbacks = generateFontFace(robotoMetrics, {
+  name: 'Roboto fallback',
+  font: 'Arial',
+  metrics: arialMetrics,
+  'font-display': 'swap',
+});
 
 writeFileSync(join(stylesDir, 'font-fallbacks.css'), fontFallbacks);
-writeFileSync(
-  join(stylesDir, 'google-fonts.css'),
-  `@import './font-fallbacks.css';\n@import url(${JSON.stringify(googleFontsHref)});\n`,
-);
 writeFileSync(join(stylesDir, 'core.css'), core);
-writeFileSync(join(stylesDir, 'home.css'), home);
-writeFileSync(join(stylesDir, 'blog.css'), blog);
+writeFileSync(join(stylesDir, 'blog-layout.css'), blogLayout);

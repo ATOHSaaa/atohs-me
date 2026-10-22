@@ -12,10 +12,10 @@ interface Props {
 const props = Astro.props;
 ---
 
-<BaseLayout {...props}>
+<BaseLayout {...props} includeSiteStyles={false}>
   <slot />
 </BaseLayout>
 
 <style is:global>
-  @import '../styles/blog.css';
+  @import '../styles/blog-layout.css';
 </style>

@@ -7,7 +7,6 @@ interface Props {
   fetchpriority?: 'high' | 'low' | 'auto';
   loading?: 'eager' | 'lazy';
   decoding?: 'sync' | 'async' | 'auto';
-  transitionPersist?: string;
 }
 
 const {
@@ -15,7 +14,6 @@ const {
   fetchpriority,
   loading = 'lazy',
   decoding = 'async',
-  transitionPersist,
 } = Astro.props;
 
 const size = SITE_LOGO_DISPLAY_SIZE;
@@ -31,5 +29,4 @@ const size = SITE_LOGO_DISPLAY_SIZE;
   loading={loading}
   decoding={decoding}
   fetchpriority={fetchpriority}
-  transition:persist={transitionPersist}
 />

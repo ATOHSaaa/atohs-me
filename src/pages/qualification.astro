@@ -17,8 +17,6 @@ const { Content } = await render(qualification);
       <a href="/">Home</a><span class="breadcrumb-slash">/</span>
     </nav>
     <h1 class="page-title">{qualification.data.title}</h1>
-    <div class="experience-body">
-      <Content />
-    </div>
+    <Content />
   </main>
 </BaseLayout>
