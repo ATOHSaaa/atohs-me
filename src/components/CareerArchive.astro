@@ -1,4 +1,5 @@
 ---
+import ArchiveSummaryGuard from './ArchiveSummaryGuard.astro';
 import CareerArchiveList from './CareerArchiveList.astro';
 import type { CareerSection } from '../lib/career-tree';
 import { inlineMarkdownToHtml } from '../lib/career-tree';
@@ -55,3 +56,5 @@ const { sections } = Astro.props;
     ))
   }
 </div>
+
+<ArchiveSummaryGuard />

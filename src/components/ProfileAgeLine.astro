@@ -1,0 +1,21 @@
+---
+import { formatAgeYears } from '../lib/age-since-birth';
+
+const initialText = formatAgeYears();
+---
+
+<span class="profile-age-inline" data-profile-age>{initialText}</span>
+
+<script>
+  import { formatAgeYears } from '../lib/age-since-birth';
+
+  function updateProfileAgeLines() {
+    const text = formatAgeYears();
+    document.querySelectorAll('[data-profile-age]').forEach((el) => {
+      el.textContent = text;
+    });
+  }
+
+  updateProfileAgeLines();
+  document.addEventListener('astro:page-load', updateProfileAgeLines);
+</script>

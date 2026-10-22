@@ -1,0 +1,24 @@
+<script>
+  function initArchiveSummaryGuards() {
+    document.querySelectorAll('.career-archive-tree .archive-summary .blog-archive-label').forEach((label) => {
+      if (label.dataset.archiveSummaryGuard === 'true') return;
+      label.dataset.archiveSummaryGuard = 'true';
+
+      label.addEventListener('click', (event) => {
+        if (event.target instanceof Element && event.target.closest('a')) return;
+        event.preventDefault();
+        event.stopPropagation();
+      });
+
+      label.addEventListener('keydown', (event) => {
+        if (event.key === ' ' || event.key === 'Enter') {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      });
+    });
+  }
+
+  initArchiveSummaryGuards();
+  document.addEventListener('astro:page-load', initArchiveSummaryGuards);
+</script>
