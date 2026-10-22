@@ -19,9 +19,6 @@ import Keywords from '../components/Keywords.astro';
         </div>
         <nav class="home-links" aria-label="サイトメニュー">
           <a class="home-link" href="/blog">Blog</a><span class="home-links-sep" aria-hidden="true">/</span>
-          <a class="home-link" href="/my-business-experience">Career</a><span
-            class="home-links-sep"
-            aria-hidden="true">/</span>
           <a class="home-link" href="/works">Works</a><span class="home-links-sep" aria-hidden="true">/</span>
           <a class="home-link" href="/contact">Contact</a>
         </nav>
@@ -29,28 +26,28 @@ import Keywords from '../components/Keywords.astro';
     </div>
 
     <div class="home-blocks">
-      <section class="home-block home-block--card" aria-labelledby="home-education-heading">
-        <h2 id="home-education-heading" class="home-section-heading">Education</h2>
+      <a class="home-block home-block--card" href="/education">
+        <h2 class="home-section-heading">Education</h2>
         <ul class="home-block-list">
           <li>Bachelor of Literature, Kumamoto University, Graduated: March 2016</li>
         </ul>
-      </section>
+      </a>
 
-      <section class="home-block home-block--card" aria-labelledby="home-career-heading">
-        <h2 id="home-career-heading" class="home-section-heading">Career</h2>
+      <a class="home-block home-block--card" href="/career">
+        <h2 class="home-section-heading">Career</h2>
         <ul class="home-block-list">
           <li>2016.04〜2018.03：Printing Company</li>
           <li>2018.04〜2021.08：pixiv Inc.</li>
           <li>2021.09〜Current：Freelance</li>
         </ul>
-      </section>
+      </a>
 
-      <section class="home-block home-block--card" aria-labelledby="home-qualification-heading">
-        <h2 id="home-qualification-heading" class="home-section-heading">Qualification</h2>
+      <a class="home-block home-block--card" href="/qualification">
+        <h2 class="home-section-heading">Qualification</h2>
         <ul class="home-block-list">
           <li>1st grade Driver's License</li>
         </ul>
-      </section>
+      </a>
     </div>
 
     <Keywords />

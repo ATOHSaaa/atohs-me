@@ -35,6 +35,9 @@ const postLastmodByPath = getBlogLastmodByPath();
 export default defineConfig({
   site: 'https://atohs.me',
   output: 'static',
+  redirects: {
+    '/my-business-experience': '/career',
+  },
   integrations: [
     sitemap({
       customPages: ['https://atohs.me/works/hanoi-clicker/'],
