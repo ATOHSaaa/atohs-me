@@ -1,5 +1,6 @@
 ---
-import { SITE_LOGO_SRC } from '../lib/site-logo';
+import Icon from './Icon.astro';
+import SiteLogo from './SiteLogo.astro';
 
 interface Props {
   isHome?: boolean;
@@ -18,16 +19,12 @@ const LogoTag = isHome ? 'h1' : 'p';
   <div class="header-inner">
     <LogoTag class="header-logo">
       <a href="/">
-        <img
+        <SiteLogo
           class="header-logo-icon"
-          src={SITE_LOGO_SRC}
-          alt=""
-          width="28"
-          height="28"
           decoding="sync"
           loading="eager"
           fetchpriority="high"
-          transition:persist="site-logo"
+          transitionPersist="site-logo"
         />
         atohs.me
       </a>
@@ -54,7 +51,7 @@ const LogoTag = isHome ? 'h1' : 'p';
         rel="noopener noreferrer"
         aria-label="Twitter @atohsaaa（新しいタブで開く）"
       >
-        <i class="fab fa-twitter" aria-hidden="true"></i>
+        <Icon name="twitter" />
       </a>
     </nav>
   </div>

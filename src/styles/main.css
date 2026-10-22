@@ -9,8 +9,9 @@
   --color-border: rgba(10, 10, 55, 0.8);
   --color-border-strong: rgba(10, 10, 55, 1);
   --color-border-subtle: rgba(10, 10, 55, 0.8);
-  --font-sans: YakuHanJP, "Roboto", "Noto Sans JP", sans-serif;
-  --font-roboto: "Roboto", sans-serif;
+  --font-sans: "Roboto", "Roboto fallback", "Noto Sans JP", "Noto Sans JP fallback",
+    sans-serif;
+  --font-roboto: "Roboto", "Roboto fallback", sans-serif;
   --font-serif-mincho: TsukuAOldMinPr6N-B, serif;
   --font-mono:
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -53,9 +54,19 @@ body {
   font-size: 18px;
   font-weight: 500;
   letter-spacing: 0;
+  /* Chrome/Edge: 行頭の開き括弧などの余白を詰める（Safari/Firefox は未対応） */
+  text-spacing-trim: trim-start;
   color: var(--color-text);
   background-color: var(--color-bg);
   margin: 0;
+}
+
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  flex-shrink: 0;
 }
 
 .site {
@@ -762,7 +773,7 @@ a.home-block--card:focus-visible {
   transition: box-shadow 0.12s ease;
 }
 
-.keywords-random-button i {
+.keywords-random-button .icon {
   transform: translateY(0.08em);
 }
 
@@ -1198,8 +1209,7 @@ a.profile-box:active .profile-box-face {
    Links / Social
    ========================================================================== */
 
-.fab,
-.fas {
+.link-item-icon {
   margin-right: 4px;
 }
 
@@ -2574,12 +2584,12 @@ a.blog-tag:hover {
   transform: translateY(1px);
 }
 
-.share-button-face > i {
+.share-button-face > .icon,
+.share-button-icon {
   display: block;
-  width: 1em;
-  font-size: 15px;
-  line-height: 1;
-  text-align: center;
+  width: 15px;
+  height: 15px;
+  margin-inline: auto;
   transform: translateY(1px);
 }
 

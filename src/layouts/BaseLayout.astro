@@ -1,7 +1,15 @@
 ---
 import ClientRouter from 'astro/components/ClientRouter.astro';
+import { getImage } from 'astro:assets';
 import SiteFooter from '../components/SiteFooter.astro';
-import { SITE_LOGO_SRC } from '../lib/site-logo';
+import { SITE_FAVICON_SRC, siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
+
+const siteLogoPreload = await getImage({
+  src: siteLogo,
+  format: 'webp',
+  width: SITE_LOGO_DISPLAY_SIZE,
+  height: SITE_LOGO_DISPLAY_SIZE,
+});
 
 interface Props {
   title: string;
@@ -41,16 +49,17 @@ const {
     <meta name="twitter:site" content="@atohsaaa" />
     <meta name="twitter:image" content={ogImage} />
 
-    <link rel="icon" href={SITE_LOGO_SRC} />
-    <link rel="preload" href={SITE_LOGO_SRC} as="image" type="image/x-icon" />
+    <link rel="icon" href={SITE_FAVICON_SRC} />
+    <link
+      rel="preload"
+      href={siteLogoPreload.src}
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
+    />
     <ClientRouter fallback="none" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/yakuhanjp@3.4.1/dist/css/yakuhanjp.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" />
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3S8S7JGPEZ"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -71,5 +80,5 @@ const {
 </html>
 
 <style is:global>
-  @import '../styles/main.css';
+  @import '../styles/core.css';
 </style>

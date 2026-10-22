@@ -1,0 +1,21 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogUrl?: string;
+  ogImage?: string;
+  ogSiteName?: string;
+}
+
+const props = Astro.props;
+---
+
+<BaseLayout {...props}>
+  <slot />
+</BaseLayout>
+
+<style is:global>
+  @import '../styles/blog.css';
+</style>

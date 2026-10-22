@@ -1,12 +1,12 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogLayout from '../../../layouts/BlogLayout.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import { blogTagHref, getBlogTagsWithCounts } from '../../../lib/blog-tags';
 
 const tagEntries = await getBlogTagsWithCounts();
 ---
 
-<BaseLayout
+<BlogLayout
   title="タグ一覧 | Blog | atohs.me"
   description="atohs(あとーす)のブログ記事のタグ一覧です。"
   ogUrl="https://atohs.me/blog/tags"
@@ -34,4 +34,4 @@ const tagEntries = await getBlogTagsWithCounts();
       )
     }
   </main>
-</BaseLayout>
+</BlogLayout>

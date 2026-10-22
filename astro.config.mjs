@@ -35,6 +35,9 @@ const postLastmodByPath = getBlogLastmodByPath();
 export default defineConfig({
   site: 'https://atohs.me',
   output: 'static',
+  build: {
+    inlineStylesheets: 'never',
+  },
   redirects: {
     '/my-business-experience': '/career',
   },

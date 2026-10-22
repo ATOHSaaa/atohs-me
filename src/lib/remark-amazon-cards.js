@@ -1,4 +1,5 @@
 import { visit } from 'unist-util-visit';
+import { iconSvg } from './icons.ts';
 
 const AMAZON_AFFILIATE_URL =
   /^https?:\/\/link\.amazon(?:\.com)?\/([A-Z0-9]{8,10})(?:[/?#].*)?$/i;
@@ -73,7 +74,7 @@ function createAmazonCard({ url, asin, title }) {
     type: 'html',
     value: `<div class="amazon-card">
   <a class="amazon-card-link" href="${safeUrl}" target="_blank" rel="noopener noreferrer sponsored">
-    <span class="amazon-card-icon" aria-hidden="true"><i class="fab fa-amazon"></i></span>
+    <span class="amazon-card-icon" aria-hidden="true">${iconSvg('amazon')}</span>
     <span class="amazon-card-body">
       <span class="amazon-card-label">Amazon.co.jp</span>
       <span class="amazon-card-title">${safeTitle}</span>

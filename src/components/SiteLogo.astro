@@ -1,0 +1,35 @@
+---
+import { Image } from 'astro:assets';
+import { siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
+
+interface Props {
+  class?: string;
+  fetchpriority?: 'high' | 'low' | 'auto';
+  loading?: 'eager' | 'lazy';
+  decoding?: 'sync' | 'async' | 'auto';
+  transitionPersist?: string;
+}
+
+const {
+  class: className,
+  fetchpriority,
+  loading = 'lazy',
+  decoding = 'async',
+  transitionPersist,
+} = Astro.props;
+
+const size = SITE_LOGO_DISPLAY_SIZE;
+---
+
+<Image
+  class={className}
+  src={siteLogo}
+  alt=""
+  width={size}
+  height={size}
+  format="webp"
+  loading={loading}
+  decoding={decoding}
+  fetchpriority={fetchpriority}
+  transition:persist={transitionPersist}
+/>

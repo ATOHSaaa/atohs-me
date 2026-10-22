@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro';
+
 const pathname = Astro.url.pathname;
 const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
 const isWorks = pathname === '/works' || pathname.startsWith('/works/');
@@ -18,7 +20,7 @@ const isContact = pathname === '/contact';
         rel="noopener noreferrer"
         aria-label="Twitter @atohsaaa（新しいタブで開く）"
       >
-        <i class="fab fa-twitter" aria-hidden="true"></i>
+        <Icon name="twitter" />
       </a>
     </nav>
   </div>

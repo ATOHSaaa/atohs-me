@@ -4,13 +4,14 @@ import SiteHeader from '../components/SiteHeader.astro';
 import Keywords from '../components/Keywords.astro';
 import ProfileAgeLine from '../components/ProfileAgeLine.astro';
 import ProfileDaysSinceBirth from '../components/ProfileDaysSinceBirth.astro';
+import SiteLogo from '../components/SiteLogo.astro';
 ---
 
 <BaseLayout title="atohs.me | あとーすのプロフィール">
   <SiteHeader isHome />
   <main id="main-content" class="main main-home">
     <div class="home-profile">
-      <img class="profile-icon home-profile-icon" src="/src/favicon.ico" alt="" width="128" height="128" />
+      <SiteLogo class="profile-icon home-profile-icon" loading="eager" fetchpriority="high" decoding="sync" />
       <div class="home-profile-aside">
         <div class="name-body">
           <p class="name-detail">
@@ -58,3 +59,7 @@ import ProfileDaysSinceBirth from '../components/ProfileDaysSinceBirth.astro';
     <ProfileDaysSinceBirth />
   </main>
 </BaseLayout>
+
+<style is:global>
+  @import '../styles/home.css';
+</style>

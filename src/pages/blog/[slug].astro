@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import ProfileBox from '../../components/ProfileBox.astro';
@@ -29,7 +29,7 @@ const tocItems = extractBlogTocItems(post.body ?? '');
 const otherPosts = await getOtherBlogPosts(post.id, 5);
 ---
 
-<BaseLayout
+<BlogLayout
   title={`${post.data.title} | atohs.me`}
   description={description}
   ogUrl={postUrl}
@@ -82,4 +82,4 @@ const otherPosts = await getOtherBlogPosts(post.id, 5);
       src="https://platform.twitter.com/widgets.js"
       charset="utf-8"></script>
   </main>
-</BaseLayout>
+</BlogLayout>
