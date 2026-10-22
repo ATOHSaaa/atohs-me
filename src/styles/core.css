@@ -14,7 +14,6 @@
   --font-sans: "Roboto", "Roboto fallback", "Hiragino Sans", "Hiragino Kaku Gothic ProN",
     "Yu Gothic UI", "Yu Gothic", "Meiryo", sans-serif;
   --font-roboto: "Roboto", "Roboto fallback", sans-serif;
-  --font-serif-mincho: TsukuAOldMinPr6N-B, serif;
   --font-mono:
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --width-content: 720px;
@@ -379,31 +378,6 @@ header:not(.header-top) {
   letter-spacing: 0.2em;
 }
 
-.yomi {
-  margin-bottom: -110px;
-  font-size: 6px;
-  letter-spacing: 12px;
-}
-
-.degrees {
-  margin-top: -90px;
-  font-size: 1.1em;
-  font-family: var(--font-serif-mincho);
-  letter-spacing: 0.1em;
-}
-
-.top-links {
-  margin-top: 50px;
-  margin-bottom: 100px;
-  text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.top-link ul {
-  text-align: center;
-}
-
 /* ==========================================================================
    Layout
    ========================================================================== */
@@ -418,30 +392,6 @@ header:not(.header-top) {
 
 .main:not(.blog-main) p {
   line-height: 1.65;
-}
-
-.date {
-  font-weight: bold;
-  font-size: 1em;
-  margin-bottom: -40px;
-  letter-spacing: 2px;
-}
-
-.about-text {
-  margin-bottom: 50px;
-}
-
-.skills-text {
-  line-height: 2em;
-}
-
-.career-text {
-  margin-top: 10px;
-  margin-bottom: 40px;
-}
-
-.right-list {
-  margin-right: 0 !important;
 }
 
 /* ==========================================================================
@@ -463,14 +413,6 @@ header:not(.header-top) {
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
-}
-
-.name {
-  font-size: 1.2em;
-  letter-spacing: 0.1em;
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.4;
 }
 
 .name-detail {
@@ -654,17 +596,6 @@ a.home-block--card:focus-visible {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-align: left;
-}
-
-.home-block-line {
-  margin: 0;
-  font-weight: 500;
-  line-height: 1.65;
-  letter-spacing: 0.02em;
-}
-
-.home-block-line + .home-block-line {
-  margin-top: 4px;
 }
 
 .home-block-list {
@@ -1073,53 +1004,6 @@ a.profile-box:active .profile-box-face {
 }
 
 /* ==========================================================================
-   Career
-   ========================================================================== */
-
-.career-list {
-  list-style-type: disc;
-  margin: 24px 0 0;
-  padding-left: 1.25em;
-  line-height: 1.8;
-}
-
-.career-list > .career-item + .career-item {
-  margin-top: 20px;
-}
-
-.career-list li {
-  margin-bottom: 0;
-  line-height: inherit;
-}
-
-.career-list .career-list {
-  list-style-type: circle;
-  margin: 20px 0;
-  padding-left: 1.5em;
-}
-
-.career-item {
-  margin-bottom: 0;
-}
-
-.career-item .date-range {
-  display: inline;
-  margin-right: 0.5em;
-  font: inherit;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.date-sep {
-  margin: 0 0.08em;
-  letter-spacing: 0;
-}
-
-.table-2 tr td span {
-  margin-top: 10px;
-}
-
-/* ==========================================================================
    Projects grid
    ========================================================================== */
 
@@ -1224,57 +1108,6 @@ a.profile-box:active .profile-box-face {
   margin-right: 8px;
   border-radius: var(--radius-sm);
   padding: 0 8px;
-}
-
-/* ==========================================================================
-   Buttons
-   ========================================================================== */
-
-.more,
-.blog-more a {
-  background-color: var(--color-text);
-  color: var(--color-bg);
-  text-align: center;
-  border-radius: var(--radius-sm);
-  font-weight: 700;
-}
-
-.more {
-  width: fit-content;
-  max-width: 100%;
-  margin: 40px auto 48px;
-  padding: 0 1.5em;
-  line-height: 2.2em;
-  white-space: nowrap;
-}
-
-a:has(> .more) {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  text-decoration: none;
-}
-
-a:has(> .more) + h2 {
-  margin-top: 24px;
-}
-
-.blog-more {
-  display: flex;
-  justify-content: center;
-  margin-top: 48px;
-  margin-bottom: 48px;
-}
-
-.blog-more + h2 {
-  margin-top: 24px;
-}
-
-.blog-more a {
-  display: inline-block;
-  text-decoration: none;
-  padding: 0 16px;
-  line-height: 2.2em;
 }
 
 /* ==========================================================================
@@ -1669,10 +1502,6 @@ a.blog-tag:hover {
   .page-title {
     font-size: 1.6em;
     letter-spacing: 0.1em;
-  }
-
-  .top-links {
-    font-size: 1.5em;
   }
 
   .cat-logo {
