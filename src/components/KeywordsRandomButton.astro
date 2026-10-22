@@ -1,0 +1,17 @@
+---
+import { getKeywordEntries, keywordHref } from '../lib/keywords';
+import ShuffleRandomButton from './ShuffleRandomButton.astro';
+
+interface Props {
+  /** いま表示中のキーワード（あればランダム先から除外） */
+  excludeSlug?: string;
+}
+
+const { excludeSlug } = Astro.props;
+const hrefs = (await getKeywordEntries())
+  .filter((entry) => entry.id !== excludeSlug)
+  .map((entry) => keywordHref(entry.id));
+const tooltip = 'ランダムにキーワードを開きます！';
+---
+
+<ShuffleRandomButton hrefs={hrefs} tooltip={tooltip} />

@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import ShuffleRandomButton from './ShuffleRandomButton.astro';
+
+interface Props {
+  /** いま表示中の記事（あればランダム先から除外） */
+  excludeSlug?: string;
+}
+
+const { excludeSlug } = Astro.props;
+const hrefs = (await getCollection('blog', ({ data }) => !data.draft))
+  .filter((post) => post.id !== excludeSlug)
+  .map((post) => `/blog/${post.id}`);
+const tooltip = 'ランダムにブログ記事を表示します！';
+---
+
+<ShuffleRandomButton hrefs={hrefs} tooltip={tooltip} />

@@ -1,5 +1,6 @@
 ---
 import KeywordsChips from './KeywordsChips.astro';
+import KeywordsRandomButton from './KeywordsRandomButton.astro';
 import { getKeywordIndexEntry, keywordsIndexHref } from '../lib/keywords';
 
 interface Props {
@@ -12,14 +13,17 @@ const indexEntry = await getKeywordIndexEntry();
 ---
 
 <section class="keywords" aria-labelledby="keywords-heading">
-  <HeadingTag id="keywords-heading" class={heading === 'h1' ? 'page-title' : 'keywords-heading'}>
-    {
-      heading === 'h1' ? (
-        indexEntry.data.title
-      ) : (
-        <a class="keywords-heading-link" href={keywordsIndexHref}>{indexEntry.data.title}</a>
-      )
-    }
-  </HeadingTag>
+  <div class="keywords-heading-row">
+    <HeadingTag id="keywords-heading" class={heading === 'h1' ? 'page-title' : 'keywords-heading'}>
+      {
+        heading === 'h1' ? (
+          indexEntry.data.title
+        ) : (
+          <a class="keywords-heading-link" href={keywordsIndexHref}>{indexEntry.data.title}</a>
+        )
+      }
+    </HeadingTag>
+    <KeywordsRandomButton />
+  </div>
   <KeywordsChips />
 </section>

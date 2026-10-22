@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import BlogPhotoMarquee from '../../components/BlogPhotoMarquee.astro';
 import BlogArchive from '../../components/BlogArchive.astro';
+import BlogRandomButton from '../../components/BlogRandomButton.astro';
 import { collectBlogPhotos } from '../../lib/blog-photos';
 import { groupBlogPostsByYearMonth } from '../../lib/blog-posts';
 
@@ -24,7 +25,10 @@ const photos = collectBlogPhotos(posts);
     <nav class="breadcrumb" aria-label="パンくずリスト">
       <a href="/">Home</a><span class="breadcrumb-slash">/</span>
     </nav>
-    <h1 class="blog-title">Blog</h1>
+    <div class="keywords-heading-row blog-title-row">
+      <h1 class="blog-title">Blog</h1>
+      <BlogRandomButton />
+    </div>
 
     {
       posts.length === 0 ? (

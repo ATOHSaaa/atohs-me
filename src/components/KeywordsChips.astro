@@ -2,19 +2,30 @@
 import { getKeywordEntries, keywordHref } from '../lib/keywords';
 
 interface Props {
-  excludeSlug?: string;
+  currentSlug?: string;
 }
 
-const { excludeSlug } = Astro.props;
-const entries = (await getKeywordEntries()).filter((entry) => entry.id !== excludeSlug);
+const { currentSlug } = Astro.props;
+const entries = await getKeywordEntries();
 ---
 
 <ul class="keywords-list">
   {
-    entries.map((entry) => (
-      <li>
-        <a class="keywords-chip" href={keywordHref(entry.id)}>{entry.data.title}</a>
-      </li>
-    ))
+    entries.map((entry) => {
+      const isCurrent = entry.id === currentSlug;
+      return (
+        <li>
+          {isCurrent ? (
+            <span class="keywords-chip keywords-chip--current" aria-current="page">
+              <span class="keywords-chip-label">{entry.data.title}</span>
+            </span>
+          ) : (
+            <a class="keywords-chip" href={keywordHref(entry.id)}>
+              <span class="keywords-chip-label">{entry.data.title}</span>
+            </a>
+          )}
+        </li>
+      );
+    })
   }
 </ul>

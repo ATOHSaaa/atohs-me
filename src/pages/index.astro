@@ -8,8 +8,8 @@ import Keywords from '../components/Keywords.astro';
   <SiteHeader isHome />
   <main id="main-content" class="main main-home">
     <div class="home-profile">
-      <div class="name-box">
-        <img class="profile-icon" src="/src/favicon.ico" alt="" width="128" height="128" />
+      <img class="profile-icon home-profile-icon" src="/src/favicon.ico" alt="" width="128" height="128" />
+      <div class="home-profile-aside">
         <div class="name-body">
           <p class="name-detail">
             <span class="name-detail-line name-primary">あとーす（atohs）, 伊藤祥太（ITO SHOTA）</span>
@@ -17,15 +17,16 @@ import Keywords from '../components/Keywords.astro';
             <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
           </p>
         </div>
+        <nav class="home-links" aria-label="サイトメニュー">
+          <a class="home-link" href="/blog">Blog</a><span class="home-links-sep" aria-hidden="true">/</span>
+          <a class="home-link" href="/my-business-experience">Career</a><span
+            class="home-links-sep"
+            aria-hidden="true">/</span>
+          <a class="home-link" href="/works">Works</a><span class="home-links-sep" aria-hidden="true">/</span>
+          <a class="home-link" href="/contact">Contact</a>
+        </nav>
       </div>
     </div>
-
-    <nav class="home-links" aria-label="サイトメニュー">
-      <a class="home-link" href="/blog">Blog</a><span class="home-links-sep" aria-hidden="true">/</span>
-      <a class="home-link" href="/my-business-experience">Career</a><span class="home-links-sep" aria-hidden="true">/</span>
-      <a class="home-link" href="/works">Works</a><span class="home-links-sep" aria-hidden="true">/</span>
-      <a class="home-link" href="/contact">Contact</a>
-    </nav>
 
     <div class="home-blocks">
       <section class="home-block home-block--card" aria-labelledby="home-education-heading">

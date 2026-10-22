@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import KeywordsIndexList from '../../components/KeywordsIndexList.astro';
+import KeywordsRandomButton from '../../components/KeywordsRandomButton.astro';
 import { getKeywordIndexEntry, keywordsIndexHref } from '../../lib/keywords';
 
 const indexEntry = await getKeywordIndexEntry();
@@ -22,7 +23,10 @@ const description =
     <nav class="breadcrumb" aria-label="パンくずリスト">
       <a href="/">Home</a><span class="breadcrumb-slash">/</span>
     </nav>
-    <h1 class="page-title">{indexEntry.data.title}</h1>
+    <div class="keywords-heading-row">
+      <h1 class="page-title">{indexEntry.data.title}</h1>
+      <KeywordsRandomButton />
+    </div>
     {
       indexEntry.body?.trim() ? (
         <div class="blog-body keywords-body">

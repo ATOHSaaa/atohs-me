@@ -1,0 +1,48 @@
+---
+interface Props {
+  hrefs: string[];
+  tooltip: string;
+}
+
+const { hrefs, tooltip } = Astro.props;
+---
+
+{
+  hrefs.length > 0 && (
+    <span class="keywords-random-button-wrap">
+      <button
+        type="button"
+        class="keywords-random-button"
+        data-random-hrefs={JSON.stringify(hrefs)}
+        aria-label={tooltip}
+      >
+        <i class="fa-solid fa-shuffle" aria-hidden="true"></i>
+      </button>
+      <span class="keywords-random-tooltip" role="tooltip">{tooltip}</span>
+    </span>
+  )
+}
+
+<script>
+  function initShuffleRandomButtons() {
+    document.querySelectorAll<HTMLButtonElement>('.keywords-random-button[data-random-hrefs]').forEach((button) => {
+      if (button.dataset.shuffleRandomInit === 'true') return;
+      button.dataset.shuffleRandomInit = 'true';
+
+      button.addEventListener('click', () => {
+        let hrefs: string[] = [];
+        try {
+          hrefs = JSON.parse(button.dataset.randomHrefs ?? '[]') as string[];
+        } catch {
+          return;
+        }
+        if (hrefs.length === 0) return;
+        const href = hrefs[Math.floor(Math.random() * hrefs.length)];
+        window.location.assign(href);
+      });
+    });
+  }
+
+  initShuffleRandomButtons();
+  document.addEventListener('astro:page-load', initShuffleRandomButtons);
+</script>

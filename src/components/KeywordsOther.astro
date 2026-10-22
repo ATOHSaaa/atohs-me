@@ -1,5 +1,6 @@
 ---
 import KeywordsChips from './KeywordsChips.astro';
+import KeywordsRandomButton from './KeywordsRandomButton.astro';
 import { getKeywordEntries } from '../lib/keywords';
 
 interface Props {
@@ -7,14 +8,17 @@ interface Props {
 }
 
 const { currentSlug } = Astro.props;
-const hasOthers = (await getKeywordEntries()).some((entry) => entry.id !== currentSlug);
+const hasKeywords = (await getKeywordEntries()).length > 0;
 ---
 
 {
-  hasOthers && (
+  hasKeywords && (
     <section class="keywords-other" aria-labelledby="keywords-other-heading">
-      <h2 id="keywords-other-heading" class="keywords-heading">そのほかのキーワード</h2>
-      <KeywordsChips excludeSlug={currentSlug} />
+      <div class="keywords-heading-row">
+        <h2 id="keywords-other-heading" class="keywords-heading">Keywords</h2>
+        <KeywordsRandomButton excludeSlug={currentSlug} />
+      </div>
+      <KeywordsChips currentSlug={currentSlug} />
     </section>
   )
 }
