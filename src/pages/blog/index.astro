@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogLayout from '../../layouts/BlogLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import BlogPhotoMarquee from '../../components/BlogPhotoMarquee.astro';
 import BlogArchive from '../../components/BlogArchive.astro';
@@ -15,7 +15,7 @@ const archive = groupBlogPostsByYearMonth(posts);
 const photos = collectBlogPhotos(posts);
 ---
 
-<BaseLayout
+<BlogLayout
   title="Blog | atohs.me"
   description="atohs(あとーす)のブログです。"
   ogUrl="https://atohs.me/blog"
@@ -42,4 +42,4 @@ const photos = collectBlogPhotos(posts);
   <div class="blog-photo-marquee-shell">
     <BlogPhotoMarquee photos={photos} />
   </div>
-</BaseLayout>
+</BlogLayout>
