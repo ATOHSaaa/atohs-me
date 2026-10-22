@@ -24,7 +24,7 @@
       var(--width-blog-toc)
   );
   --site-gutter: 16px;
-  --header-height: 101px;
+  --header-height: 113px;
   --radius-sm: 8px;
   --radius-md: 16px;
   --radius-lg: 32px;
@@ -243,7 +243,7 @@ header:not(.header-top) {
   padding: 0;
   font-weight: bold;
   border-top: none;
-  border-bottom: var(--color-text) solid 2px;
+  border-bottom: var(--color-text) solid 3px;
   margin: 0;
   background-color: var(--color-bg);
 }
@@ -255,7 +255,7 @@ header:not(.header-top) {
   width: min(calc(100% - 2 * var(--site-gutter)), var(--width-content));
   max-width: none;
   margin: 0 auto;
-  padding: 20px 0;
+  padding: 32px 0;
 }
 
 .header-logo {
@@ -1179,7 +1179,6 @@ a.profile-box:active .profile-box-face {
 
 .experience .page-title {
   font-size: 1.5em;
-  letter-spacing: 0.2em;
 }
 
 .experience ul {
@@ -1428,7 +1427,7 @@ a.blog-tag:hover {
     padding: 8px var(--site-gutter) 20px;
     font-size: 1em;
     background-color: var(--color-bg);
-    border-bottom: var(--color-text) solid 2px;
+    border-bottom: var(--color-text) solid 3px;
     box-sizing: border-box;
   }
 

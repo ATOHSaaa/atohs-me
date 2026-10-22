@@ -49,6 +49,13 @@ const LogoTag = isHome ? 'h1' : 'p';
 </header>
 
 <script>
+  function syncHeaderHeight() {
+    const header = document.querySelector('.header-top');
+    if (!header) return;
+    const height = Math.ceil(header.getBoundingClientRect().height);
+    document.documentElement.style.setProperty('--header-height', `${height}px`);
+  }
+
   function initHeaderMenu() {
     const header = document.querySelector('.header-top');
     const toggle = document.querySelector('.header-menu-toggle');
@@ -83,8 +90,13 @@ const LogoTag = isHome ? 'h1' : 'p';
     });
   }
 
+  syncHeaderHeight();
   initHeaderMenu();
-  document.addEventListener('astro:page-load', initHeaderMenu);
+  document.addEventListener('astro:page-load', () => {
+    syncHeaderHeight();
+    initHeaderMenu();
+  });
+  window.addEventListener('resize', syncHeaderHeight);
 
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
