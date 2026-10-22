@@ -1,5 +1,4 @@
 ---
-import ClientRouter from 'astro/components/ClientRouter.astro';
 import { getImage } from 'astro:assets';
 import SiteFooter from '../components/SiteFooter.astro';
 import { SITE_FAVICON_SRC, siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
@@ -17,6 +16,8 @@ interface Props {
   ogUrl?: string;
   ogImage?: string;
   ogSiteName?: string;
+  /** false のときグローバル CSS を読み込まない（BlogLayout が blog-layout.css を読む） */
+  includeSiteStyles?: boolean;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   ogUrl = 'https://atohs.me',
   ogImage = 'https://atohs.me/src/ogp.png',
   ogSiteName = 'atohs.me',
+  includeSiteStyles = true,
 } = Astro.props;
 ---
 
@@ -57,7 +59,6 @@ const {
       type="image/webp"
       fetchpriority="high"
     />
-    <ClientRouter fallback="none" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3S8S7JGPEZ"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -77,6 +78,8 @@ const {
   </body>
 </html>
 
-<style is:global>
-  @import '../styles/core.css';
-</style>
+{includeSiteStyles ? (
+  <style is:global>
+    @import '../styles/core.css';
+  </style>
+) : null}

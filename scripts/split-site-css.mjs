@@ -25,16 +25,42 @@ const blogStart = indexOfOrThrow(main, sectionHeader('Blog'), 'blog');
 const notFoundStart = indexOfOrThrow(main, sectionHeader('404'), '404');
 const shareStart = indexOfOrThrow(main, sectionHeader('Share buttons'), 'share');
 const responsiveStart = indexOfOrThrow(main, sectionHeader('Responsive'), 'responsive');
+const responsiveBlogStart = indexOfOrThrow(
+  main,
+  sectionHeader('Responsive (blog)'),
+  'responsive-blog',
+);
+const blogListStart = indexOfOrThrow(
+  main,
+  '.blog-list {\n  list-style: none;',
+  'blog-list',
+);
+const blogBodyStart = indexOfOrThrow(
+  main,
+  '.blog-body {\n  font-weight: 400;',
+  'blog-body',
+);
 
 const home = main.slice(homeStart, keywordsStart);
-const blog = main.slice(blogStart, notFoundStart) + main.slice(shareStart, responsiveStart);
+const blogListEssentials = main.slice(blogListStart, blogBodyStart);
+const blog =
+  main.slice(blogStart, blogListStart) +
+  main.slice(blogBodyStart, notFoundStart) +
+  main.slice(shareStart, responsiveStart) +
+  main.slice(responsiveBlogStart);
 
-const core =
-  `@import './site-fonts.css';\n\n` +
+const coreBody =
   main.slice(0, homeStart) +
+  home +
   main.slice(keywordsStart, blogStart) +
+  blogListEssentials +
   main.slice(notFoundStart, shareStart) +
-  main.slice(responsiveStart);
+  main.slice(responsiveStart, responsiveBlogStart);
+
+const siteFontsImport = `@import './site-fonts.css';\n\n`;
+
+const core = siteFontsImport + coreBody;
+const blogLayout = siteFontsImport + coreBody + blog;
 
 const fontFallbacks = generateFontFace(robotoMetrics, {
   name: 'Roboto fallback',
@@ -45,5 +71,4 @@ const fontFallbacks = generateFontFace(robotoMetrics, {
 
 writeFileSync(join(stylesDir, 'font-fallbacks.css'), fontFallbacks);
 writeFileSync(join(stylesDir, 'core.css'), core);
-writeFileSync(join(stylesDir, 'home.css'), home);
-writeFileSync(join(stylesDir, 'blog.css'), blog);
+writeFileSync(join(stylesDir, 'blog-layout.css'), blogLayout);

@@ -402,13 +402,6 @@ header:not(.header-top) {
   text-align: center;
 }
 
-/* Astro client navigation: keep swaps instant (no fade) */
-::view-transition-group(root),
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none !important;
-}
-
 /* ==========================================================================
    Layout
    ========================================================================== */
@@ -2491,13 +2484,6 @@ a.blog-tag:hover {
   }
 }
 
-@media (max-width: 720px) {
-  .blog-photo-marquee-item img {
-    height: 149px;
-    width: 235px;
-  }
-}
-
 /* ==========================================================================
    Share buttons
    ========================================================================== */
@@ -2652,15 +2638,6 @@ a.blog-tag:hover {
     box-sizing: border-box;
   }
 
-  .blog-list-item,
-  .blog-list-item a {
-    line-height: 2.4;
-  }
-
-  .blog-list-item {
-    margin-bottom: 24px;
-  }
-
   .footer-inner {
     padding: 20px 0;
   }
@@ -2720,11 +2697,6 @@ a.blog-tag:hover {
     font-size: 1.6em;
   }
 
-  .blog-title,
-  .breadcrumb + .page-title {
-    font-size: 1.7em;
-  }
-
   .not-found {
     padding-top: 32px;
   }
@@ -2736,6 +2708,45 @@ a.blog-tag:hover {
   .not-found-posts {
     margin-top: 56px;
     padding-top: 32px;
+  }
+
+  .share-buttons {
+    margin-bottom: 42px;
+  }
+
+  /* 404 の最近の記事リスト（blog-layout.css は読まない） */
+  .not-found-posts .blog-list-item,
+  .not-found-posts .blog-list-item a {
+    line-height: 2.4;
+  }
+
+  .not-found-posts .blog-list-item {
+    margin-bottom: 24px;
+  }
+}
+
+/* ==========================================================================
+   Responsive (blog)
+   ========================================================================== */
+
+@media (max-width: 720px) {
+  .blog-photo-marquee-item img {
+    height: 149px;
+    width: 235px;
+  }
+
+  .blog-list-item,
+  .blog-list-item a {
+    line-height: 2.4;
+  }
+
+  .blog-list-item {
+    margin-bottom: 24px;
+  }
+
+  .blog-title,
+  .breadcrumb + .page-title {
+    font-size: 1.7em;
   }
 
   .blog-layout-share-rail {
@@ -2766,10 +2777,6 @@ a.blog-tag:hover {
 
   .blog-share-float .share-button-face {
     background-color: var(--card-surface);
-  }
-
-  .share-buttons {
-    margin-bottom: 42px;
   }
 
   .blog-layout-footer .share-buttons {
