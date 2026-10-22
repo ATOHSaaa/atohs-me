@@ -1,17 +1,16 @@
 ---
 title: Career
 ---
-
-これまでの職歴の概要です。
-
 ## 蓼食う本の虫（個人事業 2021.09〜現在）
 
 - Webメディア[蓼食う本の虫](https://tadeku.net)の運営・執筆・編集
 - 小説執筆ツール集 [tadeku-tools](https://tools.tadeku.net) の開発
-- [蓼食う本の虫制作室](https://production.tadeku.net)としての制作事業
-  - WordPressを用いたWebサイト制作
-  - ノベルゲームシナリオの校正
-  - チラシのデザイン制作 など
+
+### [蓼食う本の虫制作室](https://production.tadeku.net)としての制作事業
+
+- WordPressを用いたWebサイト制作
+- ノベルゲームシナリオの校正
+- チラシのデザイン制作 など
 
 ### ANANMARK（2025.10〜現在）
 

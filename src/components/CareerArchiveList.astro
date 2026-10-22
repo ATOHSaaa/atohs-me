@@ -1,0 +1,26 @@
+---
+import type { CareerListItem } from '../lib/career-tree';
+import { inlineMarkdownToHtml } from '../lib/career-tree';
+
+interface Props {
+  items: CareerListItem[];
+  nested?: boolean;
+}
+
+const { items, nested = false } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <ul class:list={['blog-list', 'blog-list--archive', 'career-archive-list', { 'career-archive-list--nested': nested }]}>
+      {
+        items.map((item) => (
+          <li class="blog-list-item career-archive-item">
+            <span class="career-archive-item-text" set:html={inlineMarkdownToHtml(item.text)} />
+            {item.children.length > 0 && <Astro.self items={item.children} nested />}
+          </li>
+        ))
+      }
+    </ul>
+  )
+}

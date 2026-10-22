@@ -1,13 +1,15 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import CareerArchive from '../components/CareerArchive.astro';
+import { parseCareerBody } from '../lib/career-tree';
 
 const career = await getEntry('career', 'index');
 if (!career) {
   throw new Error('Career content not found');
 }
-const { Content } = await render(career);
+const sections = parseCareerBody(career.body ?? '');
 ---
 
 <BaseLayout title={`${career.data.title} | atohs.me`} ogUrl="https://atohs.me/career">
@@ -17,8 +19,6 @@ const { Content } = await render(career);
       <a href="/">Home</a><span class="breadcrumb-slash">/</span>
     </nav>
     <h1 class="page-title">{career.data.title}</h1>
-    <div class="experience-body">
-      <Content />
-    </div>
+    <CareerArchive sections={sections} />
   </main>
 </BaseLayout>
