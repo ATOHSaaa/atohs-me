@@ -2,7 +2,6 @@
 import ClientRouter from 'astro/components/ClientRouter.astro';
 import { getImage } from 'astro:assets';
 import SiteFooter from '../components/SiteFooter.astro';
-import { GOOGLE_FONTS_STYLESHEET_HREF } from '../lib/google-fonts';
 import { SITE_FAVICON_SRC, siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
 
 const siteLogoPreload = await getImage({
@@ -61,7 +60,6 @@ const {
     <ClientRouter fallback="none" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href={GOOGLE_FONTS_STYLESHEET_HREF} rel="stylesheet" />
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3S8S7JGPEZ"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];

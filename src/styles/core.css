@@ -1,3 +1,5 @@
+@import './google-fonts.css';
+
 /* ==========================================================================
    Design tokens
    ========================================================================== */
@@ -9,8 +11,9 @@
   --color-border: rgba(10, 10, 55, 0.8);
   --color-border-strong: rgba(10, 10, 55, 1);
   --color-border-subtle: rgba(10, 10, 55, 0.8);
-  --font-sans: "Roboto", "Noto Sans JP", sans-serif;
-  --font-roboto: "Roboto", sans-serif;
+  --font-sans: "Roboto", "Roboto fallback", "Noto Sans JP", "Noto Sans JP fallback",
+    sans-serif;
+  --font-roboto: "Roboto", "Roboto fallback", sans-serif;
   --font-serif-mincho: TsukuAOldMinPr6N-B, serif;
   --font-mono:
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -498,7 +501,6 @@ header:not(.header-top) {
   letter-spacing: 0.04em;
   text-align: justify;
 }
-
 
 .keywords-heading-row {
   display: flex;
@@ -1444,4 +1446,3 @@ a:has(> .more) + h2 {
     margin-bottom: 0;
   }
 }
-

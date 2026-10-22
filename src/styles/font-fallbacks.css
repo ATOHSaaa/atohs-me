@@ -1,0 +1,18 @@
+@font-face {
+  font-family: "Roboto fallback";
+  src: local("Arial"), local("Arial Regular"), local("Arial-Regular"), local("ArialMT");
+  size-adjust: 99.7809%;
+  ascent-override: 92.9771%;
+  descent-override: 24.4677%;
+  line-gap-override: 0%;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Sans JP fallback";
+  src: local("Hiragino Sans"), local("Hiragino Sans Regular"), local("HiraginoSans-Regular"), local("Arial"), local("ArialMT");
+  size-adjust: 104.7553%;
+  ascent-override: 110.7342%;
+  descent-override: 27.4926%;
+  line-gap-override: 0%;
+  font-display: swap;
+}
