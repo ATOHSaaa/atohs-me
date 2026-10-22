@@ -304,8 +304,15 @@ header:not(.header-top) {
 .footer-social {
   display: inline-flex;
   align-items: center;
-  font-size: 1.1em;
+  gap: 0.35em;
   text-transform: none;
+}
+
+.link-external-mark {
+  margin-left: 0.15em;
+  font-size: 0.85em;
+  font-weight: 400;
+  opacity: 0.75;
 }
 
 .header-menu-toggle {
@@ -619,27 +626,6 @@ a.home-block--card:focus-visible {
 
 .keywords {
   margin-top: 56px;
-}
-
-.main-home .home-days-since-birth {
-  margin: 20px 0 0;
-  font-size: 0.9em;
-  font-weight: 700;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
-  text-align: right;
-  color: var(--color-text);
-}
-
-.main-home .home-days-since-birth-num {
-  display: inline-block;
-  margin: 0 0.2em;
-  padding: 3px 12px;
-  border: 2px solid var(--color-text);
-  border-radius: 12px;
-  font-weight: 700;
-  line-height: 1.35;
-  letter-spacing: 0.03em;
 }
 
 .main-home a.keywords-chip {

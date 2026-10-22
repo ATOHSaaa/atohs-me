@@ -36,7 +36,8 @@ export default defineConfig({
   site: 'https://atohs.me',
   output: 'static',
   build: {
-    inlineStylesheets: 'never',
+    // 小さなサイト CSS を HTML に埋め、PSI のレンダリングブロックを避ける
+    inlineStylesheets: 'always',
   },
   redirects: {
     '/my-business-experience': '/career',

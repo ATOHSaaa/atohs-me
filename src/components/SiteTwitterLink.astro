@@ -1,0 +1,19 @@
+---
+interface Props {
+  variant: 'header' | 'footer';
+}
+
+const { variant } = Astro.props;
+const className =
+  variant === 'header' ? 'header-link header-social' : 'footer-link footer-social';
+---
+
+<a
+  class={className}
+  href="https://twitter.com/atohsaaa"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Twitter<span class="link-external-mark" aria-hidden="true">↗</span>
+  <span class="visually-hidden">（新しいタブで開く）</span>
+</a>

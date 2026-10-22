@@ -1,6 +1,6 @@
 ---
-import Icon from './Icon.astro';
 import SiteLogo from './SiteLogo.astro';
+import SiteTwitterLink from './SiteTwitterLink.astro';
 
 interface Props {
   isHome?: boolean;
@@ -43,15 +43,7 @@ const LogoTag = isHome ? 'h1' : 'p';
       <a class="header-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>Blog</a>
       <a class="header-link" href="/works" aria-current={isWorks ? 'page' : undefined}>Works</a>
       <a class="header-link" href="/contact" aria-current={isContact ? 'page' : undefined}>Contact</a>
-      <a
-        class="header-link header-social"
-        href="https://twitter.com/atohsaaa"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Twitter @atohsaaa（新しいタブで開く）"
-      >
-        <Icon name="twitter" />
-      </a>
+      <SiteTwitterLink variant="header" />
     </nav>
   </div>
 </header>

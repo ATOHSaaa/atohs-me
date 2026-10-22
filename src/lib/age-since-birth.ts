@@ -19,12 +19,3 @@ export function formatAgeYears(now: Date = new Date()): string {
   return `${getAgeYears(now)} years old 🙋`;
 }
 
-/** 誕生日を1日目として数えた通算日数 */
-export function getDaysSinceBirth(now: Date = new Date()): number {
-  const { year, month, day } = PROFILE_BIRTH;
-  const birth = new Date(year, month - 1, day);
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const msPerDay = 1000 * 60 * 60 * 24;
-  return Math.floor((today.getTime() - birth.getTime()) / msPerDay) + 1;
-}
-
