@@ -28,5 +28,5 @@ export function iconSvg(name: IconName, className = ''): string {
   if (!raw) return '';
 
   const classes = ['icon', className].filter(Boolean).join(' ');
-  return raw.replace(/^<svg /, `<svg class="${classes}" aria-hidden="true" `);
+  return raw.replace(/\sclass="[^"]*"/, '').replace(/^<svg /, `<svg class="${classes}" aria-hidden="true" `);
 }
