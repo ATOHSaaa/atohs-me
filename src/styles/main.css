@@ -969,7 +969,7 @@ a.keywords-chip:active {
   border: 1px solid var(--card-border);
   border-radius: 12px;
   background-color: var(--card-surface);
-  box-shadow: var(--card-shadow);
+  box-shadow: var(--card-shadow-chip);
   text-decoration: none;
   color: inherit;
   transition: box-shadow 0.12s ease;
@@ -977,9 +977,7 @@ a.keywords-chip:active {
 
 a.profile-box:hover,
 a.profile-box:active {
-  box-shadow:
-    0 2px 4px rgba(10, 10, 55, 0.07),
-    0 10px 24px rgba(10, 10, 55, 0.08);
+  box-shadow: var(--card-shadow-chip-hover);
 }
 
 .profile-box-title {
@@ -2484,15 +2482,13 @@ a.blog-tag:hover {
   font-size: 14px;
   line-height: 1;
   background-color: var(--card-surface);
-  box-shadow: var(--card-shadow);
+  box-shadow: var(--card-shadow-chip);
   transition: box-shadow 0.12s ease;
 }
 
 .share-button:hover .share-button-face,
 .share-button:active .share-button-face {
-  box-shadow:
-    0 2px 4px rgba(10, 10, 55, 0.07),
-    0 10px 24px rgba(10, 10, 55, 0.08);
+  box-shadow: var(--card-shadow-chip-hover);
 }
 
 .share-hatena,
