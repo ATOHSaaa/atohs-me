@@ -68,3 +68,15 @@ export async function getOtherBlogPosts(
     .filter((post) => post.id !== currentId)
     .slice(0, limit);
 }
+
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+/** 公開日が現在から days 日以内の記事を新しい順で返す。 */
+export async function getBlogPostsPublishedWithinDays(
+  days: number,
+): Promise<BlogPostEntry[]> {
+  const cutoff = Date.now() - days * MS_PER_DAY;
+  return (await getPublishedBlogPosts()).filter(
+    (post) => post.data.pubDate.valueOf() >= cutoff,
+  );
+}

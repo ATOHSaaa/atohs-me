@@ -118,6 +118,7 @@ a {
   text-decoration: underline var(--color-text) 1px;
   text-decoration-thickness: 1px;
   text-underline-offset: 6px;
+  cursor: text;
 }
 
 h2,
@@ -189,9 +190,6 @@ header:not(.header-top) {
   font-weight: 700;
 }
 
-.footer-link:hover {
-  cursor: pointer;
-}
 
 /* ==========================================================================
    Accessibility
@@ -296,9 +294,6 @@ header:not(.header-top) {
   font-weight: 700;
 }
 
-.header-link:hover {
-  cursor: pointer;
-}
 
 .header-social,
 .footer-social {
@@ -629,8 +624,25 @@ a.home-block--card:focus-visible {
   margin-bottom: 0;
 }
 
+.home-blocks + .home-recent-blog {
+  margin-top: 40px;
+}
+
+.home-recent-blog + .keywords,
 .home-blocks + .keywords {
   margin-top: 40px;
+}
+
+.home-recent-blog-list {
+  margin-top: 0;
+}
+
+.blog-list-new {
+  color: #d40000;
+  font-size: 0.85em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
 }
 
 .keywords {
@@ -846,7 +858,7 @@ a.home-block--card:focus-visible {
   box-sizing: border-box;
   height: 100%;
   min-height: 11.5rem;
-  padding: 12px 14px;
+  padding: 18px 18px;
   border: 2px solid var(--color-text);
   border-radius: 12px;
   text-decoration: none;
@@ -881,7 +893,7 @@ a.keywords-index-link:active {
 .keywords-index-preview-wrap {
   position: relative;
   flex: 1 1 auto;
-  margin-top: 8px;
+  margin-top: 14px;
   min-height: calc(5 * 1.5em + 12px);
   max-height: calc(5 * 1.5em + 12px);
   overflow: hidden;
@@ -2655,6 +2667,7 @@ a.blog-tag:hover {
     margin-bottom: 24px;
   }
 
+  .home-recent-blog + .keywords,
   .home-blocks + .keywords {
     margin-top: 32px;
   }

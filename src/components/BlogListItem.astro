@@ -4,12 +4,14 @@ import { formatDate } from '../lib/format-date';
 
 interface Props {
   post: BlogPostEntry;
+  showNew?: boolean;
 }
 
-const { post } = Astro.props;
+const { post, showNew = false } = Astro.props;
 ---
 
 <li class="blog-list-item">
+  {showNew && <span class="blog-list-new" aria-hidden="true">NEW</span>}
   <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
   <a href={`/blog/${post.id}`}>{post.data.title}</a>
 </li>
