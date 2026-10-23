@@ -9,6 +9,7 @@ import { remarkAmazonCards } from './src/lib/remark-amazon-cards.js';
 import { remarkLinkCards } from './src/lib/remark-link-cards.js';
 import rehypeSlug from 'rehype-slug';
 import { rehypeExternalLinks } from './src/lib/rehype-external-links.js';
+import { rehypeContentImages } from './src/lib/rehype-content-images.js';
 
 function getBlogLastmodByPath() {
   const blogDir = './src/content/blog';
@@ -64,7 +65,7 @@ export default defineConfig({
       remarkLinkCards,
       remarkQuoteSource,
     ],
-    rehypePlugins: [rehypeSlug, rehypeExternalLinks],
+    rehypePlugins: [rehypeSlug, rehypeExternalLinks, rehypeContentImages],
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,

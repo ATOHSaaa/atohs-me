@@ -2,6 +2,7 @@ import type { ImageMetadata } from 'astro';
 import catImage from '../cat.png';
 import mahoImage from '../maho.png';
 import tadekuImage from '../tadeku.png';
+import hanoiPreview from '../../public/works/hanoi-clicker/preview.png';
 
 export interface Work {
   slug: string;
@@ -9,7 +10,6 @@ export interface Work {
   description: string;
   href: string;
   image?: ImageMetadata;
-  imagePublic?: string;
   external?: boolean;
   featured?: boolean;
 }
@@ -55,7 +55,7 @@ export const works: Work[] = [
     title: 'ハノイクリッカー',
     description: 'ハノイの塔を題材にした放置系ゲームです。円盤を移して功徳を積みます。',
     href: '/works/hanoi-clicker/',
-    imagePublic: '/works/hanoi-clicker/preview.png',
+    image: hanoiPreview,
     featured: true,
   },
 ];

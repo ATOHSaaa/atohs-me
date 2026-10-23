@@ -647,13 +647,20 @@ a.home-block--card:focus-visible {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 12px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .keywords-heading-row .keywords-heading,
 .keywords-heading-row .page-title,
 .keywords-heading-row .blog-title {
   margin: 0;
+  line-height: 1.15;
+}
+
+.keywords-heading-row .keywords-heading-link {
+  display: inline-block;
+  line-height: 1.15;
+  text-decoration: none;
 }
 
 .blog-title-row {
@@ -686,7 +693,7 @@ a.home-block--card:focus-visible {
 }
 
 .keywords-random-button .icon {
-  transform: translateY(0.08em);
+  display: block;
 }
 
 .keywords-random-button:hover,
@@ -912,7 +919,7 @@ a.keywords-index-link:active {
   border-radius: 12px;
   font-size: 0.82em;
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.25;
   letter-spacing: 0.02em;
   text-decoration: none;
   color: inherit;
@@ -925,7 +932,7 @@ a.keywords-index-link:active {
 
 .keywords-chip-label {
   display: block;
-  transform: translateY(0.08em);
+  line-height: 1.25;
 }
 
 a.keywords-chip:hover,
@@ -1522,6 +1529,14 @@ a.blog-tag:hover {
 
   .not-found-posts .blog-list-item {
     margin-bottom: 24px;
+  }
+
+  .home-blocks + .keywords {
+    margin-top: 32px;
+  }
+
+  .keywords-heading-row {
+    margin-bottom: 12px;
   }
 }
 
