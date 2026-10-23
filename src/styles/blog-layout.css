@@ -896,7 +896,7 @@ a.keywords-index-link:active {
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: 0.02em;
-  color: var(--color-text-muted);
+  color: var(--color-text);
   list-style-type: disc;
 }
 
