@@ -1,4 +1,5 @@
 ---
+import ArchiveSummaryGuard from './ArchiveSummaryGuard.astro';
 import BlogListItem from './BlogListItem.astro';
 import type { BlogArchiveYearGroup } from '../lib/blog-posts';
 import { formatArchiveMonth } from '../lib/format-date';
@@ -46,3 +47,4 @@ const { archive } = Astro.props;
     })
   }
 </div>
+<ArchiveSummaryGuard />

@@ -1861,19 +1861,19 @@ a.blog-tag:hover {
   min-width: 0;
 }
 
-.career-archive-tree .archive-summary {
+.blog-archive-tree .archive-summary {
   cursor: default;
   padding: 0;
   pointer-events: none;
 }
 
-.career-archive-tree .archive-summary .blog-archive-chevron {
+.blog-archive-tree .archive-summary .blog-archive-chevron {
   padding: 2px 4px 2px 0;
   cursor: pointer;
   pointer-events: auto;
 }
 
-.career-archive-tree .archive-summary .blog-archive-label {
+.blog-archive-tree .archive-summary .blog-archive-label {
   cursor: default;
   padding: 2px 0;
   pointer-events: auto;
