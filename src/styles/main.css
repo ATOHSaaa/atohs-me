@@ -1719,9 +1719,28 @@ h2 + .blog-list {
   line-height: 2;
 }
 
+.blog-list-title-wrap {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.blog-list-title-wrap a {
+  display: inline;
+  line-height: inherit;
+}
+
 .blog-list-item a {
   line-height: 2;
   min-width: 0;
+}
+
+.blog-list-relative {
+  display: inline;
+  margin-left: 0.75em;
+  font-size: 0.85em;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 .blog-tags {

@@ -1,17 +1,22 @@
 ---
 import type { BlogPostEntry } from '../lib/blog-posts';
-import { formatDate } from '../lib/format-date';
+import { formatDate, formatRelativePublishLabel } from '../lib/format-date';
 
 interface Props {
   post: BlogPostEntry;
   showNew?: boolean;
+  showRelativeDate?: boolean;
 }
 
-const { post, showNew = false } = Astro.props;
+const { post, showNew = false, showRelativeDate = false } = Astro.props;
+const relativeLabel = showRelativeDate ? formatRelativePublishLabel(post.data.pubDate) : null;
 ---
 
 <li class="blog-list-item">
   {showNew && <span class="blog-list-new" aria-hidden="true">NEW</span>}
   <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-  <a href={`/blog/${post.id}`}>{post.data.title}</a>
+  <span class="blog-list-title-wrap">
+    <a href={`/blog/${post.id}`}>{post.data.title}</a>
+    {relativeLabel && <span class="blog-list-relative">{relativeLabel}</span>}
+  </span>
 </li>

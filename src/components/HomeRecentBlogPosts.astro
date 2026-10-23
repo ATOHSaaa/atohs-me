@@ -10,7 +10,7 @@ const posts = await getBlogPostsPublishedWithinDays(7);
     <section class="home-recent-blog" aria-label="直近1週間のブログ記事">
       <ul class="blog-list home-recent-blog-list">
         {posts.map((post) => (
-          <BlogListItem post={post} showNew />
+          <BlogListItem post={post} showNew showRelativeDate />
         ))}
       </ul>
     </section>
