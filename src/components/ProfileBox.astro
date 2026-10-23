@@ -5,20 +5,19 @@ import SiteLogo from './SiteLogo.astro';
 <section class="profile-section">
   <h2 class="profile-box-title">Profile</h2>
   <a class="profile-box" href="/" aria-label="トップページへ">
-    <span class="profile-box-face">
-      <span class="name-box">
-        <SiteLogo class="profile-icon" loading="eager" fetchpriority="high" decoding="sync" />
-        <span class="name-body">
-          <p class="name-detail">
-            <span class="name-detail-line name-primary">あとーす（atohs）, 伊藤祥太（ITO SHOTA）</span>
-            <span class="name-detail-line">Born on November 13, 1993 🎉 / Live in Kumamoto 🧸</span>
-            <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
-          </p>
+    <div class="name-box">
+      <SiteLogo class="profile-icon" loading="eager" fetchpriority="high" decoding="sync" />
+      <p class="name-detail">
+        <span class="name-primary">
+          <span class="name-primary-part">あとーす（atohs）,</span>
+          <span class="name-primary-part">伊藤祥太（ITO SHOTA）</span>
         </span>
-      </span>
-      <p class="profile-text">
-        熊本大学文学部文学科卒。印刷会社で営業・Webディレクター、IT系ベンチャー企業でPdM・カスタマーサポートとして勤務した後に独立。ことばや文章に関することを中心に、企画・制作を担当します。
+        <span class="name-detail-line">Born on November 13, 1993 🎉 / Live in Kumamoto 🧸</span>
+        <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
       </p>
-    </span>
+    </div>
+    <p class="profile-text">
+      熊本大学文学部文学科卒。印刷会社で営業・Webディレクター、IT系ベンチャー企業でPdM・カスタマーサポートとして勤務した後に独立。ことばや文章に関することを中心に、企画・制作を担当します。
+    </p>
   </a>
 </section>

@@ -432,6 +432,7 @@ header:not(.header-top) {
 }
 
 .name-primary {
+  display: block;
   font-weight: 700;
   font-size: 1.2em;
 }
@@ -958,22 +959,18 @@ a.keywords-chip:active {
 
 .profile-box {
   display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
-.profile-box-face {
-  display: block;
   padding: 32px;
   border: 1px solid var(--card-border);
   border-radius: 12px;
   background-color: var(--card-surface);
   box-shadow: var(--card-shadow);
+  text-decoration: none;
+  color: inherit;
   transition: box-shadow 0.12s ease;
 }
 
-a.profile-box:hover .profile-box-face,
-a.profile-box:active .profile-box-face {
+a.profile-box:hover,
+a.profile-box:active {
   box-shadow:
     0 2px 4px rgba(10, 10, 55, 0.07),
     0 10px 24px rgba(10, 10, 55, 0.08);
@@ -1384,7 +1381,7 @@ a.blog-tag:hover {
     animation: none;
   }
 
-  .profile-box-face,
+  .profile-box,
   .share-button-face {
     transition: box-shadow 0.15s ease;
   }

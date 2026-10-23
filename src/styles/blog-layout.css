@@ -432,6 +432,7 @@ header:not(.header-top) {
 }
 
 .name-primary {
+  display: block;
   font-weight: 700;
   font-size: 1.2em;
 }
@@ -958,22 +959,18 @@ a.keywords-chip:active {
 
 .profile-box {
   display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
-.profile-box-face {
-  display: block;
   padding: 32px;
   border: 1px solid var(--card-border);
   border-radius: 12px;
   background-color: var(--card-surface);
   box-shadow: var(--card-shadow);
+  text-decoration: none;
+  color: inherit;
   transition: box-shadow 0.12s ease;
 }
 
-a.profile-box:hover .profile-box-face,
-a.profile-box:active .profile-box-face {
+a.profile-box:hover,
+a.profile-box:active {
   box-shadow:
     0 2px 4px rgba(10, 10, 55, 0.07),
     0 10px 24px rgba(10, 10, 55, 0.08);
@@ -1384,7 +1381,7 @@ a.blog-tag:hover {
     animation: none;
   }
 
-  .profile-box-face,
+  .profile-box,
   .share-button-face {
     transition: box-shadow 0.15s ease;
   }
@@ -1671,7 +1668,7 @@ a.blog-tag:hover {
     flex-shrink: 0;
   }
 
-  .blog-sidebar .profile-box-face {
+  .blog-sidebar .profile-box {
     padding: 16px;
   }
 
@@ -1700,6 +1697,10 @@ a.blog-tag:hover {
 
   .blog-sidebar .name-primary {
     font-size: 0.95em;
+  }
+
+  .blog-sidebar .name-primary-part {
+    display: block;
   }
 
   .blog-sidebar .profile-text {
@@ -2028,22 +2029,28 @@ a.blog-tag:hover {
   text-align: justify;
 }
 
-.blog-body-tags {
-  margin: 0 0 28px;
+.blog-intro-tags {
+  margin: 0 0 12px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   width: 100%;
 }
 
-.blog-body-tags .blog-tags {
-  justify-content: flex-end;
+.blog-intro-tags .blog-tags {
+  justify-content: flex-start;
   max-width: 100%;
 }
 
-.blog-body-tags .blog-tag {
+.blog-intro-tags .blog-tag {
   font-size: 0.85em;
   padding: 0;
   letter-spacing: 0;
+  color: rgba(10, 10, 55, 0.78);
+  background-color: transparent;
+}
+
+.blog-intro-tags a.blog-tag:hover {
+  color: var(--color-text);
 }
 
 .blog-body a {
