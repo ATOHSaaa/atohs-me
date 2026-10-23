@@ -437,6 +437,14 @@ header:not(.header-top) {
   font-size: 1.2em;
 }
 
+.name-primary-part:first-child::after {
+  content: ',';
+}
+
+.blog-sidebar .name-primary-part:first-child::after {
+  content: none;
+}
+
 .profile-text {
   font-weight: 500;
   margin-top: 40px;
@@ -1695,8 +1703,14 @@ a.blog-tag:hover {
     text-align: center;
   }
 
+  .blog-sidebar .name-detail {
+    width: 100%;
+    text-align: center;
+  }
+
   .blog-sidebar .name-primary {
     font-size: 0.95em;
+    text-align: center;
   }
 
   .blog-sidebar .name-primary-part {

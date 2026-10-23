@@ -437,6 +437,14 @@ header:not(.header-top) {
   font-size: 1.2em;
 }
 
+.name-primary-part:first-child::after {
+  content: ',';
+}
+
+.blog-sidebar .name-primary-part:first-child::after {
+  content: none;
+}
+
 .profile-text {
   font-weight: 500;
   margin-top: 40px;
