@@ -4,7 +4,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { remarkBracketUrlLinks } from './src/lib/remark-bracket-url-links.js';
 import { remarkTwitterEmbeds } from './src/lib/remark-twitter-embeds.js';
-import { remarkQuoteSource } from './src/lib/remark-quote-source.js';
+import { remarkBracketFootnotes } from './src/lib/remark-bracket-footnotes.js';
 import { remarkAmazonCards } from './src/lib/remark-amazon-cards.js';
 import { remarkLinkCards } from './src/lib/remark-link-cards.js';
 import rehypeSlug from 'rehype-slug';
@@ -63,7 +63,7 @@ export default defineConfig({
       remarkTwitterEmbeds,
       remarkAmazonCards,
       remarkLinkCards,
-      remarkQuoteSource,
+      remarkBracketFootnotes,
     ],
     rehypePlugins: [rehypeSlug, rehypeExternalLinks, rehypeContentImages],
     shikiConfig: {

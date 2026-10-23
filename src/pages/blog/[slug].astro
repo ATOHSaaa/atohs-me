@@ -7,6 +7,8 @@ import ProfileBox from '../../components/ProfileBox.astro';
 import BlogToc from '../../components/BlogToc.astro';
 import BlogOtherPosts from '../../components/BlogOtherPosts.astro';
 import BlogPostTags from '../../components/BlogPostTags.astro';
+import BlogQuoteFootnotes from '../../components/BlogQuoteFootnotes.astro';
+import { extractFootnotesFromMarkdown } from '../../lib/blog-footnotes.js';
 import { createPostDescription } from '../../lib/post-description';
 import { extractBlogTocItems } from '../../lib/blog-toc';
 import { getOtherBlogPosts } from '../../lib/blog-posts';
@@ -29,6 +31,7 @@ const description = createPostDescription(post.body ?? '');
 const tocItems = extractBlogTocItems(post.body ?? '');
 const otherPosts = await getOtherBlogPosts(post.id, 5);
 const hasTwitterEmbed = postHasTwitterEmbed(post.body);
+const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
 ---
 
 <BlogLayout
@@ -70,6 +73,7 @@ const hasTwitterEmbed = postHasTwitterEmbed(post.body);
       </aside>
       <div class="blog-layout-footer">
         <ShareButtons url={postUrl} title={post.data.title} />
+        <BlogQuoteFootnotes sources={footnotes} />
         <div class="blog-layout-footer-profile">
           <ProfileBox />
           <BlogOtherPosts posts={otherPosts} />

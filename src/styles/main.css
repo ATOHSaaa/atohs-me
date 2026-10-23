@@ -1814,10 +1814,7 @@ a.blog-tag:hover {
 
 .blog-body blockquote:not(.twitter-tweet) {
   margin: 1.8em 0 2em 1em;
-  padding: 0.15em 0 0.15em 1.1em;
-  border-left: 3px solid var(--color-border);
-  font-style: italic;
-  letter-spacing: 0.04em;
+  padding-left: 1.1em;
 }
 
 .blog-body blockquote:not(.twitter-tweet) p {
@@ -1830,12 +1827,122 @@ a.blog-tag:hover {
   margin-bottom: 0;
 }
 
-.blog-body .quote-source {
-  margin: -0.35em 0 2em 1em;
-  padding-left: 1.1em;
-  font-size: 0.92em;
-  letter-spacing: 0.05em;
-  text-align: right;
+.blog-body blockquote:not(.twitter-tweet) .quote-ref {
+  margin-left: 0.25em;
+  font-family: var(--font-roboto);
+  font-size: 0.75em;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: super;
+  white-space: nowrap;
+}
+
+.blog-body .quote-ref-link {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+.blog-body .quote-ref-wrap {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+}
+
+.blog-body .quote-ref-num {
+  text-decoration: none;
+}
+
+.blog-body .quote-ref-tooltip {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  width: max-content;
+  max-width: min(22rem, calc(100vw - 2 * var(--site-gutter)));
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.78em;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0.02em;
+  text-align: left;
+  white-space: normal;
+  color: var(--color-bg);
+  background-color: var(--color-text);
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition:
+    opacity 0.12s ease,
+    visibility 0.12s ease;
+}
+
+.blog-body .quote-ref-wrap:hover .quote-ref-tooltip,
+.blog-body .quote-ref-wrap:focus-visible .quote-ref-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.blog-body .quote-ref-wrap:focus-visible .quote-ref-num {
+  outline: 2px solid var(--color-border);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.blog-layout-footer .quote-footnotes {
+  margin: -12px 0 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--card-border);
+}
+
+.quote-footnotes-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.88em;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: 0.04em;
+}
+
+.quote-footnotes-item {
+  display: flex;
+  gap: 0.35em;
+  margin: 0 0 10px;
+  scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+.quote-footnotes-item:last-child {
+  margin-bottom: 0;
+}
+
+.quote-footnotes-mark-link {
+  flex-shrink: 0;
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.quote-footnotes-mark-link:hover,
+.quote-footnotes-mark-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.quote-footnotes-mark {
+  font-family: var(--font-roboto);
+  font-weight: 700;
+}
+
+.quote-footnotes-text {
+  min-width: 0;
 }
 
 .blog-body h2,
