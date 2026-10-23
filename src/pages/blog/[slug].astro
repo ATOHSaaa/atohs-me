@@ -11,6 +11,7 @@ import { createPostDescription } from '../../lib/post-description';
 import { extractBlogTocItems } from '../../lib/blog-toc';
 import { getOtherBlogPosts } from '../../lib/blog-posts';
 import { formatDate } from '../../lib/format-date';
+import { postHasTwitterEmbed } from '../../lib/blog-twitter-embed.js';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -27,6 +28,7 @@ const ogImage = `https://atohs.me/blog/${post.id}/og.png`;
 const description = createPostDescription(post.body ?? '');
 const tocItems = extractBlogTocItems(post.body ?? '');
 const otherPosts = await getOtherBlogPosts(post.id, 5);
+const hasTwitterEmbed = postHasTwitterEmbed(post.body);
 ---
 
 <BlogLayout
@@ -34,6 +36,7 @@ const otherPosts = await getOtherBlogPosts(post.id, 5);
   description={description}
   ogUrl={postUrl}
   ogImage={ogImage}
+  twitterEmbeds={hasTwitterEmbed}
 >
   <SiteHeader />
   <main id="main-content" class="main blog-main">
@@ -76,10 +79,10 @@ const otherPosts = await getOtherBlogPosts(post.id, 5);
     <div class="blog-share-float" aria-label="記事をシェア">
       <ShareButtons url={postUrl} title={post.data.title} />
     </div>
-    <script
-      is:inline
-      async
-      src="https://platform.twitter.com/widgets.js"
-      charset="utf-8"></script>
+    {
+      hasTwitterEmbed && (
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" />
+      )
+    }
   </main>
 </BlogLayout>

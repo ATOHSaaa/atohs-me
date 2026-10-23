@@ -17,6 +17,8 @@ interface Props {
   ogSiteName?: string;
   /** ブログは blog-layout（core 込み）。それ以外は core のみ */
   stylesheet?: 'core' | 'blog-layout';
+  /** 記事内 X 埋め込み用（preconnect のみ。widgets.js はページ側で読み込む） */
+  twitterEmbeds?: boolean;
 }
 
 const {
@@ -26,6 +28,7 @@ const {
   ogImage = 'https://atohs.me/src/ogp.png',
   ogSiteName = 'atohs.me',
   stylesheet = 'core',
+  twitterEmbeds = false,
 } = Astro.props;
 
 if (stylesheet === 'blog-layout') {
@@ -78,6 +81,14 @@ if (stylesheet === 'blog-layout') {
       type="image/webp"
       fetchpriority="high"
     />
+    {
+      twitterEmbeds && (
+        <>
+          <link rel="preconnect" href="https://syndication.twitter.com" />
+          <link rel="preconnect" href="https://platform.twitter.com" />
+        </>
+      )
+    }
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3S8S7JGPEZ"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
