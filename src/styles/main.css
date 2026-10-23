@@ -847,7 +847,7 @@ a.home-block--card:focus-visible {
   height: 100%;
   min-height: 11.5rem;
   padding: 12px 14px;
-  border: 1px solid var(--card-border);
+  border: 2px solid var(--color-text);
   border-radius: 12px;
   text-decoration: none;
   color: inherit;
