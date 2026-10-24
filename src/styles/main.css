@@ -2640,6 +2640,40 @@ a.blog-tag:hover {
     font-size: clamp(0.75rem, 4.6cqi, 1.3em);
   }
 
+  .profile-box {
+    padding: 24px 20px;
+    box-sizing: border-box;
+  }
+
+  .profile-box .name-box {
+    --name-block-height: auto;
+  }
+
+  .profile-box .name-detail {
+    width: 100%;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .profile-box .name-detail-line {
+    white-space: normal;
+    font-size: 0.9em;
+    line-height: 1.45;
+  }
+
+  .profile-box .name-primary {
+    font-size: 1.1em;
+    text-align: center;
+  }
+
+  .profile-box .name-primary-part {
+    display: block;
+  }
+
+  .profile-box .name-primary-part:first-child::after {
+    content: none;
+  }
+
   .profile-icon {
     width: 128px;
     height: 128px;
