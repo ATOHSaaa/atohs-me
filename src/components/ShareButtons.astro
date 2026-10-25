@@ -17,15 +17,6 @@ const xUrl = `https://x.com/intent/post?text=${encodedTitle}&url=${encodedUrl}`;
 
 <div class="share-buttons">
   <a
-    class="share-button share-hatena"
-    href={hatenaUrl}
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="はてなブックマークに追加（新しいタブで開く）"
-  >
-    <span class="share-button-face"><span class="share-button-mark">B!</span></span>
-  </a>
-  <a
     class="share-button share-x"
     href={xUrl}
     target="_blank"
@@ -33,6 +24,15 @@ const xUrl = `https://x.com/intent/post?text=${encodedTitle}&url=${encodedUrl}`;
     aria-label="Xでシェア（新しいタブで開く）"
   >
     <span class="share-button-face"><span class="share-button-mark">X</span></span>
+  </a>
+  <a
+    class="share-button share-hatena"
+    href={hatenaUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="はてなブックマークに追加（新しいタブで開く）"
+  >
+    <span class="share-button-face"><span class="share-button-mark">B!</span></span>
   </a>
   <button
     type="button"

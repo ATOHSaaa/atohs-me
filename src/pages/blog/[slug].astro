@@ -72,7 +72,6 @@ const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
         <BlogToc items={tocItems} />
       </aside>
       <div class="blog-layout-footer">
-        <ShareButtons url={postUrl} title={post.data.title} />
         <BlogQuoteFootnotes sources={footnotes} />
         <div class="blog-layout-footer-profile">
           <ProfileBox />
