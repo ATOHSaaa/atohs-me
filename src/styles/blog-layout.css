@@ -1654,6 +1654,7 @@ a.blog-tag:hover {
 @media (max-width: 720px) {
   :root {
     --header-height: 70px;
+    --site-gutter: 24px;
   }
 
   body {
@@ -2386,6 +2387,8 @@ a.blog-tag:hover {
   font-weight: 400;
   letter-spacing: 0.05em;
   text-align: justify;
+  font-feature-settings: "palt";
+  text-spacing-trim: normal;
 }
 
 .blog-intro-tags {
