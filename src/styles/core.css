@@ -320,11 +320,11 @@ header:not(.header-top) {
   font-weight: 700;
 }
 
-.header-info {
+details.header-info {
   position: relative;
 }
 
-.header-info-toggle {
+summary.header-info-toggle {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
@@ -339,9 +339,14 @@ header:not(.header-top) {
   letter-spacing: inherit;
   line-height: 1;
   cursor: pointer;
+  list-style: none;
 }
 
-.header-info-toggle:focus-visible {
+summary.header-info-toggle::-webkit-details-marker {
+  display: none;
+}
+
+summary.header-info-toggle:focus-visible {
   outline: 2px solid var(--color-border-strong);
   outline-offset: 4px;
 }
@@ -357,7 +362,7 @@ header:not(.header-top) {
   transition: transform 0.15s ease;
 }
 
-.header-info-toggle[aria-expanded='true'] .header-info-chevron {
+details.header-info[open] > summary.header-info-toggle .header-info-chevron {
   transform: rotate(-135deg);
   margin-top: 0.1em;
 }
@@ -380,7 +385,7 @@ header:not(.header-top) {
   box-sizing: border-box;
 }
 
-.header-info.is-open .header-info-panel {
+details.header-info[open] .header-info-panel {
   display: flex;
 }
 
@@ -1408,6 +1413,7 @@ a.profile-box:active {
 
 .blog-list.blog-list--archive {
   margin: 0;
+  padding-left: calc(var(--blog-archive-indent) * 0.75);
 }
 
 h2 + .blog-list {
@@ -1725,7 +1731,7 @@ a.blog-tag:hover {
     width: 100%;
   }
 
-  .header-info-toggle {
+  summary.header-info-toggle {
     width: 100%;
     justify-content: space-between;
     padding: 14px 0;

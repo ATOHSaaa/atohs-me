@@ -34,23 +34,17 @@ const LogoTag = isHome ? 'h1' : 'p';
       <ThemeToggle />
       <nav id="header-menu" class="header-links" aria-label="メニュー">
         <a class="header-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>Blog</a>
-        <div class="header-info">
-          <button
-            type="button"
-            class="header-info-toggle"
-            aria-expanded="false"
-            aria-controls="header-info-panel"
-            data-header-info-toggle
-          >
+        <details class="header-info">
+          <summary class="header-info-toggle">
             Info
             <span class="header-info-chevron" aria-hidden="true"></span>
-          </button>
-          <div id="header-info-panel" class="header-info-panel" hidden>
+          </summary>
+          <div class="header-info-panel">
             <a class="header-link" href="/resume" aria-current={isResume ? 'page' : undefined}>Resume</a>
             <a class="header-link" href="/works" aria-current={isWorks ? 'page' : undefined}>Works</a>
             <a class="header-link" href="/keywords" aria-current={isKeywords ? 'page' : undefined}>Keywords</a>
           </div>
-        </div>
+        </details>
         <a class="header-link" href="/contact" aria-current={isContact ? 'page' : undefined}>Contact</a>
         <SiteTwitterLink variant="header" />
       </nav>
@@ -87,7 +81,7 @@ const LogoTag = isHome ? 'h1' : 'p';
       header.classList.remove('is-menu-open');
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-label', 'メニューを開く');
-      closeHeaderInfo();
+      header.querySelector('details.header-info')?.removeAttribute('open');
     };
 
     const openMenu = () => {
@@ -114,73 +108,17 @@ const LogoTag = isHome ? 'h1' : 'p';
     backdrop?.addEventListener('click', closeMenu);
   }
 
-  function closeHeaderInfo() {
-    const info = document.querySelector('.header-info');
-    const toggle = document.querySelector('[data-header-info-toggle]');
-    const panel = document.getElementById('header-info-panel');
-    if (!info || !toggle || !panel) return;
-    info.classList.remove('is-open');
-    toggle.setAttribute('aria-expanded', 'false');
-    panel.hidden = true;
-  }
-
-  function initHeaderInfo() {
-    const info = document.querySelector('.header-info');
-    const toggle = document.querySelector('[data-header-info-toggle]');
-    const panel = document.getElementById('header-info-panel');
-    if (!info || !toggle || !panel) return;
-
-    const closeInfo = () => closeHeaderInfo();
-
-    const openInfo = () => {
-      info.classList.add('is-open');
-      toggle.setAttribute('aria-expanded', 'true');
-      panel.hidden = false;
-    };
-
-    if (info.dataset.bound === 'true') return;
-    info.dataset.bound = 'true';
-
-    toggle.addEventListener('click', (event) => {
-      event.stopPropagation();
-      if (info.classList.contains('is-open')) {
-        closeInfo();
-      } else {
-        openInfo();
-      }
-    });
-
-    panel.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeInfo);
-    });
-
-    document.addEventListener('click', (event) => {
-      if (!(event.target instanceof Node)) return;
-      if (!info.contains(event.target)) closeInfo();
-    });
-  }
-
   initHeaderMenu();
-  initHeaderInfo();
-  document.addEventListener('astro:page-load', () => {
-    initHeaderMenu();
-    initHeaderInfo();
-  });
+  document.addEventListener('astro:page-load', initHeaderMenu);
 
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
     const header = document.querySelector('.header-top');
     const menuToggle = document.querySelector('.header-menu-toggle');
-    const info = document.querySelector('.header-info');
-
-    if (info?.classList.contains('is-open')) {
-      closeHeaderInfo();
-      return;
-    }
-
     if (!header?.classList.contains('is-menu-open') || !menuToggle) return;
     header.classList.remove('is-menu-open');
     menuToggle.setAttribute('aria-expanded', 'false');
     menuToggle.setAttribute('aria-label', 'メニューを開く');
+    header.querySelector('details.header-info')?.removeAttribute('open');
   });
 </script>
