@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { isPublishedWithinLocalDays } from './format-date';
 
 export type BlogPostEntry = CollectionEntry<'blog'>;
 
@@ -69,14 +70,40 @@ export async function getOtherBlogPosts(
     .slice(0, limit);
 }
 
-const MS_PER_DAY = 24 * 60 * 60 * 1000;
+function isSameLocalMonth(a: Date, b: Date): boolean {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
+}
 
-/** 公開日が現在から days 日以内の記事を新しい順で返す。 */
-export async function getBlogPostsPublishedWithinDays(
-  days: number,
+function isSameLocalYear(a: Date, b: Date): boolean {
+  return a.getFullYear() === b.getFullYear();
+}
+
+/** 公開日が当月（ローカル日付）の記事を新しい順で返す。 */
+export async function getBlogPostsPublishedInCurrentMonth(
+  now = new Date(),
 ): Promise<BlogPostEntry[]> {
-  const cutoff = Date.now() - days * MS_PER_DAY;
-  return (await getPublishedBlogPosts()).filter(
-    (post) => post.data.pubDate.valueOf() >= cutoff,
+  return (await getPublishedBlogPosts()).filter((post) =>
+    isSameLocalMonth(post.data.pubDate, now),
   );
 }
+
+/** 公開日が当年（ローカル日付）の記事を新しい順で返す。 */
+export async function getBlogPostsPublishedInCurrentYear(
+  now = new Date(),
+): Promise<BlogPostEntry[]> {
+  return (await getPublishedBlogPosts()).filter((post) =>
+    isSameLocalYear(post.data.pubDate, now),
+  );
+}
+
+/** 公開日が now から指定日数以内（ローカル日付）の記事を新しい順で返す。 */
+export async function getBlogPostsPublishedWithinLocalDays(
+  days: number,
+  now = new Date(),
+): Promise<BlogPostEntry[]> {
+  return (await getPublishedBlogPosts()).filter((post) =>
+    isPublishedWithinLocalDays(post.data.pubDate, now, days),
+  );
+}
+
+export { isSameLocalMonth, isSameLocalYear };

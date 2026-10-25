@@ -1,16 +1,26 @@
 ---
-import { getBlogPostsPublishedWithinDays } from '../lib/blog-posts';
+import {
+  getBlogPostsPublishedWithinLocalDays,
+} from '../lib/blog-posts';
 import BlogListItem from './BlogListItem.astro';
 
-const posts = await getBlogPostsPublishedWithinDays(7);
+const HOME_RECENT_DAYS = 7;
+
+const now = new Date();
+const posts = await getBlogPostsPublishedWithinLocalDays(HOME_RECENT_DAYS, now);
 ---
 
 {
   posts.length > 0 && (
-    <section class="home-recent-blog" aria-label="直近1週間のブログ記事">
+    <section class="home-recent-blog" aria-label="直近7日以内のブログ記事">
       <ul class="blog-list home-recent-blog-list">
         {posts.map((post) => (
-          <BlogListItem post={post} showNew showRelativeDate />
+          <BlogListItem
+            post={post}
+            homeRecentList
+            showNew
+            showRelativeDate
+          />
         ))}
       </ul>
     </section>

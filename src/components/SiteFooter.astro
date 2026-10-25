@@ -13,9 +13,9 @@ const isResume = pathname === '/resume';
   <div class="footer-inner">
     <nav class="footer-links" aria-label="フッターメニュー">
       <a class="footer-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>Blog</a>
+      <a class="footer-link" href="/resume" aria-current={isResume ? 'page' : undefined}>Resume</a>
       <a class="footer-link" href="/works" aria-current={isWorks ? 'page' : undefined}>Works</a>
       <a class="footer-link" href="/keywords" aria-current={isKeywords ? 'page' : undefined}>Keywords</a>
-      <a class="footer-link" href="/resume" aria-current={isResume ? 'page' : undefined}>Resume</a>
       <a class="footer-link" href="/contact" aria-current={isContact ? 'page' : undefined}>Contact</a>
       <SiteTwitterLink variant="footer" />
     </nav>
