@@ -1,9 +1,0 @@
-@font-face {
-  font-family: "Roboto fallback";
-  src: local("Arial"), local("Arial Regular"), local("Arial-Regular"), local("ArialMT");
-  size-adjust: 99.7809%;
-  ascent-override: 92.9771%;
-  descent-override: 24.4677%;
-  line-gap-override: 0%;
-  font-display: swap;
-}

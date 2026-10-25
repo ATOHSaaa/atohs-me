@@ -1,0 +1,93 @@
+---
+/** ヘッダー用のカラーテーマ切り替え */
+---
+
+<button type="button" class="theme-toggle" data-theme-toggle aria-label="ダークモードに切り替え">
+  <svg
+    class="theme-toggle-icon theme-toggle-icon--to-dark"
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+  <svg
+    class="theme-toggle-icon theme-toggle-icon--to-light"
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="5"></circle>
+    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+  </svg>
+</button>
+
+<script>
+  import {
+    applyThemePreference,
+    readStoredThemePreference,
+    resolveThemePreference,
+    THEME_STORAGE_KEY,
+  } from '../lib/theme-preference';
+
+  function syncThemeToggleUi() {
+    const dark = resolveThemePreference() === 'dark';
+    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+      button.setAttribute('aria-label', dark ? 'ライトモードに切り替え' : 'ダークモードに切り替え');
+    });
+  }
+
+  function applyResolvedTheme() {
+    applyThemePreference(resolveThemePreference());
+    syncThemeToggleUi();
+  }
+
+  function setUserTheme(theme) {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+    applyResolvedTheme();
+  }
+
+  function initThemeToggle() {
+    applyResolvedTheme();
+
+    document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
+      if (button.dataset.bound === 'true') return;
+      button.dataset.bound = 'true';
+      button.addEventListener('click', () => {
+        const next = resolveThemePreference() === 'dark' ? 'light' : 'dark';
+        setUserTheme(next);
+      });
+    });
+  }
+
+  let systemThemeListenerBound = false;
+
+  function bindSystemThemeListener() {
+    if (systemThemeListenerBound) return;
+    systemThemeListenerBound = true;
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (readStoredThemePreference() === null) {
+        applyResolvedTheme();
+      }
+    });
+  }
+
+  initThemeToggle();
+  bindSystemThemeListener();
+  document.addEventListener('astro:page-load', () => {
+    initThemeToggle();
+    bindSystemThemeListener();
+  });
+</script>

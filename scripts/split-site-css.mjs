@@ -1,8 +1,5 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import robotoMetrics from '@capsizecss/metrics/roboto';
-import arialMetrics from '@capsizecss/metrics/arial';
-import { generateFontFace } from 'fontaine';
 
 const stylesDir = join(process.cwd(), 'src/styles');
 const main = readFileSync(join(stylesDir, 'main.css'), 'utf8');
@@ -57,18 +54,5 @@ const coreBody =
   main.slice(notFoundStart, shareStart) +
   main.slice(responsiveStart, responsiveBlogStart);
 
-const siteFontsImport = `@import './site-fonts.css';\n\n`;
-
-const core = siteFontsImport + coreBody;
-const blogLayout = siteFontsImport + coreBody + blog;
-
-const fontFallbacks = generateFontFace(robotoMetrics, {
-  name: 'Roboto fallback',
-  font: 'Arial',
-  metrics: arialMetrics,
-  'font-display': 'swap',
-});
-
-writeFileSync(join(stylesDir, 'font-fallbacks.css'), fontFallbacks);
-writeFileSync(join(stylesDir, 'core.css'), core);
-writeFileSync(join(stylesDir, 'blog-layout.css'), blogLayout);
+writeFileSync(join(stylesDir, 'core.css'), coreBody);
+writeFileSync(join(stylesDir, 'blog-layout.css'), coreBody + blog);

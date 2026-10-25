@@ -4,30 +4,26 @@ import SiteHeader from '../components/SiteHeader.astro';
 import HomeRecentBlogPosts from '../components/HomeRecentBlogPosts.astro';
 import Keywords from '../components/Keywords.astro';
 import ProfileAgeLine from '../components/ProfileAgeLine.astro';
-import SiteLogo from '../components/SiteLogo.astro';
 ---
 
 <BaseLayout title="atohs.me | あとーすのプロフィール">
   <SiteHeader isHome />
   <main id="main-content" class="main main-home">
     <div class="home-profile">
-      <SiteLogo class="profile-icon home-profile-icon" loading="eager" fetchpriority="high" decoding="sync" />
-      <div class="home-profile-aside">
-        <div class="name-body">
-          <p class="name-detail">
-            <span class="name-detail-line name-primary">あとーす（atohs）, 伊藤祥太（ITO SHOTA）</span>
-            <span class="name-detail-line">
-              Born on November 13, 1993 🎉 / <ProfileAgeLine /> / Live in Kumamoto 🧸
-            </span>
-            <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
-          </p>
-        </div>
-        <nav class="home-links" aria-label="サイトメニュー">
-          <a class="home-link" href="/blog">Blog</a><span class="home-links-sep" aria-hidden="true">/</span>
-          <a class="home-link" href="/works">Works</a><span class="home-links-sep" aria-hidden="true">/</span>
-          <a class="home-link" href="/contact">Contact</a>
-        </nav>
+      <div class="name-body">
+        <p class="name-detail">
+          <span class="name-detail-line name-primary">あとーす（atohs）, 伊藤祥太（ITO SHOTA）</span>
+          <span class="name-detail-line">
+            Born on November 13, 1993 🎉 / <ProfileAgeLine /> / Live in Kumamoto 🧸
+          </span>
+          <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
+        </p>
       </div>
+      <nav class="home-links" aria-label="サイトメニュー">
+        <a class="home-link" href="/blog">Blog</a><span class="home-links-sep" aria-hidden="true">/</span>
+        <a class="home-link" href="/works">Works</a><span class="home-links-sep" aria-hidden="true">/</span>
+        <a class="home-link" href="/contact">Contact</a>
+      </nav>
     </div>
 
     <div class="home-blocks">

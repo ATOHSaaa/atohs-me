@@ -1,6 +1,7 @@
 ---
 import SiteLogo from './SiteLogo.astro';
 import SiteTwitterLink from './SiteTwitterLink.astro';
+import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
   isHome?: boolean;
@@ -28,23 +29,26 @@ const LogoTag = isHome ? 'h1' : 'p';
         atohs.me
       </a>
     </LogoTag>
-    <button
-      type="button"
-      class="header-menu-toggle"
-      aria-expanded="false"
-      aria-controls="header-menu"
-      aria-label="メニューを開く"
-    >
-      <span class="header-menu-toggle-bar" aria-hidden="true"></span>
-      <span class="header-menu-toggle-bar" aria-hidden="true"></span>
-      <span class="header-menu-toggle-bar" aria-hidden="true"></span>
-    </button>
-    <nav id="header-menu" class="header-links" aria-label="メニュー">
-      <a class="header-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>Blog</a>
-      <a class="header-link" href="/works" aria-current={isWorks ? 'page' : undefined}>Works</a>
-      <a class="header-link" href="/contact" aria-current={isContact ? 'page' : undefined}>Contact</a>
-      <SiteTwitterLink variant="header" />
-    </nav>
+    <div class="header-end">
+      <ThemeToggle />
+      <nav id="header-menu" class="header-links" aria-label="メニュー">
+        <a class="header-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>Blog</a>
+        <a class="header-link" href="/works" aria-current={isWorks ? 'page' : undefined}>Works</a>
+        <a class="header-link" href="/contact" aria-current={isContact ? 'page' : undefined}>Contact</a>
+        <SiteTwitterLink variant="header" />
+      </nav>
+      <button
+        type="button"
+        class="header-menu-toggle"
+        aria-expanded="false"
+        aria-controls="header-menu"
+        aria-label="メニューを開く"
+      >
+        <span class="header-menu-toggle-bar" aria-hidden="true"></span>
+        <span class="header-menu-toggle-bar" aria-hidden="true"></span>
+        <span class="header-menu-toggle-bar" aria-hidden="true"></span>
+      </button>
+    </div>
   </div>
 </header>
 

@@ -1,5 +1,3 @@
-@import './site-fonts.css';
-
 /* ==========================================================================
    Design tokens
    ========================================================================== */
@@ -11,9 +9,8 @@
   --color-border: rgba(10, 10, 55, 0.8);
   --color-border-strong: rgba(10, 10, 55, 1);
   --color-border-subtle: rgba(10, 10, 55, 0.8);
-  --font-sans: "Roboto", "Roboto fallback", "Hiragino Sans", "Hiragino Kaku Gothic ProN",
-    "Yu Gothic UI", "Yu Gothic", "Meiryo", sans-serif;
-  --font-roboto: "Roboto", "Roboto fallback", sans-serif;
+  --font-sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic",
+    "Meiryo", sans-serif;
   --font-mono:
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --width-content: 720px;
@@ -29,10 +26,29 @@
   --radius-md: 16px;
   --radius-lg: 32px;
   --card-surface: var(--color-bg);
+  --card-border-width: 1px;
   --card-border: rgba(10, 10, 55, 0.1);
   --card-shadow: 0 1px 2px rgba(10, 10, 55, 0.05), 0 6px 18px rgba(10, 10, 55, 0.06);
   --card-shadow-chip: 0 1px 2px rgba(10, 10, 55, 0.035), 0 2px 8px rgba(10, 10, 55, 0.04);
   --card-shadow-chip-hover: 0 1px 3px rgba(10, 10, 55, 0.05), 0 4px 12px rgba(10, 10, 55, 0.05);
+  --color-tag-bg: #fff;
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --color-text: rgb(236, 238, 248);
+  --color-bg: rgb(10, 12, 42);
+  --color-text-muted: rgba(236, 238, 248, 0.62);
+  --color-border: rgba(236, 238, 248, 0.72);
+  --color-border-strong: rgba(236, 238, 248, 0.95);
+  --color-border-subtle: rgba(236, 238, 248, 0.45);
+  --color-tag-bg: rgb(18, 22, 56);
+  --card-border-width: 2px;
+  --card-border: rgba(236, 238, 248, 0.28);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 6px 18px rgba(0, 0, 0, 0.25);
+  --card-shadow-chip: 0 1px 2px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.22);
+  --card-shadow-chip-hover:
+    0 1px 3px rgba(0, 0, 0, 0.32), 0 4px 12px rgba(0, 0, 0, 0.28);
 }
 
 /* ==========================================================================
@@ -183,7 +199,6 @@ header:not(.header-top) {
   display: flex;
   gap: 24px;
   font-size: 0.85em;
-  font-family: var(--font-roboto);
   letter-spacing: 0.05em;
 }
 
@@ -281,12 +296,19 @@ header:not(.header-top) {
   flex-shrink: 0;
 }
 
+.header-end {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
 .header-links {
   display: flex;
   align-items: center;
   gap: 24px;
   font-size: 0.85em;
-  font-family: var(--font-roboto);
   letter-spacing: 0.05em;
   line-height: 1;
 }
@@ -296,6 +318,45 @@ header:not(.header-top) {
   font-weight: 700;
 }
 
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--color-border-strong);
+  outline-offset: 2px;
+}
+
+.theme-toggle-icon {
+  display: block;
+}
+
+html[data-theme='dark'] .theme-toggle-icon--to-dark {
+  display: none;
+}
+
+html[data-theme='dark'] .theme-toggle-icon--to-light {
+  display: block;
+}
+
+html[data-theme='light'] .theme-toggle-icon--to-dark {
+  display: block;
+}
+
+html[data-theme='light'] .theme-toggle-icon--to-light {
+  display: none;
+}
 
 .header-social,
 .footer-social {
@@ -452,7 +513,7 @@ header:not(.header-top) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   width: 100%;
   max-width: 100%;
   margin-top: 24px;
@@ -498,27 +559,17 @@ header:not(.header-top) {
 }
 
 .home-profile .home-links {
-  margin-top: 24px;
+  margin-top: 0;
 }
 
 @media (min-width: 720px) {
   .home-profile {
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 32px;
-    width: fit-content;
-    max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-  }
-
-  .home-profile-aside {
     align-items: flex-start;
-    flex: 0 1 auto;
-    width: auto;
-    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
   }
 
   .home-profile .name-detail {
@@ -536,8 +587,7 @@ header:not(.header-top) {
   justify-content: center;
   align-items: center;
   gap: 0;
-  margin-top: 28px;
-  font-family: var(--font-roboto);
+  margin-top: 0;
   font-size: 1.05em;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -574,7 +624,7 @@ header:not(.header-top) {
   min-width: min(100%, 240px);
   margin: 0;
   padding: 16px 18px;
-  border: 1px solid var(--card-border);
+  border: var(--card-border-width) solid var(--card-border);
   border-radius: 12px;
   background-color: var(--card-surface);
   box-shadow: var(--card-shadow);
@@ -633,6 +683,13 @@ a.home-block--card:focus-visible {
 .home-recent-blog + .keywords,
 .home-blocks + .keywords {
   margin-top: 40px;
+}
+
+.main-home .home-blocks,
+.main-home .home-recent-blog,
+.main-home .keywords {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 360px;
 }
 
 .home-recent-blog-list {
@@ -702,7 +759,7 @@ a.home-block--card:focus-visible {
   width: 2.25rem;
   height: 2.25rem;
   padding: 0;
-  border: 1px solid var(--card-border);
+  border: var(--card-border-width) solid var(--card-border);
   border-radius: 12px;
   font-size: 0.9em;
   line-height: 1;
@@ -936,7 +993,7 @@ a.keywords-index-link:active {
   box-sizing: border-box;
   min-height: 2.25rem;
   padding: 0 14px;
-  border: 1px solid var(--card-border);
+  border: var(--card-border-width) solid var(--card-border);
   border-radius: 12px;
   font-size: 0.82em;
   font-weight: 600;
@@ -980,7 +1037,7 @@ a.keywords-chip:active {
 .profile-box {
   display: block;
   padding: 32px;
-  border: 1px solid var(--card-border);
+  border: var(--card-border-width) solid var(--card-border);
   border-radius: 12px;
   background-color: var(--card-surface);
   box-shadow: var(--card-shadow-chip);
@@ -1267,7 +1324,7 @@ h2 + .blog-list {
   font-weight: 700;
   line-height: 1.65;
   letter-spacing: 0.02em;
-  background-color: #fff;
+  background-color: var(--color-tag-bg);
   border-radius: var(--radius-sm);
   white-space: nowrap;
 }
@@ -1330,7 +1387,6 @@ a.blog-tag:hover {
 
 .not-found-code {
   margin: 0;
-  font-family: var(--font-roboto);
   font-size: clamp(6rem, 22vw, 9rem);
   font-weight: 900;
   line-height: 0.9;
@@ -1448,6 +1504,10 @@ a.blog-tag:hover {
   .header-logo {
     margin: 0;
     width: auto;
+  }
+
+  .header-end {
+    gap: 2px;
   }
 
   .header-menu-toggle {
