@@ -1,11 +1,15 @@
 ---
 interface Props {
-  variant: 'header' | 'footer';
+  variant: 'header' | 'footer' | 'home-footer';
 }
 
 const { variant } = Astro.props;
 const className =
-  variant === 'header' ? 'header-link header-social' : 'footer-link footer-social';
+  variant === 'header'
+    ? 'header-link header-social'
+    : variant === 'home-footer'
+      ? 'home-footer-nav-link home-footer-nav-social'
+      : 'footer-link footer-social';
 ---
 
 <a
@@ -14,6 +18,17 @@ const className =
   target="_blank"
   rel="noopener noreferrer"
 >
-  Twitter<span class="link-external-mark" aria-hidden="true">↗</span>
+  {
+    variant === 'home-footer' ? (
+      <>
+        <span class="home-footer-nav-link-label">Twitter</span>
+        <span class="link-external-mark" aria-hidden="true">↗</span>
+      </>
+    ) : (
+      <>
+        Twitter<span class="link-external-mark" aria-hidden="true">↗</span>
+      </>
+    )
+  }
   <span class="visually-hidden">（新しいタブで開く）</span>
 </a>
