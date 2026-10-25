@@ -41,7 +41,10 @@ export default defineConfig({
     inlineStylesheets: 'always',
   },
   redirects: {
-    '/my-business-experience': '/career',
+    '/my-business-experience': '/resume#career',
+    '/education': '/resume#education',
+    '/career': '/resume#career',
+    '/qualification': '/resume#qualification',
   },
   integrations: [
     sitemap({

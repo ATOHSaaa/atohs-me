@@ -12,6 +12,8 @@ const pathname = Astro.url.pathname;
 const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
 const isWorks = pathname === '/works' || pathname.startsWith('/works/');
 const isContact = pathname === '/contact';
+const isKeywords = pathname === '/keywords' || pathname.startsWith('/keywords/');
+const isResume = pathname === '/resume';
 
 const LogoTag = isHome ? 'h1' : 'p';
 ---
@@ -34,6 +36,8 @@ const LogoTag = isHome ? 'h1' : 'p';
       <nav id="header-menu" class="header-links" aria-label="メニュー">
         <a class="header-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>Blog</a>
         <a class="header-link" href="/works" aria-current={isWorks ? 'page' : undefined}>Works</a>
+        <a class="header-link" href="/keywords" aria-current={isKeywords ? 'page' : undefined}>Keywords</a>
+        <a class="header-link" href="/resume" aria-current={isResume ? 'page' : undefined}>Resume</a>
         <a class="header-link" href="/contact" aria-current={isContact ? 'page' : undefined}>Contact</a>
         <SiteTwitterLink variant="header" />
       </nav>

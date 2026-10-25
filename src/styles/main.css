@@ -1304,6 +1304,28 @@ a.profile-box:active {
   margin-bottom: 4px;
 }
 
+.resume .page-title {
+  margin-bottom: 2rem;
+}
+
+.resume-section {
+  scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+.resume-section + .resume-section {
+  margin-top: 3rem;
+}
+
+.resume-section-heading {
+  margin: 0 0 1rem;
+  font-size: 1.35em;
+  letter-spacing: 0.05em;
+}
+
+.resume .resume-section > .blog-archive-tree {
+  margin-top: 0;
+}
+
 /* ==========================================================================
    Blog
    ========================================================================== */

@@ -1,0 +1,46 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import CareerArchive from '../components/CareerArchive.astro';
+import { parseCareerBody } from '../lib/career-tree';
+
+const education = await getEntry('career', 'education');
+const career = await getEntry('career', 'index');
+const qualification = await getEntry('career', 'qualification');
+
+if (!education || !career || !qualification) {
+  throw new Error('Resume content not found');
+}
+
+const { Content: EducationContent } = await render(education);
+const { Content: QualificationContent } = await render(qualification);
+const careerSections = parseCareerBody(career.body ?? '');
+---
+
+<BaseLayout title="Resume | atohs.me" ogUrl="https://atohs.me/resume">
+  <SiteHeader />
+  <main id="main-content" class="main experience resume">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="page-title">Resume</h1>
+
+    <section id="education" class="resume-section" aria-labelledby="resume-education-heading">
+      <h2 id="resume-education-heading" class="resume-section-heading">{education.data.title}</h2>
+      <EducationContent />
+    </section>
+
+    <section id="career" class="resume-section" aria-labelledby="resume-career-heading">
+      <h2 id="resume-career-heading" class="resume-section-heading">{career.data.title}</h2>
+      <CareerArchive sections={careerSections} />
+    </section>
+
+    <section id="qualification" class="resume-section" aria-labelledby="resume-qualification-heading">
+      <h2 id="resume-qualification-heading" class="resume-section-heading">
+        {qualification.data.title}
+      </h2>
+      <QualificationContent />
+    </section>
+  </main>
+</BaseLayout>

@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import HomeRecentBlogPosts from '../components/HomeRecentBlogPosts.astro';
-import Keywords from '../components/Keywords.astro';
 ---
 
 <BaseLayout title="atohs.me | あとーすのプロフィール">
@@ -24,19 +23,21 @@ import Keywords from '../components/Keywords.astro';
       <nav class="home-links" aria-label="サイトメニュー">
         <a class="home-link" href="/blog">Blog</a><span class="home-links-sep" aria-hidden="true">/</span>
         <a class="home-link" href="/works">Works</a><span class="home-links-sep" aria-hidden="true">/</span>
+        <a class="home-link" href="/keywords">Keywords</a><span class="home-links-sep" aria-hidden="true">/</span>
+        <a class="home-link" href="/resume">Resume</a><span class="home-links-sep" aria-hidden="true">/</span>
         <a class="home-link" href="/contact">Contact</a>
       </nav>
     </div>
 
     <div class="home-blocks">
-      <a class="home-block--card" href="/education">
+      <a class="home-block--card" href="/resume#education">
         <h2 class="home-section-heading">Education</h2>
         <ul class="home-block-list">
           <li>Bachelor of Literature, Kumamoto University, Graduated: March 2016</li>
         </ul>
       </a>
 
-      <a class="home-block--card" href="/career">
+      <a class="home-block--card" href="/resume#career">
         <h2 class="home-section-heading">Career</h2>
         <ul class="home-block-list">
           <li>2016.04〜2018.03：Printing Company</li>
@@ -45,7 +46,7 @@ import Keywords from '../components/Keywords.astro';
         </ul>
       </a>
 
-      <a class="home-block--card" href="/qualification">
+      <a class="home-block--card" href="/resume#qualification">
         <h2 class="home-section-heading">Qualification</h2>
         <ul class="home-block-list">
           <li>1st grade Driver's License</li>
@@ -54,7 +55,5 @@ import Keywords from '../components/Keywords.astro';
     </div>
 
     <HomeRecentBlogPosts />
-
-    <Keywords />
   </main>
 </BaseLayout>
