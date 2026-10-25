@@ -724,7 +724,7 @@ a.home-block--card:focus-visible {
   margin-bottom: 0;
 }
 
-.home-blocks + .home-recent-blog {
+.home-profile + .home-recent-blog {
   margin-top: 32px;
 }
 

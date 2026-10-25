@@ -15,12 +15,7 @@ const posts = await getBlogPostsPublishedWithinLocalDays(HOME_RECENT_DAYS, now);
     <section class="home-recent-blog" aria-label="直近7日以内のブログ記事">
       <ul class="blog-list home-recent-blog-list">
         {posts.map((post) => (
-          <BlogListItem
-            post={post}
-            homeRecentList
-            showNew
-            showRelativeDate
-          />
+          <BlogListItem post={post} homeRecentList showNew />
         ))}
       </ul>
     </section>

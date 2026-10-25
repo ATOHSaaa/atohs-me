@@ -24,15 +24,3 @@ export function isPublishedWithinLocalDays(
   return dayDiff >= 0 && dayDiff < days;
 }
 
-/** 公開日と今日の差（ローカル日付）を英語の相対表現で返す。 */
-export function formatRelativePublishLabel(date: Date, now = new Date()): string {
-  const dayDiff = Math.floor((startOfLocalDay(now) - startOfLocalDay(date)) / MS_PER_DAY);
-
-  if (dayDiff <= 0) {
-    return 'Today';
-  }
-  if (dayDiff === 1) {
-    return 'Yesterday';
-  }
-  return `${dayDiff} days ago`;
-}
