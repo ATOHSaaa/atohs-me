@@ -33,6 +33,8 @@
   --card-shadow-chip-hover: 0 1px 3px rgba(10, 10, 55, 0.05), 0 4px 12px rgba(10, 10, 55, 0.05);
   --outline-frame-shadow: 0 2px 4px rgba(10, 10, 55, 0.04), 0 5px 14px rgba(10, 10, 55, 0.06);
   --outline-frame-shadow-hover: 0 3px 6px rgba(10, 10, 55, 0.05), 0 7px 16px rgba(10, 10, 55, 0.07);
+  --outline-frame-bg-hover: #ffee00;
+  --outline-frame-radius: 4px;
   --color-tag-bg: #fff;
 }
 
@@ -53,6 +55,7 @@
     0 1px 3px rgba(0, 0, 0, 0.32), 0 4px 12px rgba(0, 0, 0, 0.28);
   --outline-frame-shadow: 0 2px 6px rgba(0, 0, 0, 0.18), 0 6px 14px rgba(0, 0, 0, 0.2);
   --outline-frame-shadow-hover: 0 3px 8px rgba(0, 0, 0, 0.22), 0 8px 18px rgba(0, 0, 0, 0.24);
+  --outline-frame-bg-hover: color-mix(in srgb, #ffee00 62%, var(--color-bg));
 }
 
 /* ==========================================================================
@@ -385,7 +388,7 @@ details.header-info[open] > summary.header-info-toggle .header-info-chevron {
   padding: 6px 0;
   background-color: var(--color-bg);
   border: 2px solid var(--color-text);
-  border-radius: 0;
+  border-radius: var(--outline-frame-radius);
   box-shadow: var(--outline-frame-shadow);
   box-sizing: border-box;
 }
@@ -677,7 +680,7 @@ html[data-theme='light'] .theme-toggle-icon--to-light {
 .blog-layout .profile-box,
 .blog-toc {
   border: 2px solid var(--color-text);
-  border-radius: 0;
+  border-radius: var(--outline-frame-radius);
   background-color: var(--color-bg);
   box-shadow: var(--outline-frame-shadow);
   box-sizing: border-box;
@@ -688,7 +691,9 @@ a.keywords-index-link,
 .container .item,
 a.keywords-chip,
 .blog-layout a.profile-box {
-  transition: box-shadow 0.12s ease;
+  transition:
+    box-shadow 0.12s ease,
+    background-color 0.12s ease;
 }
 
 a.home-block--card:hover,
@@ -701,6 +706,7 @@ a.keywords-chip:hover:not(.keywords-chip--current),
 a.keywords-chip:active:not(.keywords-chip--current),
 .blog-layout a.profile-box:hover,
 .blog-layout a.profile-box:active {
+  background-color: var(--outline-frame-bg-hover);
   box-shadow: var(--outline-frame-shadow-hover);
 }
 
@@ -1096,8 +1102,8 @@ a.home-block--card:focus-visible {
 }
 
 .keywords-chip--current {
-  background-color: var(--color-text);
-  color: var(--color-bg);
+  background-color: var(--outline-frame-bg-hover);
+  color: var(--color-text);
   cursor: default;
 }
 

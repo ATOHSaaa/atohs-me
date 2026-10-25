@@ -91,7 +91,7 @@ const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
     <script>
       (function initBlogShareFloat() {
         const float = document.querySelector('.blog-share-float');
-        const footer = document.querySelector('.footer-top');
+        const footer = document.querySelector('.blog-layout-footer');
         if (!float || !footer) return;
 
         const mobileQuery = window.matchMedia('(max-width: 720px)');

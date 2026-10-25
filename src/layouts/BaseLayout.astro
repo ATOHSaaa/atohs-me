@@ -1,6 +1,5 @@
 ---
 import { getImage } from 'astro:assets';
-import SiteFooter from '../components/SiteFooter.astro';
 import { SITE_FAVICON_SRC, siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
 const siteLogoPreload = await getImage({
   src: siteLogo,
@@ -115,6 +114,5 @@ if (stylesheet === 'blog-layout') {
     <div class="site-content">
       <slot />
     </div>
-    <SiteFooter />
   </body>
 </html>
