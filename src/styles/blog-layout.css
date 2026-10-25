@@ -586,36 +586,28 @@ html[data-theme='light'] .theme-toggle-icon--to-light {
 }
 
 .home-profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
   width: 100%;
   max-width: 100%;
   margin-top: 24px;
+}
+
+.home-profile .name-box {
+  flex-direction: column;
+  margin-top: 0;
+  align-items: center;
+  gap: 16px;
   text-align: center;
 }
 
 .home-profile-icon {
-  width: 128px;
-  height: 128px;
-}
-
-.home-profile-aside {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 100%;
-}
-
-.home-profile .name-body {
-  width: 100%;
-  max-width: 100%;
+  width: 96px;
+  height: 96px;
 }
 
 .home-profile .name-detail {
   margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
   text-align: center;
 }
 
@@ -635,17 +627,20 @@ html[data-theme='light'] .theme-toggle-icon--to-light {
 }
 
 @media (min-width: 720px) {
-  .home-profile {
-    align-items: flex-start;
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
+  .home-profile .name-box {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
     text-align: left;
   }
 
   .home-profile .name-detail {
     text-align: left;
+  }
+
+  .home-profile-icon {
+    width: 128px;
+    height: 128px;
   }
 
   .home-profile .name-primary-part {
