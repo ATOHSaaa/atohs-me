@@ -31,6 +31,8 @@
   --card-shadow: 0 1px 2px rgba(10, 10, 55, 0.05), 0 6px 18px rgba(10, 10, 55, 0.06);
   --card-shadow-chip: 0 1px 2px rgba(10, 10, 55, 0.035), 0 2px 8px rgba(10, 10, 55, 0.04);
   --card-shadow-chip-hover: 0 1px 3px rgba(10, 10, 55, 0.05), 0 4px 12px rgba(10, 10, 55, 0.05);
+  --outline-frame-shadow: 0 2px 4px rgba(10, 10, 55, 0.04), 0 5px 14px rgba(10, 10, 55, 0.06);
+  --outline-frame-shadow-hover: 0 3px 6px rgba(10, 10, 55, 0.05), 0 7px 16px rgba(10, 10, 55, 0.07);
   --color-tag-bg: #fff;
 }
 
@@ -49,6 +51,8 @@
   --card-shadow-chip: 0 1px 2px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.22);
   --card-shadow-chip-hover:
     0 1px 3px rgba(0, 0, 0, 0.32), 0 4px 12px rgba(0, 0, 0, 0.28);
+  --outline-frame-shadow: 0 2px 6px rgba(0, 0, 0, 0.18), 0 6px 14px rgba(0, 0, 0, 0.2);
+  --outline-frame-shadow-hover: 0 3px 8px rgba(0, 0, 0, 0.22), 0 8px 18px rgba(0, 0, 0, 0.24);
 }
 
 /* ==========================================================================
@@ -380,17 +384,14 @@ details.header-info[open] > summary.header-info-toggle .header-info-chevron {
   min-width: 10.5rem;
   padding: 6px 0;
   background-color: var(--color-bg);
-  border: var(--color-text) solid 2px;
-  box-shadow: 0 10px 28px rgba(10, 10, 55, 0.12);
+  border: 2px solid var(--color-text);
+  border-radius: 0;
+  box-shadow: var(--outline-frame-shadow);
   box-sizing: border-box;
 }
 
 details.header-info[open] .header-info-panel {
   display: flex;
-}
-
-[data-theme='dark'] .header-info-panel {
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45);
 }
 
 .header-info-panel .header-link {
@@ -665,6 +666,44 @@ html[data-theme='light'] .theme-toggle-icon--to-light {
   }
 }
 
+/* ==========================================================================
+   Outline frame surfaces (home cards, works, keywords, blog sidebar)
+   ========================================================================== */
+
+.home-block--card,
+.container .item,
+.keywords-index-link,
+.keywords-chip,
+.blog-layout .profile-box,
+.blog-toc {
+  border: 2px solid var(--color-text);
+  border-radius: 0;
+  background-color: var(--color-bg);
+  box-shadow: var(--outline-frame-shadow);
+  box-sizing: border-box;
+}
+
+a.home-block--card,
+a.keywords-index-link,
+.container .item,
+a.keywords-chip,
+.blog-layout a.profile-box {
+  transition: box-shadow 0.12s ease;
+}
+
+a.home-block--card:hover,
+a.home-block--card:focus-visible,
+a.keywords-index-link:hover,
+a.keywords-index-link:active,
+.container .item:has(.item-link:hover),
+.container .item:has(.item-link:focus-visible),
+a.keywords-chip:hover:not(.keywords-chip--current),
+a.keywords-chip:active:not(.keywords-chip--current),
+.blog-layout a.profile-box:hover,
+.blog-layout a.profile-box:active {
+  box-shadow: var(--outline-frame-shadow-hover);
+}
+
 .home-blocks {
   display: flex;
   flex-wrap: wrap;
@@ -677,25 +716,12 @@ html[data-theme='light'] .theme-toggle-icon--to-light {
   min-width: min(100%, 240px);
   margin: 0;
   padding: 16px 18px;
-  border: var(--card-border-width) solid var(--card-border);
-  border-radius: 12px;
-  background-color: var(--card-surface);
-  box-shadow: var(--card-shadow);
-  box-sizing: border-box;
 }
 
 a.home-block--card {
   display: block;
   text-decoration: none;
   color: inherit;
-  transition: box-shadow 0.12s ease;
-}
-
-a.home-block--card:hover,
-a.home-block--card:focus-visible {
-  box-shadow:
-    0 2px 4px rgba(10, 10, 55, 0.07),
-    0 10px 24px rgba(10, 10, 55, 0.08);
 }
 
 a.home-block--card:focus-visible {
@@ -993,26 +1019,11 @@ a.home-block--card:focus-visible {
 .keywords-index-link {
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
   height: 100%;
   min-height: 11.5rem;
   padding: 18px 18px;
-  border: var(--card-border-width) solid var(--card-border);
-  border-radius: 12px;
   text-decoration: none;
   color: inherit;
-  background-color: var(--card-surface);
-  box-shadow: var(--card-shadow);
-  transition:
-    background-color 0.12s ease,
-    box-shadow 0.12s ease;
-}
-
-a.keywords-index-link:hover,
-a.keywords-index-link:active {
-  box-shadow:
-    0 2px 4px rgba(10, 10, 55, 0.07),
-    0 10px 24px rgba(10, 10, 55, 0.08);
 }
 
 .keywords-index-title {
@@ -1069,22 +1080,14 @@ a.keywords-index-link:active {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
   min-height: 2.25rem;
   padding: 0 14px;
-  border: var(--card-border-width) solid var(--card-border);
-  border-radius: 12px;
   font-size: 0.82em;
   font-weight: 600;
   line-height: 1.25;
   letter-spacing: 0.02em;
   text-decoration: none;
   color: inherit;
-  background-color: var(--card-surface);
-  box-shadow: var(--card-shadow-chip);
-  transition:
-    background-color 0.12s ease,
-    box-shadow 0.12s ease;
 }
 
 .keywords-chip-label {
@@ -1092,15 +1095,8 @@ a.keywords-index-link:active {
   line-height: 1.25;
 }
 
-a.keywords-chip:hover,
-a.keywords-chip:active {
-  box-shadow: var(--card-shadow-chip-hover);
-}
-
 .keywords-chip--current {
   background-color: var(--color-text);
-  background-clip: padding-box;
-  border-color: var(--card-border);
   color: var(--color-bg);
   cursor: default;
 }
@@ -1131,10 +1127,7 @@ a.profile-box:active {
 }
 
 .profile-box-title {
-  margin: 0 0 16px;
-  font-size: 1.2em;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  display: none;
 }
 
 .profile-box .name-box {
@@ -1181,8 +1174,6 @@ a.profile-box:active {
 .item {
   width: auto;
   margin-bottom: 0;
-  border: var(--card-border-width) solid var(--card-border);
-  border-radius: var(--radius-md);
   overflow: hidden;
   max-width: 100%;
 }
@@ -1191,7 +1182,7 @@ a.profile-box:active {
   display: block;
   width: 100%;
   height: auto;
-  border-bottom: var(--card-border-width) solid var(--card-border);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
 }
 
 .item h3 {
