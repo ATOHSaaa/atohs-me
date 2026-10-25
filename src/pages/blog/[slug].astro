@@ -88,5 +88,41 @@ const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" />
       )
     }
+    <script>
+      (function initBlogShareFloat() {
+        const float = document.querySelector('.blog-share-float');
+        const footer = document.querySelector('.footer-top');
+        if (!float || !footer) return;
+
+        const mobileQuery = window.matchMedia('(max-width: 720px)');
+        /** @type {IntersectionObserver | undefined} */
+        let observer;
+
+        function apply() {
+          observer?.disconnect();
+          observer = undefined;
+          float.classList.remove('blog-share-float--receded');
+
+          if (!mobileQuery.matches) return;
+
+          observer = new IntersectionObserver(
+            (entries) => {
+              const entry = entries[0];
+              if (!entry) return;
+              float.classList.toggle('blog-share-float--receded', entry.isIntersecting);
+            },
+            {
+              root: null,
+              rootMargin: '0px 0px 80px 0px',
+              threshold: 0,
+            },
+          );
+          observer.observe(footer);
+        }
+
+        apply();
+        mobileQuery.addEventListener('change', apply);
+      })();
+    </script>
   </main>
 </BlogLayout>

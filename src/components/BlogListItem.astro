@@ -9,14 +9,25 @@ interface Props {
 }
 
 const { post, showNew = false, showRelativeDate = false } = Astro.props;
-const relativeLabel = showRelativeDate ? formatRelativePublishLabel(post.data.pubDate) : null;
+const relativeLabel = showRelativeDate
+  ? formatRelativePublishLabel(post.data.pubDate)
+  : null;
 ---
 
-<li class="blog-list-item">
+<li
+  class:list={['blog-list-item', showRelativeDate && 'blog-list-item--relative-date']}
+>
   {showNew && <span class="blog-list-new" aria-hidden="true">NEW</span>}
-  <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+  {
+    relativeLabel ? (
+      <time class="blog-list-date" datetime={post.data.pubDate.toISOString()}>
+        {relativeLabel}
+      </time>
+    ) : (
+      <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+    )
+  }
   <span class="blog-list-title-wrap">
     <a href={`/blog/${post.id}`}>{post.data.title}</a>
-    {relativeLabel && <span class="blog-list-relative">{relativeLabel}</span>}
   </span>
 </li>

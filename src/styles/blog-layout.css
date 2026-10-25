@@ -706,6 +706,34 @@ a.home-block--card:focus-visible {
 
 .home-recent-blog-list {
   margin-top: 0;
+  display: grid;
+  grid-template-columns: auto max-content minmax(0, 1fr);
+  column-gap: 8px;
+  align-items: baseline;
+}
+
+.home-recent-blog-list .blog-list-item--relative-date {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+  align-items: baseline;
+}
+
+.home-recent-blog-list .blog-list-item--relative-date .blog-list-new {
+  grid-column: 1;
+}
+
+.home-recent-blog-list .blog-list-date {
+  grid-column: 2;
+  font-size: 0.8em;
+  font-weight: 400;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.home-recent-blog-list .blog-list-item--relative-date .blog-list-title-wrap {
+  grid-column: 3;
+  min-width: 0;
 }
 
 .blog-list-new {
@@ -2882,11 +2910,29 @@ a.blog-tag:hover {
     bottom: max(16px, env(safe-area-inset-bottom, 0px));
     z-index: 90;
     pointer-events: none;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      visibility 0.3s ease;
+  }
+
+  .blog-share-float.blog-share-float--receded {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(14px);
+    pointer-events: none;
   }
 
   .blog-share-float .share-buttons {
     margin: 0;
     pointer-events: auto;
+  }
+
+  .blog-share-float.blog-share-float--receded .share-buttons {
+    pointer-events: none;
   }
 
   .blog-share-float .share-button-face {
