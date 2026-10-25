@@ -2050,6 +2050,10 @@ a.blog-tag:hover {
   border-radius: 2px;
 }
 
+.blog-layout-footer-profile {
+  margin-top: 56px;
+}
+
 .blog-layout-footer-profile .profile-box .profile-text {
   font-size: 0.9em;
   font-weight: 400;
@@ -2982,10 +2986,6 @@ a.blog-tag:hover {
 
   .blog-layout-footer > .share-buttons:first-child {
     display: none;
-  }
-
-  .blog-layout-footer-profile {
-    margin-top: 64px;
   }
 
   .blog-share-float {
