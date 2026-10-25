@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "predev": "node scripts/ensure-og-font.mjs && node scripts/update-link-card-ogp.mjs && node scripts/copy-site-fonts.mjs && node scripts/split-site-css.mjs && rm -f node_modules/.astro/data-store.json",
-    "prebuild": "node scripts/ensure-og-font.mjs && node scripts/update-link-card-ogp.mjs && node scripts/copy-site-fonts.mjs && node scripts/split-site-css.mjs && rm -f node_modules/.astro/data-store.json",
+    "dev:reset": "node scripts/reset-astro-dev.mjs && npm run dev",
+    "predev": "node scripts/ensure-og-font.mjs && node scripts/update-link-card-ogp.mjs && node scripts/copy-site-fonts.mjs && node scripts/split-site-css.mjs",
+    "prebuild": "node scripts/ensure-og-font.mjs && node scripts/update-link-card-ogp.mjs && node scripts/copy-site-fonts.mjs && node scripts/split-site-css.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "ensure-og-font": "node scripts/ensure-og-font.mjs",

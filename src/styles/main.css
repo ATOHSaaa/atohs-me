@@ -118,7 +118,7 @@ a {
   text-decoration: underline var(--color-text) 1px;
   text-decoration-thickness: 1px;
   text-underline-offset: 6px;
-  cursor: text;
+  cursor: pointer;
 }
 
 h2,
