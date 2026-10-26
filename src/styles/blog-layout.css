@@ -288,21 +288,25 @@ body {
     padding-right: 0.28rem;
   }
 
-  /* 上部 tadeku レール：ビューポート右端（safe-area 内） */
+  /* 上部・フッター tadeku レール：画面端から少し内側（safe-area 込み） */
+  .home-layout {
+    --home-tadeku-rail-inset: max(10px, calc(var(--site-gutter) * 0.5));
+  }
+
   .home-layout > .home-top-rail {
-    right: 0;
+    top: var(--home-tadeku-rail-inset);
+    right: var(--home-tadeku-rail-inset);
     padding-right: env(safe-area-inset-right, 0);
   }
 
-  /* フッター tadeku レール：.main の右ガター分だけはみ出す */
   .home-tadeku-rail {
-    margin-right: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw + var(--home-tadeku-rail-inset));
     padding-right: env(safe-area-inset-right, 0);
   }
 
   @supports (width: 100dvw) {
     .home-tadeku-rail {
-      margin-right: calc(50% - 50dvw);
+      margin-right: calc(50% - 50dvw + var(--home-tadeku-rail-inset));
     }
   }
 
