@@ -1212,21 +1212,6 @@ a.home-block--card:focus-visible {
   margin-top: 48px;
 }
 
-/* トップの直近記事だけ右端まで（/blog 一覧は通常ガターを維持） */
-.main-home .home-recent-blog {
-  --home-recent-bleed-right: max((100vw - 100%) / 2, var(--site-gutter));
-  width: calc(100% + var(--home-recent-bleed-right));
-  max-width: none;
-  margin-right: calc(-1 * var(--home-recent-bleed-right));
-  box-sizing: border-box;
-}
-
-@supports (width: 100dvw) {
-  .main-home .home-recent-blog {
-    --home-recent-bleed-right: max((100dvw - 100%) / 2, var(--site-gutter));
-  }
-}
-
 .home-footer-nav {
   display: flex;
   flex-wrap: wrap;
