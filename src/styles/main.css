@@ -3443,6 +3443,24 @@ a.blog-tag:hover {
     margin-left: 10px;
   }
 
+  .home-profile .name-box {
+    gap: 12px;
+  }
+
+  .home-profile-icon {
+    width: 72px;
+    height: 72px;
+  }
+
+  .home-profile .name-detail-line {
+    font-size: 0.85em;
+  }
+
+  .home-profile .name-detail-line.name-primary {
+    margin-bottom: 6px;
+    font-size: 1.05em;
+  }
+
   .home-profile .name-primary-part {
     display: block;
   }

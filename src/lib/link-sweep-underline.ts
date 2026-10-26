@@ -39,13 +39,23 @@ function resetHost(host: HTMLElement): { sweepText: string; preserved: ChildNode
 }
 
 /**
- * Range の1文字計測は日本語の禁則処理を見ないため、
- * `」` などが行頭に来ることがある。分割後に補正する。
+ * Range の1文字計測は禁則・英単語境界を見ない。
+ * - 行頭禁則（」など）→ 前行へ
+ * - 英単語の途中改行 → 単語ごと次行へ
+ * - 行末禁則（「など）→ 次行へ（1文字引き上げると「I / nditer」になる）
  */
 const LINE_START_FORBIDDEN =
   /^[、。，．・：；？！゛゜´｀¨＾￣＿ヽヾゝゞ々‐–—―〜ぁぃぅぇぉっゃゅょゎァィゥェォッャュョヮヵヶー）］｝〉》」』】〕〗〙〛〞〟’”›»％‰℃°′″…‥]+/u;
 
-const LINE_END_FORBIDDEN = /[（［｛〈《「『【〔〖〘〚〝‘“‹«]$/u;
+const LINE_END_FORBIDDEN_CHARS = /[（［｛〈《「『【〔〖〘〚〝‘“‹«]+$/u;
+const LATIN_WORD_END = /[A-Za-z0-9][A-Za-z0-9._-]*$/;
+const LATIN_WORD_START = /^[A-Za-z0-9._-]+/;
+
+function removeEmptyLines(lines: string[]): void {
+  for (let i = lines.length - 1; i >= 0; i--) {
+    if (lines[i] === '') lines.splice(i, 1);
+  }
+}
 
 function applyKinsoku(lines: string[]): string[] {
   const result = lines.filter((line) => line.length > 0);
@@ -54,6 +64,25 @@ function applyKinsoku(lines: string[]): string[] {
   while (changed) {
     changed = false;
     for (let i = 1; i < result.length; i++) {
+      // 英単語の途中で割れている → 末尾の断片を次行へ
+      if (LATIN_WORD_END.test(result[i - 1]) && LATIN_WORD_START.test(result[i])) {
+        const trailing = result[i - 1].match(LATIN_WORD_END);
+        if (trailing) {
+          result[i - 1] = result[i - 1].slice(0, -trailing[0].length);
+          result[i] = trailing[0] + result[i];
+          changed = true;
+        }
+      }
+
+      // 行末禁則: 開き括弧などを次行先頭へ送る
+      const endMatch = result[i - 1].match(LINE_END_FORBIDDEN_CHARS);
+      if (endMatch) {
+        result[i - 1] = result[i - 1].slice(0, -endMatch[0].length);
+        result[i] = endMatch[0] + result[i];
+        changed = true;
+      }
+
+      // 行頭禁則: 閉じ括弧などを前行末へ戻す
       const startMatch = result[i].match(LINE_START_FORBIDDEN);
       if (startMatch) {
         result[i - 1] += startMatch[0];
@@ -61,22 +90,10 @@ function applyKinsoku(lines: string[]): string[] {
         changed = true;
       }
 
-      if (result[i] === '') {
-        result.splice(i, 1);
+      if (result[i - 1] === '' || result[i] === '') {
+        removeEmptyLines(result);
         changed = true;
-        i -= 1;
-        continue;
-      }
-
-      if (LINE_END_FORBIDDEN.test(result[i - 1]) && result[i].length > 0) {
-        const chars = [...result[i]];
-        result[i - 1] += chars[0];
-        result[i] = chars.slice(1).join('');
-        changed = true;
-        if (result[i] === '') {
-          result.splice(i, 1);
-          i -= 1;
-        }
+        break;
       }
     }
   }
