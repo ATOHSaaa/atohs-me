@@ -162,7 +162,23 @@ function splitHost(
   applyLineSpans(host, lineTexts, preserved);
 }
 
+function prefersSweepSplit(): boolean {
+  return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+}
+
+/** タッチ端末向け: 分割をやめて自然折り返しに戻す（nowrap 行のはみ出し防止） */
+function flattenHost(host: HTMLElement): void {
+  const { sweepText, preserved } = resetHost(host);
+  host.replaceChildren(document.createTextNode(sweepText));
+  preserved.forEach((node) => host.appendChild(node));
+}
+
 function processHost(host: HTMLElement, force: boolean): void {
+  if (!prefersSweepSplit()) {
+    flattenHost(host);
+    return;
+  }
+
   if (!force && host.hasAttribute(SPLIT_ATTR)) {
     return;
   }
@@ -203,5 +219,8 @@ export function setupLinkSweepUnderlines(): void {
   if (!setupDone) {
     setupDone = true;
     window.addEventListener('resize', debounce(() => run(true), 150));
+    window
+      .matchMedia('(hover: hover) and (pointer: fine)')
+      .addEventListener('change', () => run(true));
   }
 }

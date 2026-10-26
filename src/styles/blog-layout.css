@@ -70,6 +70,7 @@
 
 html {
   box-sizing: border-box;
+  overflow-x: hidden;
   overflow-x: clip;
 }
 
@@ -91,6 +92,8 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   margin: 0;
+  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .icon {
@@ -121,6 +124,8 @@ body {
 .home-layout {
   position: relative;
   width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .home-keywords-marquee-shell {
@@ -1901,10 +1906,12 @@ h2 + .blog-list {
   max-width: 100%;
 }
 
-/* 計測で決めた行を再折り返ししない（禁則補正後の1文字のはみ出しを許容） */
-.blog-list-title-wrap a .link-sweep-line {
-  white-space: nowrap;
-  max-width: none;
+/* PCホバー用。タッチでは JS 側で分割しない（nowrap 行の横はみ出し防止） */
+@media (hover: hover) and (pointer: fine) {
+  .blog-list-title-wrap a .link-sweep-line {
+    white-space: nowrap;
+    max-width: none;
+  }
 }
 
 .header-links .header-social .link-sweep-line {
