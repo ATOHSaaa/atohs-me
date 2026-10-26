@@ -1859,6 +1859,13 @@ a.profile-box:active {
   line-height: 1.4;
 }
 
+.blog-layout-intro .blog-title {
+  font-size: 1.65em;
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-character;
+}
+
 .keywords-heading-row .page-title {
   margin-bottom: 0;
 }
@@ -2676,14 +2683,14 @@ a.blog-tag:hover {
 .blog-body h2 {
   font-size: 1.5em;
   font-weight: 700;
-  margin-top: 48px;
+  margin-top: 60px;
   margin-bottom: 24px;
 }
 
 .blog-body h3 {
-  font-size: 1.15em;
+  font-size: 1.3em;
   font-weight: 600;
-  margin-top: 36px;
+  margin-top: 48px;
   margin-bottom: 24px;
 }
 
@@ -3590,6 +3597,10 @@ a.blog-tag:hover {
     font-size: 1.7em;
   }
 
+  .blog-layout-intro .blog-title {
+    font-size: 1.4em;
+  }
+
   .cat-logo {
     font-size: 3.6em;
   }
@@ -3683,6 +3694,10 @@ a.blog-tag:hover {
   .blog-title,
   .breadcrumb + .page-title {
     font-size: 1.7em;
+  }
+
+  .blog-layout-intro .blog-title {
+    font-size: 1.4em;
   }
 
   .blog-layout-share-rail {
