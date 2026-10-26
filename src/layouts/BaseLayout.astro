@@ -114,5 +114,10 @@ if (stylesheet === 'blog-layout') {
     <div class="site-content">
       <slot />
     </div>
+    <script>
+      import { setupLinkSweepUnderlines } from '../lib/link-sweep-underline';
+
+      setupLinkSweepUnderlines();
+    </script>
   </body>
 </html>

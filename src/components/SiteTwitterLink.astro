@@ -1,4 +1,6 @@
 ---
+import HeaderNavLabel from './HeaderNavLabel.astro';
+
 interface Props {
   variant: 'header' | 'footer' | 'home-footer';
 }
@@ -14,6 +16,7 @@ const className =
 
 <a
   class={className}
+  style={variant === 'header' ? '--title-line-count: 1' : undefined}
   href="https://twitter.com/atohsaaa"
   target="_blank"
   rel="noopener noreferrer"
@@ -22,6 +25,11 @@ const className =
     variant === 'home-footer' ? (
       <>
         <span class="home-footer-nav-link-label">Twitter</span>
+        <span class="link-external-mark" aria-hidden="true">↗</span>
+      </>
+    ) : variant === 'header' ? (
+      <>
+        <HeaderNavLabel label="Twitter" />
         <span class="link-external-mark" aria-hidden="true">↗</span>
       </>
     ) : (

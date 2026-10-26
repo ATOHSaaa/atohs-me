@@ -1,12 +1,8 @@
 ---
+import HeaderNavLabel from './HeaderNavLabel.astro';
 import SiteTwitterLink from './SiteTwitterLink.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
-interface Props {
-  isHome?: boolean;
-}
-
-const { isHome = false } = Astro.props;
 const pathname = Astro.url.pathname;
 const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
 const isWorks = pathname === '/works' || pathname.startsWith('/works/');
@@ -14,31 +10,72 @@ const isContact = pathname === '/contact';
 const isKeywords = pathname === '/keywords' || pathname.startsWith('/keywords/');
 const isAbout = pathname === '/about';
 const isResume = pathname === '/resume';
-const LogoTag = isHome ? 'h1' : 'p';
 ---
 
 <header class="header-top">
   <div class="header-inner">
-    <LogoTag class="header-logo">
+    <p class="header-logo">
       <a href="/">atohs.me</a>
-    </LogoTag>
+    </p>
     <div class="header-end">
       <ThemeToggle />
       <nav id="header-menu" class="header-links" aria-label="メニュー">
-        <a class="header-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>Blog</a>
+        <a
+          class="header-link"
+          style="--title-line-count: 1"
+          href="/blog"
+          aria-current={isBlog ? 'page' : undefined}
+        >
+          <HeaderNavLabel label="Blog" />
+        </a>
         <details class="header-info">
-          <summary class="header-info-toggle">
-            Info
+          <summary class="header-info-toggle" style="--title-line-count: 1">
+            <HeaderNavLabel label="Info" />
             <span class="header-info-chevron" aria-hidden="true"></span>
           </summary>
           <div class="header-info-panel">
-            <a class="header-link" href="/about" aria-current={isAbout ? 'page' : undefined}>About</a>
-            <a class="header-link" href="/resume" aria-current={isResume ? 'page' : undefined}>Resume</a>
-            <a class="header-link" href="/works" aria-current={isWorks ? 'page' : undefined}>Works</a>
-            <a class="header-link" href="/keywords" aria-current={isKeywords ? 'page' : undefined}>Keywords</a>
+            <a
+              class="header-link"
+              style="--title-line-count: 1"
+              href="/about"
+              aria-current={isAbout ? 'page' : undefined}
+            >
+              <HeaderNavLabel label="About" />
+            </a>
+            <a
+              class="header-link"
+              style="--title-line-count: 1"
+              href="/resume"
+              aria-current={isResume ? 'page' : undefined}
+            >
+              <HeaderNavLabel label="Resume" />
+            </a>
+            <a
+              class="header-link"
+              style="--title-line-count: 1"
+              href="/works"
+              aria-current={isWorks ? 'page' : undefined}
+            >
+              <HeaderNavLabel label="Works" />
+            </a>
+            <a
+              class="header-link"
+              style="--title-line-count: 1"
+              href="/keywords"
+              aria-current={isKeywords ? 'page' : undefined}
+            >
+              <HeaderNavLabel label="Keywords" />
+            </a>
           </div>
         </details>
-        <a class="header-link" href="/contact" aria-current={isContact ? 'page' : undefined}>Contact</a>
+        <a
+          class="header-link"
+          style="--title-line-count: 1"
+          href="/contact"
+          aria-current={isContact ? 'page' : undefined}
+        >
+          <HeaderNavLabel label="Contact" />
+        </a>
         <SiteTwitterLink variant="header" />
       </nav>
       <button
