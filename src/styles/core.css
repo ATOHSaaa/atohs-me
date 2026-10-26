@@ -288,8 +288,23 @@ body {
     padding-right: 0.28rem;
   }
 
+  /* tadeku 系リンク：.main の右ガターをはみ出して画面右端に寄せる */
   .home-top-rail {
-    right: calc(-1 * var(--site-gutter));
+    right: calc((100% - 100vw) / 2);
+  }
+
+  .home-tadeku-rail {
+    margin-right: calc((100% - 100vw) / 2);
+  }
+
+  @supports (width: 100dvw) {
+    .home-top-rail {
+      right: calc((100% - 100dvw) / 2);
+    }
+
+    .home-tadeku-rail {
+      margin-right: calc((100% - 100dvw) / 2);
+    }
   }
 
   /* トップの直近記事だけ右端まで（/blog 一覧は通常ガターを維持） */
