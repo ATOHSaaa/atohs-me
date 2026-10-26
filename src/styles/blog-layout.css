@@ -291,6 +291,14 @@ body {
   .home-top-rail {
     right: calc(-1 * var(--site-gutter));
   }
+
+  /* 左マーキーと対称に、直近記事リストは右ガターまで使う */
+  .home-recent-blog {
+    width: calc(100% + var(--site-gutter));
+    max-width: none;
+    margin-right: calc(-1 * var(--site-gutter));
+    box-sizing: border-box;
+  }
 }
 
 @media (min-width: 880px) {
@@ -3708,6 +3716,13 @@ a.blog-tag:hover {
     line-height: 1.55;
   }
 
+  .blog-list:not(.home-recent-blog-list):not(.career-archive-list) .blog-list-title-wrap {
+    width: calc(100% + var(--site-gutter));
+    max-width: none;
+    margin-right: calc(-1 * var(--site-gutter));
+    box-sizing: border-box;
+  }
+
   .blog-title,
   .breadcrumb + .page-title {
     font-size: 1.7em;
@@ -3715,6 +3730,10 @@ a.blog-tag:hover {
 
   .blog-layout-intro .blog-title {
     font-size: 1.4em;
+    width: calc(100% + var(--site-gutter));
+    max-width: none;
+    margin-right: calc(-1 * var(--site-gutter));
+    box-sizing: border-box;
   }
 
   .blog-layout-share-rail {

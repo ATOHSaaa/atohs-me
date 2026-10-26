@@ -291,6 +291,14 @@ body {
   .home-top-rail {
     right: calc(-1 * var(--site-gutter));
   }
+
+  /* 左マーキーと対称に、直近記事リストは右ガターまで使う */
+  .home-recent-blog {
+    width: calc(100% + var(--site-gutter));
+    max-width: none;
+    margin-right: calc(-1 * var(--site-gutter));
+    box-sizing: border-box;
+  }
 }
 
 @media (min-width: 880px) {
