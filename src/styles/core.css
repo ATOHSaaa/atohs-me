@@ -1940,14 +1940,6 @@ h2 + .blog-list {
   max-width: 100%;
 }
 
-/* PCホバー用。タッチでは JS 側で分割しない（nowrap 行の横はみ出し防止） */
-@media (hover: hover) and (pointer: fine) {
-  .blog-list-title-wrap a .link-sweep-line {
-    white-space: nowrap;
-    max-width: none;
-  }
-}
-
 .header-links .header-social .link-sweep-line {
   display: inline-block;
 }
