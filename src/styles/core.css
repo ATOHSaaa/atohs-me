@@ -1925,12 +1925,13 @@ h2 + .blog-list {
 
 .blog-list-title-wrap a {
   display: block;
+  width: 100%;
   max-width: 100%;
   line-height: inherit;
   text-decoration: none;
   color: var(--color-text);
-  /* 対応ブラウザで末尾1文字だけの行を減らす */
-  text-wrap: pretty;
+  text-wrap: wrap;
+  overflow-wrap: break-word;
 }
 
 .blog-list-item a {
