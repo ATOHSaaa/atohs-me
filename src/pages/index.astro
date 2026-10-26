@@ -3,35 +3,43 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import HomeRecentBlogPosts from '../components/HomeRecentBlogPosts.astro';
 import HomeFooterNav from '../components/HomeFooterNav.astro';
+import HomeTadekuRail from '../components/HomeTadekuRail.astro';
+import HomeKeywordsMarquee from '../components/HomeKeywordsMarquee.astro';
 import SiteLogo from '../components/SiteLogo.astro';
 ---
 
 <BaseLayout title="atohs.me | あとーすのプロフィール">
   <SiteHeader isHome />
-  <main id="main-content" class="main main-home">
-    <div class="home-profile">
-      <div class="name-box">
-        <SiteLogo
-          class="profile-icon home-profile-icon"
-          decoding="sync"
-          loading="eager"
-          fetchpriority="high"
-        />
-        <p class="name-detail">
-          <span class="name-detail-line name-primary">
-            <span class="name-primary-part">あとーす（atohs）</span>
-            <span class="name-primary-part">伊藤祥太（ITO SHOTA）</span>
-          </span>
-          <span class="name-detail-line">
-            Born on November 13, 1993 / Live in Kumamoto
-          </span>
-          <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
-        </p>
+  <div class="home-layout">
+    <main id="main-content" class="main main-home">
+      <HomeKeywordsMarquee />
+      <div class="home-profile">
+        <div class="name-box">
+          <SiteLogo
+            class="profile-icon home-profile-icon"
+            decoding="sync"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <p class="name-detail">
+            <span class="name-detail-line name-primary">
+              <span class="name-primary-part">あとーす（atohs）</span>
+              <span class="name-primary-part">伊藤祥太（ITO SHOTA）</span>
+            </span>
+            <span class="name-detail-line">
+              Born on November 13, 1993 / Live in Kumamoto
+            </span>
+            <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
+          </p>
+        </div>
       </div>
-    </div>
 
-    <HomeRecentBlogPosts />
+      <HomeRecentBlogPosts />
 
-    <HomeFooterNav />
-  </main>
+      <div class="home-footer-zone">
+        <HomeFooterNav />
+        <HomeTadekuRail />
+      </div>
+    </main>
+  </div>
 </BaseLayout>

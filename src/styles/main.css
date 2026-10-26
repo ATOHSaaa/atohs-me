@@ -111,8 +111,107 @@ body {
   flex-direction: column;
 }
 
-.site-content > .main {
+.site-content > .main,
+.site-content > .home-layout {
   flex: 1 0 auto;
+}
+
+.home-layout {
+  position: relative;
+  width: 100%;
+}
+
+.home-keywords-marquee-shell {
+  display: none;
+}
+
+.home-keywords-marquee {
+  --marquee-duration: 40s;
+  height: 100%;
+  overflow: hidden;
+}
+
+.home-keywords-marquee-viewport {
+  height: 100%;
+  overflow: hidden;
+}
+
+.home-keywords-marquee-track {
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  animation: home-keywords-marquee var(--marquee-duration) linear infinite;
+}
+
+.home-keywords-marquee:hover .home-keywords-marquee-track {
+  animation-play-state: paused;
+}
+
+.home-keywords-marquee-list {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0.75rem 0;
+  list-style: none;
+}
+
+.home-keywords-marquee-item {
+  flex-shrink: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.home-keywords-marquee-item a {
+  display: inline-block;
+  font: inherit;
+  line-height: 1.65;
+  letter-spacing: inherit;
+  text-decoration: none;
+  color: var(--color-text);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+}
+
+@keyframes home-keywords-marquee {
+  from {
+    transform: translate3d(0, -50%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (min-width: 880px) {
+  .home-layout > .main-home {
+    position: relative;
+  }
+
+  .home-keywords-marquee-shell {
+    display: flex;
+    position: absolute;
+    top: 0;
+    bottom: 104px;
+    right: calc(100% + 16px);
+    width: max-content;
+    height: auto;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .home-keywords-marquee-shell a {
+    pointer-events: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-keywords-marquee-track {
+    animation: none;
+  }
 }
 
 .site-content > .main.main--blog-index {
@@ -812,6 +911,54 @@ a.home-block--card:focus-visible {
   margin-bottom: 0;
 }
 
+.home-footer-zone {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: visible;
+}
+
+.home-tadeku-rail {
+  position: relative;
+  align-self: flex-end;
+  width: max-content;
+  margin-top: 16px;
+  padding: 0;
+  overflow: visible;
+}
+
+.home-tadeku-rail-link {
+  font-size: 0.62rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.home-tadeku-rail-link:is(:hover, :focus-visible) {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.home-tadeku-rail-link--horizontal {
+  display: block;
+  text-align: right;
+}
+
+.home-tadeku-rail-link--vertical {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  margin-bottom: 4px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: 0.1em;
+  z-index: 1;
+}
+
 .home-profile + .home-recent-blog {
   margin-top: 48px;
 }
@@ -822,7 +969,7 @@ a.home-block--card:focus-visible {
   align-items: center;
   justify-content: flex-start;
   gap: 0.65em 0;
-  margin-top: 32px;
+  margin-top: 0;
   font-size: 0.85em;
   font-weight: 700;
   letter-spacing: 0.05em;

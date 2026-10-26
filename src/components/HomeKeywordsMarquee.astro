@@ -1,0 +1,39 @@
+---
+import { getKeywordEntries, keywordHref } from '../lib/keywords';
+
+const entries = await getKeywordEntries();
+if (entries.length === 0) return;
+
+const durationSeconds = Math.max(40, entries.length * 6);
+---
+
+<div class="home-keywords-marquee-shell">
+  <section
+    class="home-keywords-marquee"
+    aria-label="キーワード"
+    style={`--marquee-duration: ${durationSeconds}s`}
+  >
+    <div class="home-keywords-marquee-viewport">
+      <div class="home-keywords-marquee-track">
+        <ul class="home-keywords-marquee-list">
+          {
+            entries.map((entry) => (
+              <li class="home-keywords-marquee-item">
+                <a href={keywordHref(entry.id)}>{entry.data.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+        <ul class="home-keywords-marquee-list" aria-hidden="true">
+          {
+            entries.map((entry) => (
+              <li class="home-keywords-marquee-item">
+                <a href={keywordHref(entry.id)} tabindex="-1">{entry.data.title}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
