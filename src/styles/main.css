@@ -237,57 +237,6 @@ body {
     margin-top: 0;
     position: relative;
     z-index: 0;
-    box-sizing: border-box;
-    padding-left: calc(var(--home-mobile-keywords-rail-width) + 0.5rem);
-  }
-
-  .home-profile {
-    margin-top: 48px;
-  }
-
-  .home-profile .name-box {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    gap: 12px;
-    width: 100%;
-    max-width: 100%;
-    margin-inline: 0;
-    margin-top: 0;
-    text-align: left;
-  }
-
-  .home-profile-icon {
-    flex-shrink: 0;
-    width: 72px;
-    height: 72px;
-  }
-
-  .home-profile .name-detail {
-    flex: 1 1 auto;
-    min-width: 0;
-    text-align: left;
-  }
-
-  .home-profile .name-detail-line:not(.name-primary) {
-    margin-inline: 0;
-    max-width: none;
-  }
-
-  .home-profile .name-detail-line.name-primary {
-    margin-bottom: 6px;
-    font-size: clamp(0.7rem, 3.4vw, 1.05em);
-    line-height: 1.35;
-    white-space: nowrap;
-  }
-
-  .home-profile .name-primary-part {
-    display: inline;
-  }
-
-  .home-profile .name-primary-part:first-child::after {
-    content: ',';
   }
 
   .home-profile-with-keywords > .home-keywords-marquee-shell {
@@ -3540,23 +3489,35 @@ a.blog-tag:hover {
     margin-left: 10px;
   }
 
+  .home-profile .name-box {
+    gap: 12px;
+  }
+
+  .home-profile-icon {
+    width: 72px;
+    height: 72px;
+  }
+
   .home-profile .name-detail-line {
     font-size: 0.85em;
   }
 
   .home-profile .name-detail-line:not(.name-primary) {
     max-width: min(100%, 16.5em);
+    margin-inline: auto;
   }
 
-  /* .name-box 全体の中央寄せよりトッププロフィールの左揃えを優先 */
-  .home-profile .name-box {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-    width: 100%;
-    max-width: 100%;
-    margin-inline: 0;
-    text-align: left;
+  .home-profile .name-detail-line.name-primary {
+    margin-bottom: 6px;
+    font-size: 1.05em;
+  }
+
+  .home-profile .name-primary-part {
+    display: block;
+  }
+
+  .home-profile .name-primary-part:first-child::after {
+    content: none;
   }
 
   .home-tadeku-rail {
