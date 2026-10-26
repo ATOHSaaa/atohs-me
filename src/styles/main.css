@@ -676,6 +676,7 @@ html[data-theme='dark'] .theme-toggle-icon--to-light {
 .keywords-index-link,
 .keywords-chip,
 .blog-layout .profile-box,
+.about .profile-box,
 .blog-toc {
   border: 2px solid var(--outline-frame-border);
   border-radius: var(--outline-frame-radius);
