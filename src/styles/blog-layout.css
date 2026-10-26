@@ -373,7 +373,7 @@ details.header-info[open] > summary.header-info-toggle .header-info-chevron {
   top: calc(100% + 14px);
   left: 0;
   right: auto;
-  translate: 2rem 0;
+  translate: 0.75rem 0;
   z-index: 100;
   display: none;
   flex-direction: column;
@@ -1451,11 +1451,12 @@ a.profile-box:active {
   margin-top: 0;
 }
 
-.about .page-title {
-  margin-bottom: 1.5rem;
+.about .breadcrumb + .page-title {
+  margin-bottom: 2rem;
 }
 
 .about .profile-section {
+  margin-top: 0;
   margin-bottom: 40px;
 }
 
