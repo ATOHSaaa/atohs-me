@@ -215,7 +215,70 @@ body {
   }
 }
 
+@media (max-width: 879px) {
+  .home-body-zone {
+    margin-top: 24px;
+  }
+
+  .home-profile-with-keywords {
+    --home-mobile-keywords-rail-width: 2.85rem;
+    position: relative;
+    padding-left: calc(var(--home-mobile-keywords-rail-width) + 10px);
+  }
+
+  .home-profile-with-keywords > .home-profile {
+    margin-top: 0;
+  }
+
+  .home-profile-with-keywords > .home-keywords-marquee-shell {
+    display: flex;
+    position: absolute;
+    box-sizing: border-box;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--home-mobile-keywords-rail-width);
+    max-width: var(--home-mobile-keywords-rail-width);
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .home-profile-with-keywords .home-keywords-marquee {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+    height: 100%;
+  }
+
+  .home-profile-with-keywords .home-keywords-marquee-viewport {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .home-profile-with-keywords .home-keywords-marquee-track {
+    flex-direction: column;
+    animation: home-keywords-marquee var(--marquee-duration) linear infinite;
+  }
+
+  .home-profile-with-keywords .home-keywords-marquee-list {
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 0.5rem 0;
+  }
+}
+
 @media (min-width: 880px) {
+  .home-body-zone,
+  .home-profile-with-keywords {
+    display: contents;
+  }
+
+  .home-keywords-marquee-shell {
+    margin-top: 0;
+  }
+
   .home-layout > .main-home {
     position: relative;
   }
@@ -241,6 +304,28 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .home-keywords-marquee-track {
     animation: none;
+  }
+
+  @media (max-width: 879px) {
+    .home-keywords-marquee-list + .home-keywords-marquee-list {
+      display: none;
+    }
+
+    .home-keywords-marquee-viewport {
+      height: auto;
+    }
+
+    .home-keywords-marquee-shell {
+      height: auto;
+      max-width: none;
+    }
+
+    .home-keywords-marquee-list {
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: flex-start;
+      max-height: none;
+    }
   }
 }
 
@@ -1055,7 +1140,8 @@ a.home-block--card:focus-visible {
   z-index: 1;
 }
 
-.home-profile + .home-recent-blog {
+.home-profile + .home-recent-blog,
+.home-profile-with-keywords + .home-recent-blog {
   margin-top: 48px;
 }
 
@@ -2257,6 +2343,10 @@ a.blog-tag:hover {
 
   .home-profile .name-primary-part:first-child::after {
     content: none;
+  }
+
+  .home-tadeku-rail {
+    margin-top: 48px;
   }
 
   .home-recent-blog-list {

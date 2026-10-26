@@ -14,29 +14,33 @@ import SiteLogo from '../components/SiteLogo.astro';
   <div class="home-layout">
     <main id="main-content" class="main main-home">
       <HomeTopRail />
-      <HomeKeywordsMarquee />
-      <div class="home-profile">
-        <div class="name-box">
-          <SiteLogo
-            class="profile-icon home-profile-icon"
-            decoding="sync"
-            loading="eager"
-            fetchpriority="high"
-          />
-          <p class="name-detail">
-            <span class="name-detail-line name-primary">
-              <span class="name-primary-part">あとーす（atohs）</span>
-              <span class="name-primary-part">伊藤祥太（ITO SHOTA）</span>
-            </span>
-            <span class="name-detail-line">
-              Born on November 13, 1993 / Live in Kumamoto
-            </span>
-            <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
-          </p>
+      <div class="home-body-zone">
+        <div class="home-profile-with-keywords">
+          <HomeKeywordsMarquee />
+          <div class="home-profile">
+            <div class="name-box">
+              <SiteLogo
+                class="profile-icon home-profile-icon"
+                decoding="sync"
+                loading="eager"
+                fetchpriority="high"
+              />
+              <p class="name-detail">
+                <span class="name-detail-line name-primary">
+                  <span class="name-primary-part">あとーす（atohs）</span>
+                  <span class="name-primary-part">伊藤祥太（ITO SHOTA）</span>
+                </span>
+                <span class="name-detail-line">
+                  Born on November 13, 1993 / Live in Kumamoto
+                </span>
+                <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <HomeRecentBlogPosts />
+        <HomeRecentBlogPosts />
+      </div>
 
       <div class="home-footer-zone">
         <HomeFooterNav />
