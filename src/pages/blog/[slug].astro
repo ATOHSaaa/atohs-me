@@ -14,6 +14,7 @@ import { extractBlogTocItems } from '../../lib/blog-toc';
 import { getOtherBlogPosts } from '../../lib/blog-posts';
 import { formatDate } from '../../lib/format-date';
 import { postHasTwitterEmbed } from '../../lib/blog-twitter-embed.js';
+import { OG_IMAGE_CACHE_KEY } from '../../lib/og-image';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -26,7 +27,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const postUrl = `https://atohs.me/blog/${post.id}`;
-const ogImage = `https://atohs.me/blog/${post.id}/og.png`;
+const ogImage = `https://atohs.me/blog/${post.id}/og.png?${OG_IMAGE_CACHE_KEY}`;
 const description = createPostDescription(post.body ?? '');
 const tocItems = extractBlogTocItems(post.body ?? '');
 const otherPosts = await getOtherBlogPosts(post.id, 5);
