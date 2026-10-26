@@ -12,8 +12,8 @@ const PAD_BOTTOM = 72;
 const TITLE_FONT_SIZE = 56;
 const SUBTITLE_FONT_SIZE = 48;
 const LINE_HEIGHT = 1.35;
-/** OGP 描画ロジック変更時に上げ、SNS の og:image キャッシュを切る */
-export const OG_IMAGE_CACHE_KEY = 'v=2';
+/** OGP 描画ロジック変更時にファイル名を上げる（`og.png` は CDN に古い画像が残ることがある） */
+export const OG_IMAGE_FILENAME = 'og-v2.png';
 
 async function loadFont() {
   const fontPath = join(process.cwd(), 'src/assets/fonts/NotoSansCJKjp-Bold.otf');

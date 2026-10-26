@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { generateOgImage } from '../../../lib/og-image';
+import { ogImageResponse } from '../../../lib/og-image-response';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -10,12 +10,6 @@ export async function getStaticPaths() {
   }));
 }
 
-export const GET: APIRoute = async ({ props }) => {
-  const png = await generateOgImage(props.title);
-  return new Response(png, {
-    headers: {
-      'Content-Type': 'image/png',
-      'Cache-Control': 'public, max-age=31536000, immutable',
-    },
-  });
-};
+/** 後方互換。長期 immutable キャッシュは付けない（古い生成結果が CDN に残るのを避ける） */
+export const GET: APIRoute = async ({ props }) =>
+  ogImageResponse(props.title, 'public, max-age=86400, must-revalidate');

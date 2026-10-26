@@ -493,11 +493,12 @@ header:not(.header-top) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: calc(100% - 2 * var(--site-gutter));
-  max-width: none;
+  width: min(calc(100% - 2 * var(--site-gutter)), var(--width-content));
+  max-width: var(--width-content);
   height: calc(var(--header-height) - 2px);
   margin: 0 auto;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .header-logo {

@@ -493,11 +493,12 @@ header:not(.header-top) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: calc(100% - 2 * var(--site-gutter));
-  max-width: none;
+  width: min(calc(100% - 2 * var(--site-gutter)), var(--width-content));
+  max-width: var(--width-content);
   height: calc(var(--header-height) - 2px);
   margin: 0 auto;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .header-logo {
@@ -2523,6 +2524,15 @@ a.blog-tag:hover {
 }
 
 @media (min-width: 1080px) {
+  .header-inner {
+    width: min(calc(100% - 2 * var(--site-gutter)), var(--width-blog-layout));
+    max-width: var(--width-blog-layout);
+  }
+
+  body:not(:has(.blog-main)) .header-inner {
+    padding-left: calc(var(--width-blog-share-rail) + 40px);
+  }
+
   .main.blog-main {
     width: min(calc(100% - 2 * var(--site-gutter)), var(--width-blog-layout));
     max-width: none;
