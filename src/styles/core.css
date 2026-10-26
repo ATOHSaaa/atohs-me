@@ -20,6 +20,8 @@
     var(--width-blog-share-rail) + 40px + var(--width-content) + 40px +
       var(--width-blog-toc)
   );
+  /** ヘッダー内要素の最大幅（本文より広く、超ワイド画面では左右に余白） */
+  --width-header: 1200px;
   --site-gutter: 16px;
   --header-height: 86px;
   --radius-sm: 8px;
@@ -493,8 +495,8 @@ header:not(.header-top) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(calc(100% - 2 * var(--site-gutter)), var(--width-content));
-  max-width: var(--width-content);
+  width: min(calc(100% - 2 * var(--site-gutter)), var(--width-header));
+  max-width: var(--width-header);
   height: calc(var(--header-height) - 2px);
   margin: 0 auto;
   padding: 0;
