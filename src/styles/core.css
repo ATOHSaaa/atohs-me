@@ -245,7 +245,7 @@ body {
     box-sizing: border-box;
     top: 0;
     bottom: 0;
-    left: calc(-1 * var(--site-gutter));
+    left: 0;
     width: var(--home-mobile-keywords-rail-width);
     max-width: var(--home-mobile-keywords-rail-width);
     min-height: 0;
@@ -284,39 +284,79 @@ body {
   }
 
   .home-profile-with-keywords .home-keywords-marquee-item a {
-    padding-left: 0.2rem;
+    padding-left: 0;
     padding-right: 0.28rem;
   }
 
-  /* tadeku 系リンク：.main の右ガターをはみ出して画面右端に寄せる */
-  .home-top-rail {
-    right: calc((100% - 100vw) / 2);
+  /* 上部 tadeku レール：ビューポート右端（safe-area 内） */
+  .home-layout > .home-top-rail {
+    right: 0;
+    padding-right: env(safe-area-inset-right, 0);
   }
 
+  /* フッター tadeku レール：.main の右ガター分だけはみ出す */
   .home-tadeku-rail {
-    margin-right: calc((100% - 100vw) / 2);
+    margin-right: calc(50% - 50vw);
+    padding-right: env(safe-area-inset-right, 0);
   }
 
   @supports (width: 100dvw) {
-    .home-top-rail {
-      right: calc((100% - 100dvw) / 2);
-    }
-
     .home-tadeku-rail {
-      margin-right: calc((100% - 100dvw) / 2);
+      margin-right: calc(50% - 50dvw);
     }
   }
 
-  /* トップの直近記事だけ右端まで（/blog 一覧は通常ガターを維持） */
-  .main-home .home-recent-blog {
-    width: calc(100% + (100vw - 100%) / 2);
+  /* トップ直近記事：日付行の下にタイトル全幅（左右は .main のガター） */
+  .home-recent-blog-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-recent-blog-list .blog-list-item--relative-date {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 8px;
+    row-gap: 2px;
+    align-items: baseline;
+  }
+
+  .home-recent-blog-list .blog-list-item--relative-date .blog-list-new {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .home-recent-blog-list .blog-list-date {
+    grid-column: 2;
+    grid-row: 1;
+    line-height: 1.35;
+  }
+
+  .home-recent-blog-list .blog-list-item--relative-date .blog-list-title-wrap {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    line-height: 1.55;
+    min-width: 0;
     max-width: none;
-    margin-right: calc((100% - 100vw) / 2);
+  }
+
+  .home-recent-blog-list .blog-list-title-wrap a {
+    display: block;
+    width: 100%;
+    max-width: none;
+    line-height: 1.55;
     box-sizing: border-box;
   }
 }
 
 @media (min-width: 880px) {
+  .home-layout > .home-top-rail {
+    right: calc(
+      (100% - min(calc(100% - 2 * var(--site-gutter)), var(--width-content))) / 2
+    );
+    padding-right: 0;
+  }
+
   .home-body-zone,
   .home-profile-with-keywords {
     display: contents;
