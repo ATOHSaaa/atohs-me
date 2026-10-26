@@ -98,6 +98,17 @@ function applyKinsoku(lines: string[]): string[] {
     }
   }
 
+  // 末尾が1〜2文字だけの行は前行へ（「た」だけの行を作らない）
+  while (
+    result.length >= 2 &&
+    [...result[result.length - 1]].length > 0 &&
+    [...result[result.length - 1]].length <= 2
+  ) {
+    const last = result.pop();
+    if (last === undefined) break;
+    result[result.length - 1] += last;
+  }
+
   return result.length > 0 ? result : lines;
 }
 
@@ -163,6 +174,9 @@ function splitHost(
 }
 
 function prefersSweepSplit(): boolean {
+  // スマホ幅では分割しない（余白があるのに「た」だけ次行、などの不自然な固定改行を防ぐ）
+  if (window.matchMedia('(max-width: 720px)').matches) return false;
+  if (window.matchMedia('(pointer: coarse)').matches) return false;
   return window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 }
 
@@ -219,8 +233,13 @@ export function setupLinkSweepUnderlines(): void {
   if (!setupDone) {
     setupDone = true;
     window.addEventListener('resize', debounce(() => run(true), 150));
-    window
-      .matchMedia('(hover: hover) and (pointer: fine)')
-      .addEventListener('change', () => run(true));
+    const resplitMq = [
+      window.matchMedia('(hover: hover) and (pointer: fine)'),
+      window.matchMedia('(max-width: 720px)'),
+      window.matchMedia('(pointer: coarse)'),
+    ];
+    for (const mq of resplitMq) {
+      mq.addEventListener('change', () => run(true));
+    }
   }
 }

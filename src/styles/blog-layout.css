@@ -1897,6 +1897,8 @@ h2 + .blog-list {
   line-height: inherit;
   text-decoration: none;
   color: var(--color-text);
+  /* 対応ブラウザで末尾1文字だけの行を減らす */
+  text-wrap: pretty;
 }
 
 .link-sweep-line {
