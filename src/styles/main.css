@@ -292,11 +292,45 @@ body {
     right: calc(-1 * var(--site-gutter));
   }
 
-  /* トップの直近記事だけ右端まで（/blog 一覧は通常ガターを維持） */
-  .main-home .home-recent-blog {
-    width: calc(100% + (100vw - 100%) / 2);
+  /* トップ直近記事：日付行の下にタイトル全幅（720px以下と同じ） */
+  .home-recent-blog-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .home-recent-blog-list .blog-list-item--relative-date {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 8px;
+    row-gap: 2px;
+    align-items: baseline;
+  }
+
+  .home-recent-blog-list .blog-list-item--relative-date .blog-list-new {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .home-recent-blog-list .blog-list-date {
+    grid-column: 2;
+    grid-row: 1;
+    line-height: 1.35;
+  }
+
+  .home-recent-blog-list .blog-list-item--relative-date .blog-list-title-wrap {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    line-height: 1.55;
+    min-width: 0;
     max-width: none;
-    margin-right: calc((100% - 100vw) / 2);
+  }
+
+  .home-recent-blog-list .blog-list-title-wrap a {
+    display: block;
+    width: 100%;
+    max-width: none;
+    line-height: 1.55;
     box-sizing: border-box;
   }
 }
