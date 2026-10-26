@@ -2418,7 +2418,7 @@ a.blog-tag:hover {
   }
 
   .home-recent-blog-list .blog-list-item--relative-date .blog-list-title-wrap {
-    grid-column: 2;
+    grid-column: 1 / -1;
     grid-row: 2;
     line-height: 1.55;
   }
