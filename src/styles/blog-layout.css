@@ -292,11 +292,11 @@ body {
     right: calc(-1 * var(--site-gutter));
   }
 
-  /* 左マーキーと対称に、直近記事リストは右ガターまで使う */
-  .home-recent-blog {
-    width: calc(100% + var(--site-gutter));
+  /* トップの直近記事だけ右端まで（/blog 一覧は通常ガターを維持） */
+  .main-home .home-recent-blog {
+    width: calc(100% + (100vw - 100%) / 2);
     max-width: none;
-    margin-right: calc(-1 * var(--site-gutter));
+    margin-right: calc((100% - 100vw) / 2);
     box-sizing: border-box;
   }
 }
@@ -3716,13 +3716,6 @@ a.blog-tag:hover {
     line-height: 1.55;
   }
 
-  .blog-list:not(.home-recent-blog-list):not(.career-archive-list) .blog-list-title-wrap {
-    width: calc(100% + var(--site-gutter));
-    max-width: none;
-    margin-right: calc(-1 * var(--site-gutter));
-    box-sizing: border-box;
-  }
-
   .blog-title,
   .breadcrumb + .page-title {
     font-size: 1.7em;
@@ -3730,10 +3723,6 @@ a.blog-tag:hover {
 
   .blog-layout-intro .blog-title {
     font-size: 1.4em;
-    width: calc(100% + var(--site-gutter));
-    max-width: none;
-    margin-right: calc(-1 * var(--site-gutter));
-    box-sizing: border-box;
   }
 
   .blog-layout-share-rail {
