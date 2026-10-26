@@ -24,35 +24,108 @@ function charWidth(ch: string, fontSize: number) {
   return fontSize;
 }
 
-/** 行幅に収まるよう文字単位で折り返す（省略なし） */
-function wrapTitle(title: string, fontSize: number, contentWidth: number): string {
-  const lines: string[] = [];
-  let currentLine = '';
-  let currentWidth = 0;
+const WORD_JOINER = '\u2060';
 
-  for (const ch of [...title]) {
-    const width = charWidth(ch, fontSize);
+/** `@` と直後の非空白を1トークンにし、行の途中で `@` だけ孤立しないようにする */
+function titleTokens(title: string): string[] {
+  const tokens: string[] = [];
+  const chars = [...title];
 
-    if (currentLine && currentWidth + width > contentWidth) {
-      lines.push(currentLine);
-      currentLine = ch;
-      currentWidth = width;
+  for (let i = 0; i < chars.length; i++) {
+    const ch = chars[i];
+    if (ch !== '@') {
+      tokens.push(ch);
       continue;
     }
 
-    currentLine += ch;
-    currentWidth += width;
+    let token = '@';
+    i++;
+    while (i < chars.length && chars[i] !== ' ' && chars[i] !== '\n' && chars[i] !== '\t') {
+      token += chars[i];
+      i++;
+    }
+    tokens.push(token);
   }
 
-  if (currentLine) lines.push(currentLine);
+  return tokens;
+}
+
+function tokenWidth(token: string, fontSize: number): number {
+  let width = 0;
+  for (const ch of [...token]) width += charWidth(ch, fontSize);
+  return width;
+}
+
+function appendCharToLine(
+  lines: string[],
+  line: { text: string; width: number },
+  ch: string,
+  fontSize: number,
+  contentWidth: number,
+) {
+  const width = charWidth(ch, fontSize);
+  if (line.text && line.width + width > contentWidth) {
+    lines.push(line.text);
+    line.text = ch;
+    line.width = width;
+    return;
+  }
+  line.text += ch;
+  line.width += width;
+}
+
+/** 1トークンが行幅を超えるときだけ文字単位に分割する */
+function appendTokenToLines(
+  lines: string[],
+  line: { text: string; width: number },
+  token: string,
+  fontSize: number,
+  contentWidth: number,
+) {
+  const width = tokenWidth(token, fontSize);
+  if (line.text && line.width + width > contentWidth) {
+    if (width <= contentWidth) {
+      lines.push(line.text);
+      line.text = token;
+      line.width = width;
+      return;
+    }
+    lines.push(line.text);
+    line.text = '';
+    line.width = 0;
+    for (const ch of [...token]) {
+      appendCharToLine(lines, line, ch, fontSize, contentWidth);
+    }
+    return;
+  }
+
+  line.text += token;
+  line.width += width;
+}
+
+/** 行幅に収まるよう折り返す（省略なし） */
+function wrapTitle(title: string, fontSize: number, contentWidth: number): string {
+  const lines: string[] = [];
+  const line = { text: '', width: 0 };
+
+  for (const token of titleTokens(title)) {
+    appendTokenToLines(lines, line, token, fontSize, contentWidth);
+  }
+
+  if (line.text) lines.push(line.text);
 
   return lines.join('\n');
+}
+
+/** Satori の行分割で `@` の前後が切れないようにする */
+function glueAtSignForRender(wrapped: string): string {
+  return wrapped.replace(/@(?=\S)/g, `@${WORD_JOINER}`).replace(/(\S)@/g, `$1${WORD_JOINER}@`);
 }
 
 export async function generateOgImage(title: string): Promise<Buffer> {
   const font = await loadFont();
   const contentWidth = WIDTH - PAD_X * 2;
-  const wrappedTitle = wrapTitle(title, TITLE_FONT_SIZE, contentWidth);
+  const wrappedTitle = glueAtSignForRender(wrapTitle(title, TITLE_FONT_SIZE, contentWidth));
 
   const svg = await satori(
     {
