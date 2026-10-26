@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import HomeRecentBlogPosts from '../components/HomeRecentBlogPosts.astro';
 import HomeFooterNav from '../components/HomeFooterNav.astro';
+import HomeTopRail from '../components/HomeTopRail.astro';
 import HomeTadekuRail from '../components/HomeTadekuRail.astro';
 import HomeKeywordsMarquee from '../components/HomeKeywordsMarquee.astro';
 import SiteLogo from '../components/SiteLogo.astro';
@@ -12,6 +13,7 @@ import SiteLogo from '../components/SiteLogo.astro';
   <SiteHeader />
   <div class="home-layout">
     <main id="main-content" class="main main-home">
+      <HomeTopRail />
       <HomeKeywordsMarquee />
       <div class="home-profile">
         <div class="name-box">

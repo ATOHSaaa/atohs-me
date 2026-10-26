@@ -929,6 +929,41 @@ a.home-block--card:focus-visible {
   margin-bottom: 0;
 }
 
+.main.main-home {
+  position: relative;
+}
+
+.home-top-rail {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: max-content;
+  padding: 0;
+  overflow: visible;
+  z-index: 1;
+}
+
+.home-top-rail-link {
+  font-size: 0.62rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.home-top-rail-link:is(:hover, :focus-visible) {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.home-top-rail-link--horizontal {
+  display: block;
+  text-align: right;
+  white-space: nowrap;
+}
+
 .home-footer-zone {
   margin-top: 32px;
   display: flex;
@@ -964,6 +999,7 @@ a.home-block--card:focus-visible {
 .home-tadeku-rail-link--horizontal {
   display: block;
   text-align: right;
+  white-space: nowrap;
 }
 
 .home-tadeku-rail-link--vertical {
@@ -974,6 +1010,7 @@ a.home-block--card:focus-visible {
   writing-mode: vertical-rl;
   text-orientation: mixed;
   letter-spacing: 0.1em;
+  white-space: nowrap;
   z-index: 1;
 }
 
