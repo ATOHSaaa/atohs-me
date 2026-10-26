@@ -890,6 +890,10 @@ html[data-theme='dark'] .theme-toggle-icon--to-light {
   line-height: 1.45;
 }
 
+.home-profile .name-detail-line:not(.name-primary) {
+  max-width: 22em;
+}
+
 .home-profile .name-detail-line.name-primary {
   margin-bottom: 10px;
   font-size: 1.2em;
@@ -2329,6 +2333,11 @@ a.blog-tag:hover {
 
   .home-profile .name-detail-line {
     font-size: 0.85em;
+  }
+
+  .home-profile .name-detail-line:not(.name-primary) {
+    max-width: min(100%, 16.5em);
+    margin-inline: auto;
   }
 
   .home-profile .name-detail-line.name-primary {
