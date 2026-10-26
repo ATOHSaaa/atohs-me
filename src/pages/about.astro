@@ -1,0 +1,30 @@
+---
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import ProfileBox from '../components/ProfileBox.astro';
+
+const entry = await getEntry('about', 'index');
+if (!entry) {
+  throw new Error('About content not found');
+}
+
+const { Content } = await render(entry);
+const description =
+  entry.body?.trim().split('\n').find((line) => line.trim() && !line.startsWith('#')) ??
+  'あとーす（伊藤祥太）の自己紹介です。';
+---
+
+<BaseLayout title="About | atohs.me" description={description} ogUrl="https://atohs.me/about">
+  <SiteHeader />
+  <main id="main-content" class="main about">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="page-title">{entry.data.title}</h1>
+    <ProfileBox href={false} />
+    <div class="blog-body about-body">
+      <Content />
+    </div>
+  </main>
+</BaseLayout>

@@ -40,4 +40,11 @@ const keywords = defineCollection({
   }),
 });
 
-export const collections = { blog, career, keywords };
+const about = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/about' }),
+  schema: z.object({
+    title: z.string().default('About'),
+  }),
+});
+
+export const collections = { blog, career, keywords, about };
