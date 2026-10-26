@@ -230,11 +230,13 @@ body {
   .home-profile-with-keywords {
     --home-mobile-keywords-rail-width: 2.85rem;
     position: relative;
-    padding-left: calc(var(--home-mobile-keywords-rail-width) + 10px);
+    padding-left: 0;
   }
 
   .home-profile-with-keywords > .home-profile {
     margin-top: 0;
+    position: relative;
+    z-index: 0;
   }
 
   .home-profile-with-keywords > .home-keywords-marquee-shell {
@@ -243,13 +245,18 @@ body {
     box-sizing: border-box;
     top: 0;
     bottom: 0;
-    left: 0;
+    left: calc(-1 * var(--site-gutter));
     width: var(--home-mobile-keywords-rail-width);
     max-width: var(--home-mobile-keywords-rail-width);
     min-height: 0;
     margin: 0;
     overflow: hidden;
     z-index: 1;
+    pointer-events: none;
+  }
+
+  .home-profile-with-keywords > .home-keywords-marquee-shell a {
+    pointer-events: auto;
   }
 
   .home-profile-with-keywords .home-keywords-marquee {
@@ -271,8 +278,18 @@ body {
 
   .home-profile-with-keywords .home-keywords-marquee-list {
     flex-direction: column;
+    align-items: flex-start;
     gap: 1.25rem;
     padding: 0.5rem 0;
+  }
+
+  .home-profile-with-keywords .home-keywords-marquee-item a {
+    padding-left: 0.2rem;
+    padding-right: 0.28rem;
+  }
+
+  .home-top-rail {
+    right: calc(-1 * var(--site-gutter));
   }
 }
 
