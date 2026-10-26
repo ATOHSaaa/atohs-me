@@ -38,6 +38,52 @@ function resetHost(host: HTMLElement): { sweepText: string; preserved: ChildNode
   return { sweepText, preserved };
 }
 
+/**
+ * Range の1文字計測は日本語の禁則処理を見ないため、
+ * `」` などが行頭に来ることがある。分割後に補正する。
+ */
+const LINE_START_FORBIDDEN =
+  /^[、。，．・：；？！゛゜´｀¨＾￣＿ヽヾゝゞ々‐–—―〜ぁぃぅぇぉっゃゅょゎァィゥェォッャュョヮヵヶー）］｝〉》」』】〕〗〙〛〞〟’”›»％‰℃°′″…‥]+/u;
+
+const LINE_END_FORBIDDEN = /[（［｛〈《「『【〔〖〘〚〝‘“‹«]$/u;
+
+function applyKinsoku(lines: string[]): string[] {
+  const result = lines.filter((line) => line.length > 0);
+  let changed = true;
+
+  while (changed) {
+    changed = false;
+    for (let i = 1; i < result.length; i++) {
+      const startMatch = result[i].match(LINE_START_FORBIDDEN);
+      if (startMatch) {
+        result[i - 1] += startMatch[0];
+        result[i] = result[i].slice(startMatch[0].length);
+        changed = true;
+      }
+
+      if (result[i] === '') {
+        result.splice(i, 1);
+        changed = true;
+        i -= 1;
+        continue;
+      }
+
+      if (LINE_END_FORBIDDEN.test(result[i - 1]) && result[i].length > 0) {
+        const chars = [...result[i]];
+        result[i - 1] += chars[0];
+        result[i] = chars.slice(1).join('');
+        changed = true;
+        if (result[i] === '') {
+          result.splice(i, 1);
+          i -= 1;
+        }
+      }
+    }
+  }
+
+  return result.length > 0 ? result : lines;
+}
+
 /** 折り返し位置を1文字ずつ測って行テキストに分割（日本語など空白なしでも動く） */
 function measureLineTexts(host: HTMLElement, text: string): string[] {
   host.replaceChildren(document.createTextNode(text));
@@ -63,7 +109,7 @@ function measureLineTexts(host: HTMLElement, text: string): string[] {
     prevTop = top;
   }
   lines.push(text.slice(lineStart));
-  return lines;
+  return applyKinsoku(lines);
 }
 
 function applyLineSpans(

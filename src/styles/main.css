@@ -2335,6 +2335,12 @@ h2 + .blog-list {
   max-width: 100%;
 }
 
+/* 計測で決めた行を再折り返ししない（禁則補正後の1文字のはみ出しを許容） */
+.blog-list-title-wrap a .link-sweep-line {
+  white-space: nowrap;
+  max-width: none;
+}
+
 .header-links .header-social .link-sweep-line {
   display: inline-block;
 }
