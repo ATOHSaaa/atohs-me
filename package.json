@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "dev:reset": "node scripts/reset-astro-dev.mjs && npm run dev",
-    "predev": "node scripts/ensure-og-font.mjs && node scripts/update-link-card-ogp.mjs && node scripts/split-site-css.mjs",
-    "prebuild": "node scripts/ensure-og-font.mjs && node scripts/update-link-card-ogp.mjs && node scripts/split-site-css.mjs",
+    "predev": "node scripts/ensure-og-font.mjs && node scripts/generate-favicon.mjs && node scripts/update-link-card-ogp.mjs && node scripts/split-site-css.mjs",
+    "prebuild": "node scripts/ensure-og-font.mjs && node scripts/generate-favicon.mjs && node scripts/update-link-card-ogp.mjs && node scripts/split-site-css.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "ensure-og-font": "node scripts/ensure-og-font.mjs",
@@ -21,5 +21,8 @@
     "astro": "^5.7.10",
     "rehype-slug": "^6.0.0",
     "satori": "^0.28.0"
+  },
+  "devDependencies": {
+    "to-ico": "^1.1.5"
   }
 }
