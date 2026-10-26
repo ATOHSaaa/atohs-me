@@ -2167,6 +2167,10 @@ a.blog-tag:hover {
   margin-bottom: 24px;
 }
 
+[data-theme='dark'] .blog-body h3 {
+  font-weight: 700;
+}
+
 .blog-body ul,
 .blog-body ol {
   margin-top: 1em;
