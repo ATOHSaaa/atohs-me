@@ -8,7 +8,7 @@ tags: 日記,登山
 
 とりあえずYAMAPのスクショを貼ります。
 
-![俵山登山の記録（YAMAP）](./climbed-tawarayama/yamap.png)
+![俵山登山の記録（YAMAP）](./img/climbed-tawarayama-yamap.png)
 
 朝6時頃に出発し、朝ごはんを食べて、7時半くらいから登山開始。萌の里の駐車場に車を停めて登り始めました。
 
@@ -18,17 +18,17 @@ tags: 日記,登山
 
 道なき道を進みます。
 
-![木の生えているエリア](./climbed-tawarayama/forest.png)
+![木の生えているエリア](./img/climbed-tawarayama-forest.png)
 
 上の写真のエリアは傾斜もかなり強く、まさに「登山！」という感じがして楽しかったです。しかし、下りはちょっと怖かったですね。ぬかるんでいるところなどもあり、たびたび滑っていました。
 
 下山して、萌の里に寄ってみると、ひまわりが満開でした。
 
-![萌の里のひまわり畑](./climbed-tawarayama/sunflowers.png)
+![萌の里のひまわり畑](./img/climbed-tawarayama-sunflowers.png)
 
 その後は、乙姫まで出向き、「ひめ路」というお店で高菜飯・だご汁・もつ煮のセットを食べました。ビールも。山を登った後に昼間から飲むビールは美味い。
 
-![登山後の昼食](./climbed-tawarayama/lunch.png)
+![登山後の昼食](./img/climbed-tawarayama-lunch.png)
 
 4時間も登山を満喫した後なのに、この時点でまだ12時過ぎ。熊本市内まで戻り、古着屋などに寄った後に帰宅しました。
 

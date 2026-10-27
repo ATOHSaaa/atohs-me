@@ -17,8 +17,6 @@ import { formatDate } from '../../lib/format-date';
 import { postHasTwitterEmbed } from '../../lib/blog-twitter-embed.js';
 import { OG_IMAGE_FILENAME } from '../../lib/og-image';
 
-await import('../../styles/blog-post.css');
-
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   return posts.map((post) => ({

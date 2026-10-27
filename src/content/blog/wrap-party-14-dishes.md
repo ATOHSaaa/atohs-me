@@ -7,11 +7,11 @@ pubDate: 2026-08-09
 
 今後の打ち上げ料理のために、どういうことを考えて作ったのかとか、味の感想とかをメモします。
 
-![打ち上げの食卓](./wrap-party-14-dishes/table-1.png)
+![打ち上げの食卓](./img/wrap-party-14-dishes-table-1.png)
 
-![もつ煮](./wrap-party-14-dishes/motsuni.png)
+![もつ煮](./img/wrap-party-14-dishes-motsuni.png)
 
-![打ち上げの食卓](./wrap-party-14-dishes/table-2.png)
+![打ち上げの食卓](./img/wrap-party-14-dishes-table-2.png)
 
 ## タコの刺身
 
