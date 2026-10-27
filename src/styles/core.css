@@ -359,7 +359,7 @@ body {
 
 @media (min-width: 880px) {
   .main-home > .home-top-rail {
-    top: 20px;
+    top: 4px;
     right: 0;
     padding-right: 0;
   }
@@ -1669,6 +1669,27 @@ a.home-block--card:focus-visible {
 a.profile-box:hover,
 a.profile-box:active {
   box-shadow: var(--card-shadow-chip-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a.profile-box .name-primary,
+  a.profile-box .name-detail-line,
+  a.profile-box .profile-text {
+    transition: font-weight 0.12s ease;
+  }
+
+  /* 通常: primary 800 / 詳細・本文 500 → ホバーで一段階上げる */
+  a.profile-box:hover .name-primary {
+    font-weight: 900;
+  }
+
+  a.profile-box:hover .name-detail-line {
+    font-weight: 600;
+  }
+
+  a.profile-box:hover .profile-text {
+    font-weight: 600;
+  }
 }
 
 .profile-box-title {

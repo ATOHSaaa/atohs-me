@@ -359,7 +359,7 @@ body {
 
 @media (min-width: 880px) {
   .main-home > .home-top-rail {
-    top: 20px;
+    top: 4px;
     right: 0;
     padding-right: 0;
   }
@@ -1669,6 +1669,27 @@ a.home-block--card:focus-visible {
 a.profile-box:hover,
 a.profile-box:active {
   box-shadow: var(--card-shadow-chip-hover);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a.profile-box .name-primary,
+  a.profile-box .name-detail-line,
+  a.profile-box .profile-text {
+    transition: font-weight 0.12s ease;
+  }
+
+  /* 通常: primary 800 / 詳細・本文 500 → ホバーで一段階上げる */
+  a.profile-box:hover .name-primary {
+    font-weight: 900;
+  }
+
+  a.profile-box:hover .name-detail-line {
+    font-weight: 600;
+  }
+
+  a.profile-box:hover .profile-text {
+    font-weight: 600;
+  }
 }
 
 .profile-box-title {
@@ -2987,23 +3008,24 @@ a.blog-tag:hover {
 }
 
 .blog-list--archive .blog-list-item {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto auto;
-  gap: 2px 0;
-  align-items: start;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 18px;
+  align-items: baseline;
   margin-bottom: 10px;
   line-height: 1.75;
 }
 
 .blog-list--archive .blog-list-item time {
-  grid-row: 1;
-  line-height: 1.35;
+  flex-shrink: 0;
+  line-height: inherit;
 }
 
 .blog-list--archive .blog-list-title-wrap {
-  grid-row: 2;
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
   max-width: 100%;
 }
 
@@ -3149,6 +3171,12 @@ a.blog-tag:hover {
   font-weight: 400;
   line-height: 1.75;
   letter-spacing: 0.05em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .blog-layout-footer-profile a.profile-box:hover .profile-text {
+    font-weight: 500;
+  }
 }
 
 .blog-layout-footer .quote-footnotes {
@@ -3709,11 +3737,25 @@ a.blog-tag:hover {
   }
 
   .blog-list--archive .blog-list-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 2px 0;
+    align-items: start;
     margin-bottom: 16px;
+    line-height: 1.75;
   }
 
   .blog-list--archive .blog-list-item time {
+    grid-row: 1;
     line-height: 1.35;
+  }
+
+  .blog-list--archive .blog-list-title-wrap {
+    grid-row: 2;
+    width: 100%;
+    max-width: 100%;
+    line-height: 1.55;
   }
 
   .blog-list--archive .blog-list-title-wrap a {
