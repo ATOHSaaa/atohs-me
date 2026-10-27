@@ -1,13 +1,16 @@
 /**
- * 未使用の CSS クラス候補を一覧する（src/styles/main.css vs src/ テンプレート）。
+ * 未使用の CSS クラス候補を一覧する（src/styles/*.css vs src/ テンプレート）。
  * 実行: node scripts/audit-css-classes.mjs
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const root = process.cwd();
-const stylesPath = join(root, 'src/styles/main.css');
-const css = readFileSync(stylesPath, 'utf8');
+const stylesDir = join(root, 'src/styles');
+const css = readdirSync(stylesDir)
+  .filter((name) => name.endsWith('.css'))
+  .map((name) => readFileSync(join(stylesDir, name), 'utf8'))
+  .join('\n');
 
 const classInCss = new Set();
 for (const match of css.matchAll(/\.([a-zA-Z][a-zA-Z0-9_-]*)/g)) {
@@ -158,7 +161,7 @@ const unused = [...classInCss]
   .filter((name) => !classInSrc.has(name) && !ignore.has(name))
   .sort();
 
-console.log(`CSS classes in main.css: ${classInCss.size}`);
+console.log(`CSS classes in src/styles/*.css: ${classInCss.size}`);
 console.log(`Classes seen in src/ corpus: ${classInSrc.size}`);
 console.log(`\nPossibly unused (${unused.length}):`);
 for (const name of unused) {

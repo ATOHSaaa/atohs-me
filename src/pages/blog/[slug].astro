@@ -16,6 +16,8 @@ import { formatDate } from '../../lib/format-date';
 import { postHasTwitterEmbed } from '../../lib/blog-twitter-embed.js';
 import { OG_IMAGE_FILENAME } from '../../lib/og-image';
 
+await import('../../styles/blog-post.css');
+
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   return posts.map((post) => ({
@@ -50,17 +52,19 @@ const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
           <a href="/">Home</a><span class="breadcrumb-slash">/</span><a href="/blog">Blog</a><span
             class="breadcrumb-slash">/</span>
         </nav>
-        {
-          post.data.tags.length > 0 && (
-            <div class="blog-intro-tags">
-              <BlogPostTags tags={post.data.tags} />
-            </div>
-          )
-        }
         <h1 class="blog-title">{post.data.title}</h1>
-        <p class="blog-meta">
-          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-        </p>
+        <div class="blog-intro-meta">
+          {
+            post.data.tags.length > 0 && (
+              <div class="blog-intro-tags">
+                <BlogPostTags tags={post.data.tags} />
+              </div>
+            )
+          }
+          <p class="blog-meta">
+            <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          </p>
+        </div>
       </div>
       <div class="blog-layout-share-rail">
         <ShareButtons url={postUrl} title={post.data.title} />
