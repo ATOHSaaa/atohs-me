@@ -55,7 +55,7 @@
 }
 
 .blog-layout-intro .blog-title {
-  font-size: 1.65em;
+  font-size: var(--font-size-blog-title);
   text-align: justify;
   text-align-last: left;
   text-justify: inter-character;
@@ -751,10 +751,6 @@
 }
 
 @media (max-width: 720px) {
-  .blog-layout-intro .blog-title {
-    font-size: 1.4em;
-  }
-
   .share-buttons {
     margin-bottom: 42px;
   }

@@ -23,7 +23,7 @@ interface Props {
 
 const { tag } = Astro.props;
 const posts = await getBlogPostsByTag(tag);
-const pageHeading = `タグ「${tag}」の記事一覧`;
+const pageHeading = `「${tag}」タグがついている記事一覧`;
 const ogUrl = `https://atohs.me${blogTagHref(tag)}`;
 ---
 

@@ -60,6 +60,7 @@
     var(--width-blog-share-rail) + 40px + var(--width-blog-content) + 40px +
       var(--width-blog-toc)
   );
+  --font-size-blog-title: 1.65em;
   /** ヘッダー内要素の最大幅（本文より広く、超ワイド画面では左右に余白） */
   --width-header: 1200px;
   --site-gutter: 16px;
@@ -323,8 +324,7 @@ a {
   cursor: pointer;
 }
 
-h2,
-.page-title {
+h2 {
   font-size: 1.5em;
   font-weight: 700;
   margin-top: 48px;
@@ -333,8 +333,8 @@ h2,
   letter-spacing: 0.1em;
 }
 
-h2 span,
-.page-title span {
+h1.page-title span,
+h2 span {
   margin-top: 8px;
   font-size: 0.6em;
   letter-spacing: 0;
@@ -1734,6 +1734,11 @@ a.keywords-chip {
   margin-top: 24px;
   margin-bottom: 20px;
   font-size: 0.85em;
+  color: #000;
+}
+
+[data-theme="dark"] .breadcrumb {
+  color: #fff;
 }
 
 .breadcrumb + .page-title,
@@ -1742,12 +1747,8 @@ a.keywords-chip {
   margin-top: 0;
 }
 
-.breadcrumb + .blog-title,
-.breadcrumb + .blog-title-row .blog-title {
-  font-feature-settings: "palt" 1;
-}
-
 .breadcrumb a {
+  color: inherit;
   text-decoration: none;
   font-weight: 700;
 }
@@ -1756,16 +1757,21 @@ a.keywords-chip {
   margin: 0 0.35em;
 }
 
-.blog-title,
-.breadcrumb + .page-title,
-.keywords-heading-row .page-title {
-  font-size: 2em;
+h1.blog-title,
+h1.page-title {
+  color: #000;
+  font-size: var(--font-size-blog-title);
   font-weight: 700;
   letter-spacing: 0em;
   margin: 0 0 8px;
   line-height: 1.4;
   font-feature-settings: "palt" 1;
   text-autospace: no-autospace;
+}
+
+[data-theme="dark"] h1.blog-title,
+[data-theme="dark"] h1.page-title {
+  color: #fff;
 }
 
 .keywords-heading-row .page-title {
@@ -2192,6 +2198,7 @@ a.blog-tag:hover {
 .blog-body h5,
 .blog-body h6 {
   color: #000;
+  font-weight: 700;
   letter-spacing: 0em;
   font-feature-settings: "palt" 1;
   text-autospace: no-autospace;
@@ -2208,31 +2215,20 @@ a.blog-tag:hover {
 
 .blog-body h2 {
   font-size: 1.5em;
-  font-weight: 800;
   margin-top: 60px;
   margin-bottom: 24px;
 }
 
 .blog-body h3 {
   font-size: 1.3em;
-  font-weight: 700;
   margin-top: 48px;
   margin-bottom: 24px;
 }
 
-[data-theme="dark"] .blog-body h3 {
-  font-weight: 700;
-}
-
 .blog-body h4 {
   font-size: 1.15em;
-  font-weight: 700;
   margin-top: 36px;
   margin-bottom: 16px;
-}
-
-[data-theme="dark"] .blog-body h4 {
-  font-weight: 700;
 }
 
 .blog-body ul,
@@ -2536,6 +2532,7 @@ a.blog-tag:hover {
   :root {
     --header-height: 70px;
     --site-gutter: 24px;
+    --font-size-blog-title: 1.4em;
   }
 
   body {
@@ -2833,16 +2830,9 @@ a.blog-tag:hover {
     height: 128px;
   }
 
-  h2,
-  .page-title {
+  h2 {
     font-size: 1.6em;
     letter-spacing: 0.1em;
-  }
-
-  .blog-title,
-  .breadcrumb + .page-title,
-  .keywords-heading-row .page-title {
-    font-size: 1.7em;
   }
 
   .cat-logo {
@@ -2967,8 +2957,4 @@ a.blog-tag:hover {
     line-height: 1.55;
   }
 
-  .blog-title,
-  .breadcrumb + .page-title {
-    font-size: 1.7em;
-  }
 }
