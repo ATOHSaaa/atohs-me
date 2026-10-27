@@ -3,10 +3,49 @@
    ========================================================================== */
 
 :root {
-  --color-text: rgb(10, 10, 55);
-  --color-bg: #fffefa;
-  --color-text-muted: rgba(10, 10, 55, 0.6);
-  --color-border: rgba(10, 10, 55, 0.8);
+  --contrast-level: 100;
+  --contrast-toward-high: 0;
+  --contrast-toward-low: 0;
+  --color-text: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      rgb(10, 10, 55) calc(100% - var(--contrast-toward-low) * 100%),
+      rgb(70, 70, 105) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    rgb(0, 0, 20) calc(var(--contrast-toward-high) * 100%)
+  );
+  --color-bg: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      #fffefa calc(100% - var(--contrast-toward-low) * 100%),
+      rgb(245, 244, 240) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    #ffffff calc(var(--contrast-toward-high) * 100%)
+  );
+  --color-text-muted: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      rgba(10, 10, 55, 0.6) calc(100% - var(--contrast-toward-low) * 100%),
+      rgba(55, 55, 90, 0.45) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    rgba(10, 10, 55, 0.78) calc(var(--contrast-toward-high) * 100%)
+  );
+  --color-border: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      rgba(10, 10, 55, 0.8) calc(100% - var(--contrast-toward-low) * 100%),
+      rgba(55, 55, 90, 0.55) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    rgba(10, 10, 55, 0.95) calc(var(--contrast-toward-high) * 100%)
+  );
   --color-border-strong: rgba(10, 10, 55, 1);
   --font-sans:
     "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic",
@@ -28,7 +67,16 @@
   --radius-md: 16px;
   --card-surface: var(--color-bg);
   --card-border-width: 1px;
-  --card-border: rgba(10, 10, 55, 0.1);
+  --card-border: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      rgba(10, 10, 55, 0.1) calc(100% - var(--contrast-toward-low) * 100%),
+      rgba(55, 55, 90, 0.08) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    rgba(10, 10, 55, 0.22) calc(var(--contrast-toward-high) * 100%)
+  );
   --card-shadow-chip:
     0 1px 2px rgba(10, 10, 55, 0.035), 0 2px 8px rgba(10, 10, 55, 0.04);
   --card-shadow-chip-hover:
@@ -39,23 +87,86 @@
     0 3px 6px rgba(10, 10, 55, 0.05), 0 7px 16px rgba(10, 10, 55, 0.07);
   --outline-frame-bg-hover: #ffee00;
   --outline-frame-fg-on-hover: rgb(10, 10, 55);
-  --outline-frame-fg-muted-on-hover: rgba(10, 10, 55, 0.6);
-  --outline-frame-border: rgb(10, 10, 55);
+  --outline-frame-fg-muted-on-hover: var(--color-text-muted);
+  --outline-frame-border: var(--color-text);
   --outline-frame-hover-scale: 1.02;
   --outline-frame-radius: 4px;
-  --color-tag-bg: #fff;
+  --color-tag-bg: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      #ffffff calc(100% - var(--contrast-toward-low) * 100%),
+      rgb(252, 251, 248) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    #ffffff calc(var(--contrast-toward-high) * 100%)
+  );
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --color-text: rgb(236, 238, 248);
-  --color-bg: rgb(10, 12, 42);
-  --color-text-muted: rgba(236, 238, 248, 0.62);
-  --color-border: rgba(236, 238, 248, 0.72);
+  --color-text: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      rgb(236, 238, 248) calc(100% - var(--contrast-toward-low) * 100%),
+      rgb(175, 177, 195) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    rgb(255, 255, 255) calc(var(--contrast-toward-high) * 100%)
+  );
+  --color-bg: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      rgb(10, 12, 42) calc(100% - var(--contrast-toward-low) * 100%),
+      rgb(30, 32, 58) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    rgb(0, 0, 12) calc(var(--contrast-toward-high) * 100%)
+  );
+  --color-text-muted: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      rgba(236, 238, 248, 0.62) calc(100% - var(--contrast-toward-low) * 100%),
+      rgba(175, 177, 195, 0.5) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    rgba(236, 238, 248, 0.82) calc(var(--contrast-toward-high) * 100%)
+  );
+  --color-border: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      rgba(236, 238, 248, 0.72) calc(100% - var(--contrast-toward-low) * 100%),
+      rgba(175, 177, 195, 0.55) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    rgba(236, 238, 248, 0.92) calc(var(--contrast-toward-high) * 100%)
+  );
   --color-border-strong: rgba(236, 238, 248, 0.95);
-  --color-tag-bg: rgb(18, 22, 56);
+  --color-tag-bg: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      rgb(18, 22, 56) calc(100% - var(--contrast-toward-low) * 100%),
+      rgb(32, 36, 68) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    rgb(8, 10, 32) calc(var(--contrast-toward-high) * 100%)
+  );
   --card-border-width: 2px;
-  --card-border: rgba(236, 238, 248, 0.28);
+  --card-border: color-mix(
+    in srgb,
+    color-mix(
+      in srgb,
+      rgba(236, 238, 248, 0.28) calc(100% - var(--contrast-toward-low) * 100%),
+      rgba(175, 177, 195, 0.22) calc(var(--contrast-toward-low) * 100%)
+    )
+    calc(100% - var(--contrast-toward-high) * 100%),
+    rgba(236, 238, 248, 0.42) calc(var(--contrast-toward-high) * 100%)
+  );
   --card-shadow-chip:
     0 1px 2px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.22);
   --card-shadow-chip-hover:
@@ -64,7 +175,7 @@
     0 2px 6px rgba(0, 0, 0, 0.18), 0 6px 14px rgba(0, 0, 0, 0.2);
   --outline-frame-shadow-hover:
     0 3px 8px rgba(0, 0, 0, 0.22), 0 8px 18px rgba(0, 0, 0, 0.24);
-  --outline-frame-border: rgb(236, 238, 248);
+  --outline-frame-border: var(--color-text);
 }
 
 /* ==========================================================================
@@ -481,6 +592,76 @@ details.header-info[open] .header-info-panel {
   white-space: nowrap;
 }
 
+.header-display-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.contrast-control {
+  width: 4.25rem;
+}
+
+.contrast-slider-wrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+}
+
+.contrast-slider {
+  --contrast-thumb-size: 7px;
+  --contrast-track-size: 1px;
+  width: 100%;
+  height: var(--contrast-thumb-size);
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.contrast-slider::-webkit-slider-runnable-track {
+  height: var(--contrast-track-size);
+  border-radius: 1px;
+  background: var(--color-border);
+}
+
+.contrast-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: calc(
+    (var(--contrast-track-size) - var(--contrast-thumb-size)) / 2
+  );
+  width: var(--contrast-thumb-size);
+  height: var(--contrast-thumb-size);
+  border: none;
+  border-radius: 50%;
+  background: var(--color-text);
+}
+
+.contrast-slider::-moz-range-track {
+  height: var(--contrast-track-size);
+  border-radius: 1px;
+  background: var(--color-border);
+}
+
+.contrast-slider::-moz-range-thumb {
+  width: var(--contrast-thumb-size);
+  height: var(--contrast-thumb-size);
+  border: none;
+  border-radius: 50%;
+  background: var(--color-text);
+}
+
+.contrast-slider:focus-visible {
+  outline: 2px solid var(--color-border-strong);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
 .theme-toggle {
   position: relative;
   display: inline-flex;
@@ -502,6 +683,13 @@ details.header-info[open] .header-info-panel {
   outline-offset: 2px;
 }
 
+.theme-toggle-icon-slot {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
 .theme-toggle-icon {
   position: absolute;
   top: 50%;
@@ -516,24 +704,24 @@ details.header-info[open] .header-info-panel {
   pointer-events: none;
 }
 
-html[data-theme="light"] .theme-toggle-icon--to-dark {
-  opacity: 0;
-  transform: translate(-50%, -50%) rotate(-72deg) scale(0.45);
-}
-
-html[data-theme="light"] .theme-toggle-icon--to-light {
+html[data-theme="light"] .theme-toggle-icon--light {
   opacity: 1;
   transform: translate(-50%, -50%) rotate(0deg) scale(1);
 }
 
-html[data-theme="dark"] .theme-toggle-icon--to-dark {
-  opacity: 1;
-  transform: translate(-50%, -50%) rotate(0deg) scale(1);
-}
-
-html[data-theme="dark"] .theme-toggle-icon--to-light {
+html[data-theme="light"] .theme-toggle-icon--dark {
   opacity: 0;
   transform: translate(-50%, -50%) rotate(72deg) scale(0.45);
+}
+
+html[data-theme="dark"] .theme-toggle-icon--dark {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(0deg) scale(1);
+}
+
+html[data-theme="dark"] .theme-toggle-icon--light {
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-72deg) scale(0.45);
 }
 
 @media (prefers-reduced-motion: reduce) {

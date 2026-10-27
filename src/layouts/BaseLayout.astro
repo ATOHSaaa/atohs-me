@@ -45,6 +45,31 @@ await import('../styles/main.css');
               ? 'dark'
               : 'light';
         document.documentElement.dataset.theme = theme;
+
+        const contrastKey = 'atohs-contrast';
+        const contrastRaw = localStorage.getItem(contrastKey);
+        const contrastParsed = contrastRaw ? parseInt(contrastRaw, 10) : 100;
+        const contrast =
+          contrastParsed >= 75 && contrastParsed <= 125 ? contrastParsed : 100;
+        document.documentElement.style.setProperty(
+          '--contrast-level',
+          String(contrast),
+        );
+        if (contrast >= 100) {
+          const towardHigh = (contrast - 100) / 25;
+          document.documentElement.style.setProperty(
+            '--contrast-toward-high',
+            String(towardHigh),
+          );
+          document.documentElement.style.setProperty('--contrast-toward-low', '0');
+        } else if (contrast < 100) {
+          const towardLow = (100 - contrast) / 25;
+          document.documentElement.style.setProperty(
+            '--contrast-toward-low',
+            String(towardLow),
+          );
+          document.documentElement.style.setProperty('--contrast-toward-high', '0');
+        }
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />

@@ -2,6 +2,7 @@
 import HeaderNavLabel from './HeaderNavLabel.astro';
 import SiteTwitterLink from './SiteTwitterLink.astro';
 import SiteYondaLink from './SiteYondaLink.astro';
+import ContrastSlider from './ContrastSlider.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 const pathname = Astro.url.pathname;
@@ -19,7 +20,10 @@ const isResume = pathname === '/resume';
       <a href="/">atohs.me</a>
     </p>
     <div class="header-end">
-      <ThemeToggle />
+      <div class="header-display-controls">
+        <ContrastSlider />
+        <ThemeToggle />
+      </div>
       <nav id="header-menu" class="header-links" aria-label="メニュー">
         <a
           class="header-link"
