@@ -2150,7 +2150,7 @@ a.blog-tag:hover {
 
 .blog-body {
   color: var(--color-text);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.04em;
   text-align: justify;
   text-spacing-trim: trim-start;
@@ -2207,14 +2207,14 @@ a.blog-tag:hover {
 
 .blog-body h2 {
   font-size: 1.5em;
-  font-weight: 700;
+  font-weight: 800;
   margin-top: 60px;
   margin-bottom: 24px;
 }
 
 .blog-body h3 {
   font-size: 1.3em;
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 48px;
   margin-bottom: 24px;
 }
@@ -2225,7 +2225,7 @@ a.blog-tag:hover {
 
 .blog-body h4 {
   font-size: 1.15em;
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 36px;
   margin-bottom: 16px;
 }
