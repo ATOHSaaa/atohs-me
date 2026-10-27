@@ -73,7 +73,7 @@
   text-align-last: left;
   text-justify: inter-character;
   font-feature-settings: "palt" 1;
-  text-autospace: normal;
+  text-autospace: no-autospace;
 }
 
 .blog-intro-meta {
@@ -190,6 +190,7 @@
     font-size: 0.72em;
     line-height: 1.5;
     text-align: center;
+    font-feature-settings: "palt" 1;
   }
 
   .blog-sidebar .name-detail {
@@ -200,6 +201,7 @@
   .blog-sidebar .name-primary {
     font-size: 0.95em;
     text-align: center;
+    font-feature-settings: "palt" 1;
   }
 
   .blog-sidebar .name-primary-part {
@@ -258,6 +260,11 @@
   .blog-toc-item--sub {
     margin-left: 1.25em;
     list-style-type: circle;
+  }
+
+  .blog-toc-item--sub2 {
+    margin-left: 2.5em;
+    list-style-type: "- ";
   }
 
   .blog-toc-link {
@@ -374,6 +381,11 @@
 
 .blog-layout-footer-profile {
   margin-top: 56px;
+}
+
+.blog-layout-footer-profile .profile-box .name-primary,
+.blog-layout-footer-profile .profile-box .name-detail-line {
+  font-feature-settings: "palt" 1;
 }
 
 .blog-layout-footer-profile .profile-box .profile-text {

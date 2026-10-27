@@ -19,6 +19,7 @@ const { items } = Astro.props;
               class:list={[
                 'blog-toc-item',
                 { 'blog-toc-item--sub': item.depth === 3 },
+                { 'blog-toc-item--sub2': item.depth === 4 },
               ]}
             >
               <a class="blog-toc-link" href={`#${item.slug}`}>{item.text}</a>
