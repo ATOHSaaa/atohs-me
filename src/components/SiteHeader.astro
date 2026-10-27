@@ -1,6 +1,7 @@
 ---
 import HeaderNavLabel from './HeaderNavLabel.astro';
 import SiteTwitterLink from './SiteTwitterLink.astro';
+import SiteYondaLink from './SiteYondaLink.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 const pathname = Astro.url.pathname;
@@ -76,6 +77,7 @@ const isResume = pathname === '/resume';
         >
           <HeaderNavLabel label="Contact" />
         </a>
+        <SiteYondaLink variant="header" />
         <SiteTwitterLink variant="header" />
       </nav>
       <button

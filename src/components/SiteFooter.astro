@@ -1,5 +1,6 @@
 ---
 import SiteTwitterLink from './SiteTwitterLink.astro';
+import SiteYondaLink from './SiteYondaLink.astro';
 
 const pathname = Astro.url.pathname;
 const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
@@ -17,6 +18,7 @@ const isResume = pathname === '/resume';
       <a class="footer-link" href="/works" aria-current={isWorks ? 'page' : undefined}>Works</a>
       <a class="footer-link" href="/keywords" aria-current={isKeywords ? 'page' : undefined}>Keywords</a>
       <a class="footer-link" href="/contact" aria-current={isContact ? 'page' : undefined}>Contact</a>
+      <SiteYondaLink variant="footer" />
       <SiteTwitterLink variant="footer" />
     </nav>
   </div>

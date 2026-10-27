@@ -1,0 +1,42 @@
+---
+import HeaderNavLabel from './HeaderNavLabel.astro';
+
+interface Props {
+  variant: 'header' | 'footer' | 'home-footer';
+}
+
+const { variant } = Astro.props;
+const className =
+  variant === 'header'
+    ? 'header-link header-social'
+    : variant === 'home-footer'
+      ? 'home-footer-nav-link home-footer-nav-social'
+      : 'footer-link footer-social';
+---
+
+<a
+  class={className}
+  style={variant === 'header' ? '--title-line-count: 1' : undefined}
+  href="https://yonda.tadeku.net/atohs"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  {
+    variant === 'home-footer' ? (
+      <>
+        <span class="home-footer-nav-link-label">Yonda</span>
+        <span class="link-external-mark" aria-hidden="true">↗</span>
+      </>
+    ) : variant === 'header' ? (
+      <>
+        <HeaderNavLabel label="Yonda" />
+        <span class="link-external-mark" aria-hidden="true">↗</span>
+      </>
+    ) : (
+      <>
+        Yonda<span class="link-external-mark" aria-hidden="true">↗</span>
+      </>
+    )
+  }
+  <span class="visually-hidden">（新しいタブで開く）</span>
+</a>

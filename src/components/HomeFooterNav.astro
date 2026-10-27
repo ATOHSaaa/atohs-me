@@ -1,5 +1,6 @@
 ---
 import SiteTwitterLink from './SiteTwitterLink.astro';
+import SiteYondaLink from './SiteYondaLink.astro';
 ---
 
 <nav class="home-footer-nav" aria-label="サイトメニュー">
@@ -14,6 +15,8 @@ import SiteTwitterLink from './SiteTwitterLink.astro';
   <a class="home-footer-nav-link" href="/keywords">Keywords</a>
   <span class="home-footer-nav-sep" aria-hidden="true">/</span>
   <a class="home-footer-nav-link" href="/contact">Contact</a>
+  <span class="home-footer-nav-sep" aria-hidden="true">/</span>
+  <SiteYondaLink variant="home-footer" />
   <span class="home-footer-nav-sep" aria-hidden="true">/</span>
   <SiteTwitterLink variant="home-footer" />
 </nav>
