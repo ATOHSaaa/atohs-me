@@ -702,10 +702,15 @@ a.blog-tag:hover {
   margin-inline: 1px;
   padding: 0.12em 0.4em;
   border-radius: 4px;
+  background-color: color-mix(in srgb, var(--color-text) 7%, var(--color-bg));
+  color: var(--color-text);
+  word-break: break-all;
+}
+
+[data-theme="dark"] .blog-body :not(pre) > code {
   /* Shiki github-dark（コードブロック）と同じ */
   background-color: #24292e;
   color: #e1e4e8;
-  word-break: break-all;
 }
 
 .blog-body pre,
