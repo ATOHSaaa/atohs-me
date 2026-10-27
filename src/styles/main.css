@@ -2220,13 +2220,13 @@ a.blog-tag:hover {
 }
 
 .blog-body h3 {
-  font-size: 1.3em;
+  font-size: 1.2em;
   margin-top: 48px;
   margin-bottom: 24px;
 }
 
 .blog-body h4 {
-  font-size: 1.15em;
+  font-size: 1.1em;
   margin-top: 36px;
   margin-bottom: 16px;
 }
@@ -2266,6 +2266,55 @@ a.blog-tag:hover {
 
 .blog-body li:has(> ul, > ol) {
   margin-bottom: 8px;
+}
+
+.blog-body table {
+  width: max-content;
+  max-width: 100%;
+  margin: 2.6em 0 2.2em;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+  font-size: 0.9em;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  text-align: left;
+  border-radius: var(--outline-frame-radius) var(--outline-frame-radius) 0 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.blog-body th,
+.blog-body td {
+  width: 1%;
+  padding: 0.65em 0.85em;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.blog-body th:not(:first-child),
+.blog-body td:not(:first-child) {
+  padding-left: 1.25em;
+}
+
+.blog-body tr:last-child th,
+.blog-body tr:last-child td {
+  border-bottom: none;
+}
+
+.blog-body thead th {
+  font-weight: 700;
+  background-color: color-mix(in srgb, var(--color-text) 8%, var(--color-bg));
+}
+
+[data-theme="dark"] .blog-body thead th {
+  background-color: color-mix(in srgb, var(--color-text) 12%, var(--color-bg));
+}
+
+.blog-body th :not(pre) > code,
+.blog-body td :not(pre) > code {
+  font-size: 0.92em;
 }
 
 .blog-body :not(pre) > code {
@@ -2310,6 +2359,30 @@ a.blog-tag:hover {
   border-radius: var(--outline-frame-radius);
   box-shadow: var(--outline-frame-shadow);
   box-sizing: border-box;
+}
+
+.blog-body p:has(> img:only-child):has(+ p.figure-caption) {
+  max-width: 550px;
+  margin: 2em auto 0;
+}
+
+.blog-body p:has(> img:only-child):has(+ p.figure-caption) img {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.blog-body p:has(> img:only-child) + p.figure-caption {
+  max-width: 550px;
+  margin: 0.55em auto 2.8em;
+  font-size: 0.88em;
+  font-weight: 500;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.blog-body p:has(> img:only-child) + p.figure-caption :not(pre) > code {
+  font-size: 0.92em;
 }
 
 /* 本文の先頭が画像だけのとき（Markdown は多くの場合 p > img） */
@@ -2956,5 +3029,4 @@ a.blog-tag:hover {
     a {
     line-height: 1.55;
   }
-
 }
