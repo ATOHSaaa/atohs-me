@@ -1760,7 +1760,7 @@ a.keywords-chip {
 .breadcrumb + .page-title,
 .keywords-heading-row .page-title {
   font-size: 2em;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0em;
   margin: 0 0 8px;
   line-height: 1.4;
@@ -2008,6 +2008,7 @@ a.keywords-chip {
   align-items: baseline;
   margin-bottom: 10px;
   line-height: 1.75;
+  color: red;
 }
 
 .blog-list--archive .blog-list-item time {
