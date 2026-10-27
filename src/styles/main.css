@@ -1998,6 +1998,7 @@ a.blog-tag:hover {
 }
 
 .blog-body a {
+  color: inherit;
   text-underline-offset: 4px;
 }
 
