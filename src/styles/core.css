@@ -288,32 +288,6 @@ body {
     padding-right: 0.28rem;
   }
 
-  /* 上部・フッター tadeku レール：画面端から少し内側（safe-area 込み） */
-  .main-home {
-    --home-tadeku-rail-inset: max(10px, calc(var(--site-gutter) * 0.5));
-  }
-
-  .main-home > .home-top-rail {
-    top: var(--home-tadeku-rail-inset);
-    right: calc((100% - 100vw) / 2 + var(--home-tadeku-rail-inset));
-    padding-right: env(safe-area-inset-right, 0);
-  }
-
-  .home-tadeku-rail {
-    margin-right: calc(50% - 50vw + var(--home-tadeku-rail-inset));
-    padding-right: env(safe-area-inset-right, 0);
-  }
-
-  @supports (width: 100dvw) {
-    .main-home > .home-top-rail {
-      right: calc((100% - 100dvw) / 2 + var(--home-tadeku-rail-inset));
-    }
-
-    .home-tadeku-rail {
-      margin-right: calc(50% - 50dvw + var(--home-tadeku-rail-inset));
-    }
-  }
-
   /* トップ直近記事：日付行の下にタイトル全幅（左右は .main のガター） */
   .home-recent-blog-list {
     display: flex;
@@ -359,9 +333,7 @@ body {
 
 @media (min-width: 880px) {
   .main-home > .home-top-rail {
-    top: 4px;
-    right: 0;
-    padding-right: 0;
+    top: -40px;
   }
 
   .home-body-zone,
@@ -380,8 +352,8 @@ body {
   .home-keywords-marquee-shell {
     display: flex;
     position: absolute;
-    top: 0;
-    bottom: 104px;
+    top: -32px;
+    bottom: 72px;
     right: calc(100% + 16px);
     width: max-content;
     height: auto;
@@ -634,6 +606,22 @@ header:not(.header-top) {
   color: var(--color-text);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .header-link:hover:not(.header-social),
+  summary.header-info-toggle:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  /* Twitter はラベルだけ下線（↗ には付けない） */
+  .header-link.header-social:hover .header-nav-label {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+}
+
 .header-links .header-social {
   display: inline-flex;
   align-items: baseline;
@@ -785,10 +773,12 @@ html[data-theme='dark'] .theme-toggle-icon--to-light {
 }
 
 .link-external-mark {
+  display: inline-block;
   margin-left: 0.15em;
   font-size: 0.85em;
   font-weight: 400;
   opacity: 0.75;
+  text-decoration: none;
 }
 
 .header-menu-toggle {
@@ -954,6 +944,8 @@ html[data-theme='dark'] .theme-toggle-icon--to-light {
 
 .home-profile .name-detail-line:not(.name-primary) {
   max-width: 22em;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .home-profile .name-detail-line.name-primary {
@@ -986,6 +978,11 @@ html[data-theme='dark'] .theme-toggle-icon--to-light {
     flex: 0 1 auto;
     min-width: 0;
     text-align: left;
+  }
+
+  .home-profile .name-detail-line:not(.name-primary) {
+    max-width: none;
+    white-space: nowrap;
   }
 
   .home-profile .name-primary-part {
@@ -1144,17 +1141,38 @@ a.home-block--card:focus-visible {
 
 .main.main-home {
   position: relative;
+  /* header-inner と同じ画面右端からの余白 */
+  --home-rail-viewport-inset: max(
+    var(--site-gutter),
+    calc((100vw - var(--width-header)) / 2)
+  );
+}
+
+@supports (width: 100dvw) {
+  .main.main-home {
+    --home-rail-viewport-inset: max(
+      var(--site-gutter),
+      calc((100dvw - var(--width-header)) / 2)
+    );
+  }
 }
 
 .home-top-rail {
   position: absolute;
   /* 固定ヘッダー下線と重ならないよう下げる */
   top: 20px;
-  right: 0;
+  /* 100% は .main の containing block 基準（right プロパティ上で直接解決） */
+  right: calc((100% - 100vw) / 2 + var(--home-rail-viewport-inset));
   width: max-content;
   padding: 0;
   overflow: visible;
   z-index: 1;
+}
+
+@supports (width: 100dvw) {
+  .home-top-rail {
+    right: calc((100% - 100dvw) / 2 + var(--home-rail-viewport-inset));
+  }
 }
 
 .home-top-rail-link {
@@ -1199,12 +1217,23 @@ a.home-block--card:focus-visible {
 }
 
 .home-tadeku-rail {
-  position: relative;
-  align-self: flex-end;
+  /* 上レールと同じく .main 基準の absolute で右端を揃える */
+  position: absolute;
+  right: calc((100% - 100vw) / 2 + var(--home-rail-viewport-inset));
+  bottom: 72px;
+  align-self: auto;
   width: max-content;
-  margin-top: 16px;
+  margin-top: 0;
+  margin-right: 0;
   padding: 0;
   overflow: visible;
+  z-index: 1;
+}
+
+@supports (width: 100dvw) {
+  .home-tadeku-rail {
+    right: calc((100% - 100dvw) / 2 + var(--home-rail-viewport-inset));
+  }
 }
 
 .home-tadeku-rail-link {
@@ -1675,20 +1704,16 @@ a.profile-box:active {
   a.profile-box .name-primary,
   a.profile-box .name-detail-line,
   a.profile-box .profile-text {
-    transition: font-weight 0.12s ease;
+    -webkit-text-stroke: 0 transparent;
+    paint-order: stroke fill;
+    transition: -webkit-text-stroke-width 0.12s ease, -webkit-text-stroke-color 0.12s ease;
   }
 
-  /* 通常: primary 800 / 詳細・本文 500 → ホバーで一段階上げる */
-  a.profile-box:hover .name-primary {
-    font-weight: 900;
-  }
-
-  a.profile-box:hover .name-detail-line {
-    font-weight: 600;
-  }
-
+  /* ホバー時は stroke でわずかに太く見せる（weight は変えない） */
+  a.profile-box:hover .name-primary,
+  a.profile-box:hover .name-detail-line,
   a.profile-box:hover .profile-text {
-    font-weight: 600;
+    -webkit-text-stroke: 1px currentColor;
   }
 }
 
@@ -2019,6 +2044,14 @@ h2 + .blog-list {
   color: var(--color-text);
   text-wrap: wrap;
   overflow-wrap: break-word;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .blog-list-title-wrap a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
 }
 
 .blog-list-item a {
@@ -2436,7 +2469,7 @@ a.blog-tag:hover {
     content: none;
   }
 
-  .home-tadeku-rail {
+  .home-footer-zone {
     margin-top: 48px;
   }
 
