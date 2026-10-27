@@ -2027,11 +2027,19 @@ a.blog-tag:hover {
 .blog-body h4,
 .blog-body h5,
 .blog-body h6 {
-  color: var(--color-text);
+  color: #000;
   letter-spacing: inherit;
   font-feature-settings: "palt" 1;
   text-autospace: normal;
   scroll-margin-top: calc(var(--header-height) + 16px);
+}
+
+[data-theme="dark"] .blog-body h2,
+[data-theme="dark"] .blog-body h3,
+[data-theme="dark"] .blog-body h4,
+[data-theme="dark"] .blog-body h5,
+[data-theme="dark"] .blog-body h6 {
+  color: #fff;
 }
 
 .blog-body h2 {
