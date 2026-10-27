@@ -125,7 +125,7 @@ body {
   position: relative;
   width: 100%;
   max-width: 100%;
-  overflow-x: clip;
+  /* overflow を付けると absolute な縦書きレールが崩れることがあるので付けない */
 }
 
 .home-keywords-marquee-shell {
@@ -289,13 +289,13 @@ body {
   }
 
   /* 上部・フッター tadeku レール：画面端から少し内側（safe-area 込み） */
-  .home-layout {
+  .main-home {
     --home-tadeku-rail-inset: max(10px, calc(var(--site-gutter) * 0.5));
   }
 
-  .home-layout > .home-top-rail {
+  .main-home > .home-top-rail {
     top: var(--home-tadeku-rail-inset);
-    right: var(--home-tadeku-rail-inset);
+    right: calc((100% - 100vw) / 2 + var(--home-tadeku-rail-inset));
     padding-right: env(safe-area-inset-right, 0);
   }
 
@@ -305,6 +305,10 @@ body {
   }
 
   @supports (width: 100dvw) {
+    .main-home > .home-top-rail {
+      right: calc((100% - 100dvw) / 2 + var(--home-tadeku-rail-inset));
+    }
+
     .home-tadeku-rail {
       margin-right: calc(50% - 50dvw + var(--home-tadeku-rail-inset));
     }
@@ -354,10 +358,9 @@ body {
 }
 
 @media (min-width: 880px) {
-  .home-layout > .home-top-rail {
-    right: calc(
-      (100% - min(calc(100% - 2 * var(--site-gutter)), var(--width-content))) / 2
-    );
+  .main-home > .home-top-rail {
+    top: 20px;
+    right: 0;
     padding-right: 0;
   }
 
@@ -1145,7 +1148,8 @@ a.home-block--card:focus-visible {
 
 .home-top-rail {
   position: absolute;
-  top: 0;
+  /* 固定ヘッダー下線と重ならないよう下げる */
+  top: 20px;
   right: 0;
   width: max-content;
   padding: 0;
@@ -1176,13 +1180,13 @@ a.home-block--card:focus-visible {
 
 .home-top-rail-link--vertical {
   position: absolute;
+  top: calc(100% + 6px);
   right: 0;
-  top: 100%;
-  margin-top: 4px;
   writing-mode: vertical-rl;
-  text-orientation: mixed;
-  letter-spacing: 0.1em;
+  /* mixed だと英字が1文字ずつ直立して崩れて見える */
+  text-orientation: sideways;
   white-space: nowrap;
+  letter-spacing: 0.12em;
   z-index: 1;
 }
 
@@ -1227,12 +1231,11 @@ a.home-block--card:focus-visible {
 .home-tadeku-rail-link--vertical {
   position: absolute;
   right: 0;
-  bottom: 100%;
-  margin-bottom: 4px;
+  bottom: calc(100% + 4px);
   writing-mode: vertical-rl;
-  text-orientation: mixed;
-  letter-spacing: 0.1em;
+  text-orientation: sideways;
   white-space: nowrap;
+  letter-spacing: 0.12em;
   z-index: 1;
 }
 
