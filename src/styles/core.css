@@ -128,10 +128,6 @@ body {
 }
 
 @media (max-width: 879px) {
-  .home-profile {
-    margin-top: 24px;
-  }
-
   /* トップ直近記事：日付行の下にタイトル全幅（左右は .main のガター） */
   .home-recent-blog-list {
     display: flex;
@@ -692,8 +688,14 @@ html[data-theme='dark'] .theme-toggle-icon--to-light {
 .home-profile {
   width: 100%;
   max-width: 100%;
-  margin-top: 100px;
+  margin-top: 40px;
   box-sizing: border-box;
+}
+
+@media (min-width: 880px) {
+  .home-profile {
+    margin-top: 100px;
+  }
 }
 
 .home-profile .name-box {
