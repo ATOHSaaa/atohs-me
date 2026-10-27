@@ -14,8 +14,6 @@ interface Props {
   ogUrl?: string;
   ogImage?: string;
   ogSiteName?: string;
-  /** ブログは blog-layout（core 込み）。それ以外は core のみ */
-  stylesheet?: 'core' | 'blog-layout';
   /** 記事内 X 埋め込み用（preconnect のみ。widgets.js はページ側で読み込む） */
   twitterEmbeds?: boolean;
 }
@@ -26,15 +24,10 @@ const {
   ogUrl = 'https://atohs.me',
   ogImage = 'https://atohs.me/src/ogp.png',
   ogSiteName = 'atohs.me',
-  stylesheet = 'core',
   twitterEmbeds = false,
 } = Astro.props;
 
-if (stylesheet === 'blog-layout') {
-  await import('../styles/blog-layout.css');
-} else {
-  await import('../styles/core.css');
-}
+await import('../styles/main.css');
 ---
 
 <!doctype html>
