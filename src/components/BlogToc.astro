@@ -6,27 +6,32 @@ interface Props {
 }
 
 const { items } = Astro.props;
+const hasItems = items.length > 0;
 ---
 
-{
-  items.length > 0 && (
-    <div class="blog-sidebar-toc-slot">
-      <nav class="blog-toc" aria-label="目次">
-        <h2 class="blog-toc-label">目次</h2>
-        <ul class="blog-toc-list">
-          {items.map((item) => (
-            <li
-              class:list={[
-                'blog-toc-item',
-                { 'blog-toc-item--sub': item.depth === 3 },
-                { 'blog-toc-item--sub2': item.depth === 4 },
-              ]}
-            >
-              <a class="blog-toc-link" href={`#${item.slug}`}>{item.text}</a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </div>
-  )
-}
+<div class="blog-sidebar-toc-slot">
+  <div class:list={['blog-toc', { 'blog-toc--empty': !hasItems }]}>
+    <h2 class="blog-toc-label">目次</h2>
+    {
+      hasItems ? (
+        <nav aria-label="目次">
+          <ul class="blog-toc-list">
+            {items.map((item) => (
+              <li
+                class:list={[
+                  'blog-toc-item',
+                  { 'blog-toc-item--sub': item.depth === 3 },
+                  { 'blog-toc-item--sub2': item.depth === 4 },
+                ]}
+              >
+                <a class="blog-toc-link" href={`#${item.slug}`}>{item.text}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ) : (
+        <p class="blog-toc-empty">この記事に目次はありません</p>
+      )
+    }
+  </div>
+</div>

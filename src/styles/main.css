@@ -52,7 +52,7 @@
     "Yu Gothic UI", "Yu Gothic", "Meiryo", sans-serif;
   --font-mono:
     ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-  --width-content: 720px;
+  --width-content: 680px;
   --font-size-blog-title: 1.65em;
   /** ヘッダー内要素の最大幅（本文より広く、超ワイド画面では左右に余白） */
   --width-header: 1200px;
@@ -533,10 +533,12 @@ details.header-info[open] .header-info-panel {
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
+  overflow: visible;
 }
 
 .contrast-control {
   width: 5.75rem;
+  overflow: visible;
 }
 
 .contrast-slider-wrap {
@@ -544,17 +546,19 @@ details.header-info[open] .header-info-panel {
   align-items: center;
   width: 100%;
   height: 44px;
+  overflow: visible;
 }
 
 .contrast-slider {
   --contrast-thumb-size: 12px;
   --contrast-track-size: 2px;
   width: 100%;
-  height: 100%;
+  height: var(--contrast-thumb-size);
   margin: 0;
   padding: 0;
   cursor: pointer;
   touch-action: pan-y;
+  overflow: visible;
   background: transparent;
   -webkit-appearance: none;
   appearance: none;
@@ -769,10 +773,10 @@ html[data-theme="dark"] .theme-toggle-icon--light {
 .name-box {
   display: flex;
   align-items: flex-start;
-  gap: 32px;
+  gap: 24px;
   margin-top: 24px;
   /* 詳細（3行）の高さ */
-  --name-block-height: calc(1em * 1.6 * 3);
+  --name-block-height: calc(1em * 1.5 * 3);
 }
 
 .profile-icon {
@@ -795,7 +799,7 @@ html[data-theme="dark"] .theme-toggle-icon--light {
 .name-primary {
   display: block;
   font-weight: 800;
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 
 .name-primary-part:first-child::after {
@@ -804,8 +808,9 @@ html[data-theme="dark"] .theme-toggle-icon--light {
 
 .profile-text {
   font-weight: 500;
-  margin-top: 40px;
-  line-height: 1.5em;
+  margin-top: 32px;
+  font-size: 0.94em;
+  line-height: 1.55;
   letter-spacing: 0.04em;
   text-align: justify;
 }
@@ -832,8 +837,8 @@ html[data-theme="dark"] .theme-toggle-icon--light {
 }
 
 .home-profile-icon {
-  width: 96px;
-  height: 96px;
+  width: 88px;
+  height: 88px;
 }
 
 .home-profile .name-detail {
@@ -858,7 +863,7 @@ html[data-theme="dark"] .theme-toggle-icon--light {
 
 .home-profile .name-detail-line.name-primary {
   margin-bottom: 10px;
-  font-size: 1.2em;
+  font-size: 1.05em;
 }
 
 .home-profile .profile-text {
@@ -1359,13 +1364,14 @@ a.keywords-chip {
 
 .profile-box {
   display: block;
-  padding: 32px;
+  padding: 28px;
   border: var(--card-border-width) solid var(--card-border);
   border-radius: 12px;
   background-color: var(--card-surface);
   box-shadow: var(--card-shadow-chip);
   text-decoration: none;
   color: inherit;
+  font-size: 0.94em;
 }
 
 .profile-box-title {
@@ -1374,12 +1380,23 @@ a.keywords-chip {
 
 .profile-box .name-box {
   margin-top: 0;
+  --name-block-height: calc(1em * 1.45 * 3);
+}
+
+.profile-box .name-detail {
+  font-size: 0.92em;
+  line-height: 1.55;
+}
+
+.profile-box .name-primary {
+  font-size: 1.05em;
 }
 
 .profile-box .profile-text {
-  margin-top: 24px;
+  margin-top: 20px;
   margin-bottom: 0;
   line-height: 1.6;
+  font-size: 0.96em;
 }
 
 /* ==========================================================================
@@ -2036,8 +2053,8 @@ h1.page-title {
   }
 
   .profile-icon {
-    width: 128px;
-    height: 128px;
+    width: 112px;
+    height: 112px;
   }
 
   h2 {

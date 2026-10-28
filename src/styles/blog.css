@@ -4,7 +4,7 @@
    ========================================================================== */
 
 :root {
-  --width-blog-content: 768px;
+  --width-blog-content: 680px;
   --width-blog-toc: 280px;
   --width-blog-share-rail: 44px;
   --width-blog-layout: calc(
@@ -104,8 +104,8 @@
 
 .home-recent-blog-list .blog-list-date {
   grid-column: 2;
-  font-size: 0.8em;
-  font-weight: 400;
+  font-size: 0.75em;
+  font-weight: 500;
   color: var(--color-text);
   white-space: nowrap;
 }
@@ -161,10 +161,16 @@ h1.blog-title {
    ========================================================================== */
 
 @media (min-width: 1080px) {
-  .main:not(.blog-main) {
+  /* 記事レイアウトと同じ外枠。パンくずは本文列（シェア列の右）の左端に揃える */
+  .main {
     width: min(calc(100% - 2 * var(--site-gutter)), var(--width-blog-layout));
     max-width: none;
-    padding-left: calc(var(--width-blog-share-rail) + 40px);
+  }
+
+  .main:not(.blog-main) {
+    --blog-main-inline-offset: calc(var(--width-blog-share-rail) + 40px);
+    padding-left: var(--blog-main-inline-offset);
+    padding-right: var(--blog-main-inline-offset);
     box-sizing: border-box;
   }
 }
@@ -406,8 +412,23 @@ h1.blog-title {
   max-width: 100%;
 }
 
+.blog-list--archive .blog-list-title-wrap a,
+.blog-other-posts .blog-list-title-wrap a,
+.home-recent-blog-list .blog-list-title-wrap a {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
 .blog-list--archive .blog-list-item a {
   line-height: 1.75;
+  text-underline-offset: 0.18em;
+}
+
+.blog-other-posts .blog-list-title-wrap a {
+  text-underline-offset: 0.18em;
+}
+
+.home-recent-blog-list .blog-list-title-wrap a {
   text-underline-offset: 0.18em;
 }
 
@@ -540,6 +561,12 @@ a.blog-tag:hover {
   text-spacing-trim: trim-start;
 }
 
+@media (min-width: 721px) {
+  .blog-body {
+    font-size: 16px;
+  }
+}
+
 [data-theme="dark"] .blog-body {
   color: color-mix(in srgb, var(--color-text) 92%, var(--color-bg));
 }
@@ -551,7 +578,7 @@ a.blog-tag:hover {
 
 .blog-body p {
   line-height: 1.8;
-  margin-bottom: 1.2em;
+  margin-bottom: 1.8em;
 }
 
 .blog-body blockquote:not(.twitter-tweet) {
@@ -1097,11 +1124,6 @@ a.blog-tag:hover {
 }
 
 @media (min-width: 1080px) {
-  .main.blog-main {
-    width: min(calc(100% - 2 * var(--site-gutter)), var(--width-blog-layout));
-    max-width: none;
-  }
-
   .main.blog-main .blog-layout {
     width: 100%;
   }
@@ -1230,6 +1252,13 @@ a.blog-tag:hover {
     letter-spacing: 0.06em;
     line-height: 1;
     font-feature-settings: "palt";
+  }
+
+  .blog-toc-empty {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    line-height: 1.45;
   }
 
   .blog-toc-list {
@@ -1674,6 +1703,30 @@ a.blog-tag:hover {
 
 .blog-other-posts-list {
   margin: 0;
+}
+
+@media (min-width: 721px) {
+  .blog-other-posts {
+    font-size: 16px;
+  }
+
+  .blog-other-posts-heading {
+    margin-bottom: 1em;
+  }
+
+  .blog-other-posts .blog-list-item {
+    margin-bottom: 1.8em;
+    line-height: 1.8;
+  }
+
+  .blog-other-posts .blog-list-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .blog-other-posts .blog-list-item a,
+  .blog-other-posts .blog-list-title-wrap a {
+    line-height: 1.8;
+  }
 }
 
 .share-button {
