@@ -6,9 +6,16 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   return posts.map((post) => ({
     params: { slug: post.id },
-    props: { title: post.data.title },
+    props: {
+      title: post.data.title,
+      tags: post.data.tags,
+      pubDate: post.data.pubDate,
+    },
   }));
 }
 
 export const GET: APIRoute = async ({ props }) =>
-  ogImageResponse(props.title, 'public, max-age=31536000, immutable');
+  ogImageResponse(props.title, 'public, max-age=31536000, immutable', {
+    tags: props.tags,
+    pubDate: props.pubDate,
+  });

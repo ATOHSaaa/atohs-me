@@ -1,7 +1,9 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import sharp from 'sharp';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
+import { formatDate } from './format-date';
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -9,15 +11,46 @@ const PAD_X = 48;
 const PAD_TOP = 56;
 const PAD_BOTTOM = 72;
 /** タイトル長に依存せず常に同じサイズ（note の自動 OGP 画像に近い扱い） */
-const TITLE_FONT_SIZE = 56;
+const TITLE_FONT_SIZE = 72;
 const SUBTITLE_FONT_SIZE = 48;
+const BRAND_ICON_SIZE = 56;
+const BRAND_ICON_GAP = 16;
+/** Satori の行ボックス余白でアイコンが上に見えるのを補正 */
+const BRAND_ICON_NUDGE_Y = 7;
 const LINE_HEIGHT = 1.35;
+const FOOTER_FONT_SIZE = 36;
+const TEXT_COLOR = 'rgb(10, 10, 55)';
+/** 記事メタの `--color-text-muted`（light / contrast 100%）に近い */
+const FOOTER_TEXT_COLOR = 'rgba(10, 10, 55, 0.6)';
 /** OGP 描画ロジック変更時にファイル名を上げる（`og.png` は CDN に古い画像が残ることがある） */
-export const OG_IMAGE_FILENAME = 'og-v2.png';
+export const OG_IMAGE_FILENAME = 'og-v9.png';
+
+export type GenerateOgImageOptions = {
+  tags?: string[];
+  pubDate?: Date;
+};
 
 async function loadFont() {
   const fontPath = join(process.cwd(), 'src/assets/fonts/NotoSansCJKjp-Bold.otf');
   return readFile(fontPath);
+}
+
+function circleMaskSvg(size: number) {
+  const r = size / 2;
+  return `<svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg"><circle cx="${r}" cy="${r}" r="${r}" fill="#fff"/></svg>`;
+}
+
+/** ヘッダー favicon と同じく site-logo を円形に切り抜く */
+async function loadCircularSiteLogoDataUrl(size: number): Promise<string> {
+  const source = join(process.cwd(), 'src/assets/site-logo.png');
+  const mask = Buffer.from(circleMaskSvg(size));
+  const png = await sharp(source)
+    .resize(size, size, { fit: 'cover', position: 'centre' })
+    .ensureAlpha()
+    .composite([{ input: mask, blend: 'dest-in' }])
+    .png()
+    .toBuffer();
+  return `data:image/png;base64,${png.toString('base64')}`;
 }
 
 function isAtSign(ch: string) {
@@ -172,11 +205,23 @@ function wrapTitleLines(title: string, fontSize: number, contentWidth: number): 
   return lines;
 }
 
-export async function generateOgImage(title: string): Promise<Buffer> {
+function formatOgTags(tags: string[]): string {
+  return tags.map((tag) => `#${tag}`).join(' ');
+}
+
+export async function generateOgImage(
+  title: string,
+  options: GenerateOgImageOptions = {},
+): Promise<Buffer> {
+  const { tags = [], pubDate } = options;
+  const tagsLabel = formatOgTags(tags);
+  const dateLabel = pubDate ? formatDate(pubDate) : '';
+
   const font = await loadFont();
+  const brandIconSrc = await loadCircularSiteLogoDataUrl(BRAND_ICON_SIZE);
   const contentWidth = WIDTH - PAD_X * 2;
-  /** 実測より少し狭く見積もり、Satori 側の再折り返しを避ける */
-  const wrapWidth = Math.floor(contentWidth * 0.97);
+  /** Satori より少し狭く見積もり、再折り返しを避けつつ行幅をできるだけ使う */
+  const wrapWidth = Math.floor(contentWidth * 0.99);
   const titleLines = wrapTitleLines(title, TITLE_FONT_SIZE, wrapWidth);
 
   const svg = await satori(
@@ -191,8 +236,7 @@ export async function generateOgImage(title: string): Promise<Buffer> {
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
           backgroundColor: '#FBFAF7',
-          color: 'rgb(10, 10, 55)',
-          borderTop: '24px solid rgb(10, 10, 55)',
+          color: TEXT_COLOR,
           paddingTop: `${PAD_TOP}px`,
           paddingBottom: `${PAD_BOTTOM}px`,
           paddingLeft: `${PAD_X}px`,
@@ -204,13 +248,84 @@ export async function generateOgImage(title: string): Promise<Buffer> {
             type: 'div',
             props: {
               style: {
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1,
                 width: `${contentWidth}px`,
-                fontSize: SUBTITLE_FONT_SIZE,
-                fontWeight: 700,
-                marginBottom: 32,
-                flexShrink: 0,
+                minHeight: 0,
               },
-              children: 'atohs.me/blog',
+              children: [
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: BRAND_ICON_GAP,
+                      width: `${contentWidth}px`,
+                      height: BRAND_ICON_SIZE,
+                      fontSize: SUBTITLE_FONT_SIZE,
+                      fontWeight: 700,
+                      lineHeight: 1,
+                      marginBottom: 32,
+                      flexShrink: 0,
+                    },
+                    children: [
+                      {
+                        type: 'img',
+                        props: {
+                          src: brandIconSrc,
+                          width: BRAND_ICON_SIZE,
+                          height: BRAND_ICON_SIZE,
+                          style: {
+                            width: BRAND_ICON_SIZE,
+                            height: BRAND_ICON_SIZE,
+                            flexShrink: 0,
+                            marginTop: BRAND_ICON_NUDGE_Y,
+                          },
+                        },
+                      },
+                      {
+                        type: 'div',
+                        props: {
+                          style: {
+                            lineHeight: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            height: BRAND_ICON_SIZE,
+                          },
+                          children: 'atohs.me/blog',
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      width: `${contentWidth}px`,
+                      flexShrink: 0,
+                    },
+                    children: titleLines.map((line) => ({
+                      type: 'div',
+                      props: {
+                        style: {
+                          fontSize: TITLE_FONT_SIZE,
+                          fontWeight: 700,
+                          lineHeight: LINE_HEIGHT,
+                          whiteSpace: 'nowrap',
+                          flexShrink: 0,
+                        },
+                        children: line,
+                      },
+                    })),
+                  },
+                },
+              ],
             },
           },
           {
@@ -218,23 +333,39 @@ export async function generateOgImage(title: string): Promise<Buffer> {
             props: {
               style: {
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'flex-end',
                 width: `${contentWidth}px`,
                 flexShrink: 0,
+                marginTop: 24,
+                fontSize: FOOTER_FONT_SIZE,
+                fontWeight: 700,
+                lineHeight: LINE_HEIGHT,
+                color: FOOTER_TEXT_COLOR,
               },
-              children: titleLines.map((line) => ({
-                type: 'div',
-                props: {
-                  style: {
-                    fontSize: TITLE_FONT_SIZE,
-                    fontWeight: 700,
-                    lineHeight: LINE_HEIGHT,
-                    whiteSpace: 'nowrap',
-                    flexShrink: 0,
+              children: [
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      flex: 1,
+                      paddingRight: 24,
+                    },
+                    children: tagsLabel,
                   },
-                  children: line,
                 },
-              })),
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      flexShrink: 0,
+                      textAlign: 'right',
+                    },
+                    children: dateLabel,
+                  },
+                },
+              ],
             },
           },
         ],
