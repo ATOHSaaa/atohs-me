@@ -913,8 +913,7 @@ html[data-theme="dark"] .theme-toggle-icon--light {
 
 .container .item,
 .keywords-index-link,
-.keywords-chip,
-.about .profile-box {
+.keywords-chip {
   border: 2px solid var(--outline-frame-border);
   border-radius: var(--outline-frame-radius);
   background-color: var(--color-bg);
@@ -1611,11 +1610,6 @@ a.keywords-chip {
 
 .about .breadcrumb + .page-title {
   margin-bottom: 2rem;
-}
-
-.about .profile-section {
-  margin-top: 0;
-  margin-bottom: 40px;
 }
 
 .about-body {

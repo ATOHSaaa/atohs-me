@@ -186,25 +186,27 @@ h1.blog-title {
   margin-top: 16px;
 }
 
-.career-archive-tree .career-archive-list {
-  list-style: disc;
+.career-archive-list {
+  list-style-type: disc;
+  list-style-position: outside;
+  margin: 0;
   padding-left: 1.35em;
 }
 
-.career-archive-list .career-archive-item {
+.career-archive-item {
   display: list-item;
   margin-bottom: 10px;
   line-height: 1.75;
 }
 
-.career-archive-list .career-archive-item:last-child {
+.career-archive-item:last-child {
   margin-bottom: 0;
 }
 
 .career-archive-list--nested {
   margin: 6px 0 0;
   padding-left: 1.25em;
-  list-style: disc;
+  list-style-type: disc;
 }
 
 .career-archive-item-text a {
