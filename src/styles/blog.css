@@ -397,6 +397,11 @@ h1.blog-title {
   border-left: 1px solid var(--color-border);
 }
 
+/* /blog/ アーカイブ: 年を開いた直下の左端ガイド線 */
+.main--blog-index .blog-archive-node--year > .blog-archive-children {
+  border-left: 1px solid var(--color-border);
+}
+
 .blog-list--archive .blog-list-item {
   display: flex;
   flex-direction: row;
