@@ -18,7 +18,19 @@ npm run build
 npm run preview
 ```
 
-`dist/` に静的ファイルが出力されます。
+`dist/` に静的ファイルが出力されます。`dev` / `build` の前に自動スクリプトは走らない（下記「必要なときだけ」参照）。
+
+### 必要なときだけ実行するスクリプト
+
+| タイミング | コマンド |
+|-----------|----------|
+| 新規記事・タイトル/タグ/公開日変更 | `npm run og:generate -- --slug=<slug>` |
+| OGP レイアウト変更 | `npm run og:generate:force` |
+| `site-logo.png` 変更 | `npm run favicon:generate` |
+| リンクカード定義変更 | `npm run link-card-ogp:refresh` |
+| Hanoi Clicker を同期 | `npm run sync:hanoi-clicker` |
+
+`og:generate` は内部で `ensure-og-font` 相当のフォント確認も行う。
 
 ## ブログ
 
@@ -119,6 +131,5 @@ curl -sI https://atohs.me/blog/blog-open/og-v9.png | grep -ei 'cache-control|ser
 
 `.github/workflows/deploy.yml` で次を GitHub Actions キャッシュしている。
 
-- `src/assets/fonts/` — OGP 用 Noto フォント（`.gitignore` のため CI 初回以外は再 DL しない）
 - `.astro/` — 画像最適化など Astro のビルドキャッシュ（記事 Markdown だけの変更ではヒットしやすい）
 - `npm` — `actions/setup-node` の `cache: npm`
