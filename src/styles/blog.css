@@ -1078,9 +1078,6 @@ a.blog-tag:hover {
 
 .blog-layout-intro .blog-title {
   font-size: var(--font-size-blog-title);
-  text-align: justify;
-  text-align-last: left;
-  text-justify: inter-character;
   font-feature-settings: "palt" 1;
   text-autospace: no-autospace;
 }
