@@ -97,7 +97,7 @@ DNS がまだ GitHub Pages のときは `ship` で Cloudflare 側だけ先に更
 |------|------|
 | 出力 | Astro `dist/`（directory 形式の `index.html`、ルートに `404.html`） |
 | 404 | `assets.not_found_handling`: `404-page` → 最寄りの `404.html` を HTTP 404 で返す |
-| 末尾スラッシュ | `assets.html_handling`: `auto-trailing-slash`（`/blog/foo/` 形式。GitHub Pages と同様のディレクトリ URL） |
+| 末尾スラッシュ | `html_handling`: `auto-trailing-slash` + ビルド生成の `dist/_redirects` で **301**（`/about` → `/about/`。`html_handling` 単体は 307） |
 | リダイレクト | Astro `redirects` で生成された HTML（例: `/my-business-experience/` → `/resume#career`） |
 | CNAME | `public/CNAME` → ビルド後 `dist/CNAME`（DNS 切替までは GitHub Pages 設定もそのまま） |
 

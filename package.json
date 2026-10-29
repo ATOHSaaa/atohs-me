@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "astro dev",
     "dev:reset": "node scripts/reset-astro-dev.mjs && npm run dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/generate-cloudflare-redirects.mjs",
     "preview": "astro preview",
     "ensure-og-font": "node scripts/ensure-og-font.mjs",
     "favicon:generate": "node scripts/generate-favicon.mjs --force",
