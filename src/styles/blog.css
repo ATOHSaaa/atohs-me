@@ -565,7 +565,7 @@ a.blog-tag:hover {
 }
 
 @media (max-width: 720px) {
-  .blog-main .blog-body {
+  .blog-body {
     font-size: 15px;
   }
 }
