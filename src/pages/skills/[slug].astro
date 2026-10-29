@@ -2,11 +2,13 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import { skills } from '../../lib/skills';
+import { skillPageCacheKey } from '../../lib/incremental-cache-key';
 
 export function getStaticPaths() {
   return skills.map((skill) => ({
     params: { slug: skill.slug },
     props: { skill },
+    cacheKey: skillPageCacheKey(skill),
   }));
 }
 
