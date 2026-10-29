@@ -392,9 +392,13 @@ h1.blog-title {
   border-left: none;
 }
 
-/* /blog/ アーカイブ: 年・月を開いた直下の左端ガイド線 */
-.main--blog-index .blog-archive-node--year > .blog-archive-children,
+/* /blog/ アーカイブ: 月を開いた直下の記事一覧左端のガイド線 */
 .main--blog-index .blog-archive-node--month > .blog-archive-children--leaves {
+  border-left: 1px solid var(--color-border);
+}
+
+/* /blog/ アーカイブ: 年を開いた直下の左端ガイド線 */
+.main--blog-index .blog-archive-node--year > .blog-archive-children {
   border-left: 1px solid var(--color-border);
 }
 
