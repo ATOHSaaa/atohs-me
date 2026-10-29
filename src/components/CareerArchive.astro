@@ -55,3 +55,18 @@ const { sections } = Astro.props;
     ))
   }
 </div>
+
+<script>
+  function initCareerArchiveSummaryLinks() {
+    document
+      .querySelectorAll('.career-archive-tree .blog-archive-label a')
+      .forEach((link) => {
+        if (link.dataset.bound === 'true') return;
+        link.dataset.bound = 'true';
+        link.addEventListener('click', (event) => event.stopPropagation());
+      });
+  }
+
+  initCareerArchiveSummaryLinks();
+  document.addEventListener('astro:page-load', initCareerArchiveSummaryLinks);
+</script>

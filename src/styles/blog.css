@@ -242,30 +242,26 @@ h1.blog-title {
   grid-row: 1;
   display: grid;
   grid-template-columns: auto 1fr;
-  align-items: baseline;
+  align-items: center;
+  column-gap: 0.15em;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
   padding: 0;
-  pointer-events: none;
-  cursor: default;
+  cursor: pointer;
 }
 
 .blog-archive-toggle .blog-archive-label {
   min-width: 0;
-  pointer-events: none;
-  cursor: default;
+  cursor: pointer;
 }
 
 .blog-archive-toggle .blog-archive-label a {
-  pointer-events: auto;
   cursor: pointer;
 }
 
 .blog-archive-toggle .blog-archive-chevron {
-  padding: 2px 4px 2px 0;
-  pointer-events: auto;
-  cursor: pointer;
+  margin-right: 0.1em;
 }
 
 .blog-archive-tree .blog-archive-node--year > .blog-archive-children,
@@ -354,29 +350,17 @@ h1.blog-title {
 
 .blog-archive-chevron {
   flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.1em;
-  height: 1.1em;
-  opacity: 0.7;
-  transform: rotate(0deg);
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
   transition: transform 0.12s ease;
 }
 
-.blog-archive-chevron::before {
-  content: "";
-  display: block;
-  width: 0.34em;
-  height: 0.34em;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  border-radius: 0.12em;
-  transform: rotate(-45deg) translate(-0.06em, -0.02em);
-}
-
 .blog-archive-node[open] > .blog-archive-toggle .blog-archive-chevron {
-  transform: rotate(90deg);
+  transform: rotate(45deg);
 }
 
 .blog-archive-children {
