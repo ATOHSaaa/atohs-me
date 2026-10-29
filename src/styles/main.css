@@ -280,6 +280,15 @@ h3 {
   font-size: 1em;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: start;
+}
+
 ul {
   margin-top: 8px;
   margin-bottom: 52px;
