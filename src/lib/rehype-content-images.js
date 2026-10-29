@@ -1,11 +1,10 @@
 import { fileURLToPath } from 'node:url';
 import { visit } from 'unist-util-visit';
 
-const { rehypeImages } = await import(
-  fileURLToPath(
-    new URL('../../node_modules/@astrojs/markdown-remark/dist/rehype-images.js', import.meta.url),
-  ),
+const rehypeImagesPath = fileURLToPath(
+  new URL('../../node_modules/@astrojs/markdown-remark/dist/rehype-images.js', import.meta.url),
 );
+const { rehypeImages } = await import(/* @vite-ignore */ rehypeImagesPath);
 
 /** `.blog-body img` の max-width。これより大きい原寸は srcset で出さない。 */
 const CONTENT_IMAGE_WIDTH = 550;
