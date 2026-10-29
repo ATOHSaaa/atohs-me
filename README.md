@@ -131,5 +131,38 @@ curl -sI https://atohs.me/blog/blog-open/og-v9.png | grep -ei 'cache-control|ser
 
 `.github/workflows/deploy.yml` で次を GitHub Actions キャッシュしている。
 
-- `.astro/` — 画像最適化など Astro のビルドキャッシュ（記事 Markdown だけの変更ではヒットしやすい）
+- `node_modules/.astro/` — 増分静的ビルドのキャッシュ（`incremental-build.json` と再利用 HTML）。`package-lock.json`・`astro.config.mjs`・`src/content/**` をキーに含める
 - `npm` — `actions/setup-node` の `cache: npm`
+
+## 増分静的ビルド
+
+`astro.config.mjs` で `experimental.incrementalBuild: true` を有効にしている（Astro 7.2+ の**実験機能**）。`getStaticPaths()` で返したページのうち `cacheKey` 付きのものは、前回ビルドとデータ・依存コードが同じなら再レンダリングをスキップする。キャッシュ本体は **`node_modules/.astro/`** に保存される。
+
+### エージェント・CI 作業時の注意
+
+1. **実験機能** — 将来の Astro でフラグ名や仕様が変わる可能性がある。
+2. **`cacheKey` は動的ルートで必須** — 新しい `[param].astro` を足すときは `getStaticPaths()` の各エントリに、内容が変わったとき必ず変わる `cacheKey` を付ける（コンテンツコレクションなら `String(entry.digest)` など）。
+3. **記事ページは当該記事の `digest` のみ** — 現状の `src/pages/blog/[slug].astro` は `cacheKey: String(post.digest)` のみ。記事下の「最近書いた記事」（`getOtherBlogPosts`）のように**他記事のタイトル・並びに依存する表示**を増やす場合は、依存する記事の digest なども `cacheKey` に含めないと、他記事だけ編集したときスキップされた HTML が古い関連リンクのまま残る。
+4. **レイアウト・コンポーネント・CSS・ミドルウェア** — ページから import されるテンプレート・CSS の変更は、多くの場合モジュール依存ハッシュで該当ルートが再生成される（本リポジトリでは `BaseLayout` が `blog.css` を読み込むため、CSS 変更は広い範囲が再生成されうる）。**ミドルウェア**は公式ドキュメントどおり、変更がキャッシュ済み prerender ページに反映されないことがある。心配な変更後のデプロイでは `astro build --force` を使うか、Actions のキャッシュキーに `src/**` や該当パスを含めて古い `node_modules/.astro` を復元しないようにする。
+5. **`build.concurrency` を 1 より大きくしない** — 設定すると増分キャッシュは無効になる。
+6. **フル再生成** — ローカルまたは CI で `npm run build -- --force`（`astro build --force`）。
+
+### ローカル確認の例
+
+```bash
+rm -rf dist node_modules/.astro
+npm run build          # 1 回目: 全ページ生成
+npm run build          # 2 回目: ログに (restored) が並ぶ
+```
+
+記事 Markdown を 1 件だけ変えたビルドでは、その記事と影響を受けるタグ一覧などだけが `(+Nms)` となり、他は `(restored)` になる。
+
+### 検証メモ（PR #23）
+
+| 懸念 | 結果 |
+|------|------|
+| (3) 他記事タイトル変更で `brew-coffee` が `(restored)` のまま | **再現した**。関連欄のリンク文言は古いタイトルのまま。`cacheKey` に関連記事の digest を含める必要あり。 |
+| (4) `BlogOtherPosts.astro` 変更 | **再生成**（`+3ms`）。import グラフで無効化。 |
+| (4) `blog.css` 1 行変更 | **BaseLayout 経由のため多数ページが再生成**（skills も含む）。通常の CSS デプロイで `--force` は必須ではない。 |
+| (4) ミドルウェア | 本リポジトリに middleware 未使用。公式: 変更時は `--force` 推奨。 |
+
