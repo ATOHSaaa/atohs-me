@@ -1,0 +1,14 @@
+{
+  // Cloudflare Workers（静的アセットのみ）。Worker スクリプトは不要。
+  // 認証: CLOUDFLARE_API_TOKEN（リポジトリに含めない）
+  // アカウント: CLOUDFLARE_ACCOUNT_ID（任意。未設定時は wrangler が解決）
+  "name": "atohs-me",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    "directory": "./dist",
+    // Astro dist は directory 形式（page/index.html）。GitHub Pages と同様に 404.html を返す。
+    // 末尾スラッシュ 301 はビルド後の dist/_redirects（generate-cloudflare-redirects.mjs）で付与。
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

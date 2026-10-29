@@ -8,14 +8,17 @@
   "scripts": {
     "dev": "astro dev",
     "dev:reset": "node scripts/reset-astro-dev.mjs && npm run dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/generate-cloudflare-redirects.mjs",
     "preview": "astro preview",
     "ensure-og-font": "node scripts/ensure-og-font.mjs",
     "favicon:generate": "node scripts/generate-favicon.mjs --force",
     "og:generate": "tsx scripts/generate-blog-og-images.ts",
     "og:generate:force": "tsx scripts/generate-blog-og-images.ts --force",
     "link-card-ogp:refresh": "node scripts/update-link-card-ogp.mjs --force",
-    "sync:hanoi-clicker": "node scripts/sync-hanoi-clicker.mjs"
+    "sync:hanoi-clicker": "node scripts/sync-hanoi-clicker.mjs",
+    "deploy:cf": "wrangler deploy",
+    "deploy:cf:dry-run": "wrangler deploy --dry-run --outdir=.wrangler-dry-run",
+    "ship": "bash scripts/ship.sh"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.5",
@@ -30,6 +33,7 @@
   },
   "devDependencies": {
     "to-ico": "^1.1.5",
-    "tsx": "^4.23.15"
+    "tsx": "^4.23.15",
+    "wrangler": "^4.155.0"
   }
 }

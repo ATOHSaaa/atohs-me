@@ -54,41 +54,70 @@ draft: false
 - OGP画像: `public/blog/<slug>/og-v9.png` に配置（ビルドでは再生成しない）。新規記事やレイアウト変更時は `npm run og:generate`（不足分のみ）または `npm run og:generate:force`（全記事）
 - 本文用画像: `src/content/blog/img/` に置き、Markdown で `![](./img/ファイル名.png)` と書く
 
-## デプロイ（GitHub Pages）
+## デプロイ（Cloudflare Workers）
 
-1. GitHub リポジトリの **Settings → Pages** を開く
-2. **Build and deployment → Source** を **GitHub Actions** に設定
-3. `main` ブランチへ push すると `.github/workflows/deploy.yml` が自動でビルド・デプロイする
+本番は **Cloudflare Workers の静的アセット**（Worker 名 `atohs-me`、`wrangler.jsonc` の `./dist`）で配信する。GitHub Actions（`.github/workflows/ci.yml`）は **ビルド検証のみ**（push / PR）。Pages への自動デプロイは行わない。
 
-カスタムドメイン `atohs.me` は `public/CNAME` から引き続き設定されます。
+### 初回・ローカルからのデプロイ
+
+1. [Cloudflare API トークン](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/)を作成（Workers 書き込みなど。**値はリポジトリに含めない**）
+2. シェルで認証（例）:
+
+```bash
+export CLOUDFLARE_API_TOKEN='…'
+export CLOUDFLARE_ACCOUNT_ID='9e79ad62d9d02398901caa5d333e6bb7'  # 任意。wrangler がアカウントを解決できないとき用
+```
+
+3. ビルドして Workers にアップロード（**git は触らない** — プレビュー用）:
+
+```bash
+npm run build
+npm run deploy:cf
+```
+
+`https://atohs-me.<account-subdomain>.workers.dev` で確認できる。設定のドライラン: `npm run deploy:cf:dry-run`
+
+### 本番リリース（`ship`）
+
+変更を **commit 済み**の状態で、**1 回ビルド**したあと **wrangler deploy** と **git push** を並列実行する。
+
+```bash
+npm run ship
+```
+
+- 未コミットの変更があると終了する（push 前に commit すること）
+- ビルド失敗時は deploy / push しない
+- force push はしない
+
+DNS がまだ GitHub Pages のときは `ship` で Cloudflare 側だけ先に更新しても、一般ユーザーは Pages を見続ける。カスタムドメイン切替は下記 DNS を参照。
+
+### wrangler と GitHub Pages 相当の挙動
+
+| 項目 | 設定 |
+|------|------|
+| 出力 | Astro `dist/`（directory 形式の `index.html`、ルートに `404.html`） |
+| 404 | `assets.not_found_handling`: `404-page` → 最寄りの `404.html` を HTTP 404 で返す |
+| 末尾スラッシュ | `html_handling`: `auto-trailing-slash` + ビルド生成の `dist/_redirects` で **301**（`/about` → `/about/`。`html_handling` 単体は 307） |
+| リダイレクト | Astro `redirects` で生成された HTML（例: `/my-business-experience/` → `/resume#career`） |
+| CNAME | `public/CNAME` → ビルド後 `dist/CNAME`（DNS 切替までは GitHub Pages 設定もそのまま） |
 
 ### 静的アセットのキャッシュ（PageSpeed Insights）
 
-GitHub Pages は `Cache-Control: max-age=600`（10 分）固定です。本番は **Cloudflare プロキシ + レスポンスヘッダー** で静的アセットを長期キャッシュします。
+Workers 本番では **Cloudflare ダッシュボードのレスポンスヘッダー** で長期キャッシュする（GitHub Pages 時代の `max-age=600` からの移行）。
 
-#### 1. Cloudflare にサイトを追加
+#### 1. Cloudflare にサイトを追加（カスタムドメイン切替時）
 
 1. [Cloudflare](https://dash.cloudflare.com/) → **ウェブサイトを追加** → `atohs.me`
-2. 表示されたネームサーバー（例: `xxx.ns.cloudflare.com`）を、ムームードメイン等の管理画面で設定（反映まで最大 24 時間、多くは数十分）
+2. 表示されたネームサーバーを、ムームードメイン等で設定（反映まで最大 24 時間、多くは数十分）
+3. **Workers & Pages** → Worker `atohs-me` に **Custom Domain** `atohs.me`（必要なら `www`）を追加
 
-#### 2. DNS（プロキシ ON）
+#### 2. DNS（切替後）
 
-| タイプ | 名前 | コンテンツ | プロキシ |
-|--------|------|------------|----------|
-| A | `@` | `185.199.108.153` | プロキシ済み |
-| A | `@` | `185.199.109.153` | プロキシ済み |
-| A | `@` | `185.199.110.153` | プロキシ済み |
-| A | `@` | `185.199.111.153` | プロキシ済み |
-| AAAA | `@` | `2606:50c0:8000::153` | プロキシ済み |
-| AAAA | `@` | `2606:50c0:8001::153` | プロキシ済み |
-| AAAA | `@` | `2606:50c0:8002::153` | プロキシ済み |
-| AAAA | `@` | `2606:50c0:8003::153` | プロキシ済み |
-
-GitHub リポジトリ **Settings → Pages → Custom domain** に `atohs.me` が入っていることを確認（`public/CNAME` と一致）。
+GitHub Pages 用の `185.199.*` / `2606:50c0:*` レコードは、Workers カスタムドメイン追加後に Cloudflare が案内するレコードへ差し替える。**MX 等メール用レコードを消さない**こと。サブドメイン（他サービス）のレコードも移行チェックリストに含める（過去の移行記事 `github-pages-to-cloudflare-workers-migration` 参照）。
 
 #### 3. SSL/TLS
 
-**SSL/TLS** → 概要 → **Full (strict)**。**常に HTTPS を使用** をオン。
+**SSL/TLS** → 概要 → **Full (strict)**。**常に HTTPS を使用** をオン。初回は証明書発行に数分かかることがある。
 
 #### 4. レスポンスヘッダー（PSI 対応）
 
@@ -129,10 +158,12 @@ curl -sI https://atohs.me/blog/blog-open/og-v9.png | grep -ei 'cache-control|ser
 
 ### CI ビルドキャッシュ
 
-`.github/workflows/deploy.yml` で次を GitHub Actions キャッシュしている。
+`.github/workflows/ci.yml` で次を GitHub Actions キャッシュしている。
 
 - `node_modules/.astro/` — 増分静的ビルドのキャッシュ（`incremental-build.json` と再利用 HTML）。`package-lock.json`・`astro.config.mjs`・`src/content/**` をキーに含める
 - `npm` — `actions/setup-node` の `cache: npm`
+
+**注意:** CI は `dist/` を artifact 化しない。本番反映はローカルの `npm run ship`（または `build` + `deploy:cf`）のみ。
 
 ## 増分静的ビルド
 
