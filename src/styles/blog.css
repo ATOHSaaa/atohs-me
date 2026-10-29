@@ -420,6 +420,10 @@ h1.blog-title {
   letter-spacing: 0.04em;
 }
 
+.main--blog-index .blog-list--archive .blog-list-title-wrap a {
+  font-size: 1.12em;
+}
+
 .blog-list--archive .blog-list-item a {
   line-height: 1.75;
   text-underline-offset: 0.18em;
