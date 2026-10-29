@@ -3,8 +3,6 @@ import { getCollection, render } from 'astro:content';
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
-import BlogSidebarProfile from '../../components/blog/BlogSidebarProfile.astro';
-import ProfileBox from '../../components/ProfileBox.astro';
 import BlogToc from '../../components/BlogToc.astro';
 import BlogOtherPosts from '../../components/BlogOtherPosts.astro';
 import BlogPostTags from '../../components/BlogPostTags.astro';
@@ -76,10 +74,7 @@ const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
       </aside>
       <div class="blog-layout-footer">
         <BlogQuoteFootnotes sources={footnotes} />
-        <div class="blog-layout-footer-profile">
-          <ProfileBox />
-          <BlogOtherPosts posts={otherPosts} />
-        </div>
+        <BlogOtherPosts posts={otherPosts} />
       </div>
     </article>
     <div class="blog-share-float" aria-label="記事をシェア">

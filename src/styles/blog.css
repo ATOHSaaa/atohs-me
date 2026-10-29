@@ -1036,7 +1036,6 @@ a.blog-tag:hover {
    Article page (layout, TOC, share, sidebar)
    ========================================================================== */
 
-.blog-layout .profile-box,
 .blog-toc {
   border: 2px solid var(--outline-frame-border);
   border-radius: var(--outline-frame-radius);
@@ -1045,7 +1044,6 @@ a.blog-tag:hover {
   box-sizing: border-box;
 }
 
-.blog-sidebar .profile-box,
 .blog-sidebar .blog-toc {
   border: none;
   border-radius: 0;
@@ -1081,10 +1079,6 @@ a.blog-tag:hover {
       box-shadow 0.15s ease,
       background-color 0.15s ease;
   }
-}
-
-.blog-sidebar .name-primary-part:first-child::after {
-  content: none;
 }
 
 .blog-layout-intro .blog-title {
@@ -1179,56 +1173,6 @@ a.blog-tag:hover {
     flex: 1 1 auto;
     align-self: stretch;
     min-height: 0;
-  }
-
-  .blog-sidebar .profile-section {
-    margin: 0;
-    flex-shrink: 0;
-  }
-
-  .blog-sidebar .profile-box {
-    padding: 0;
-  }
-
-  .blog-sidebar .name-box {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    margin-top: 0;
-    --name-block-height: auto;
-  }
-
-  .blog-sidebar .profile-icon {
-    width: 72px;
-    height: 72px;
-  }
-
-  .blog-sidebar .name-detail-line {
-    font-size: 0.72em;
-    line-height: 1.5;
-    text-align: center;
-    font-feature-settings: "palt" 1;
-  }
-
-  .blog-sidebar .name-detail {
-    width: 100%;
-    text-align: center;
-  }
-
-  .blog-sidebar .name-primary {
-    font-size: 0.95em;
-    text-align: center;
-    font-feature-settings: "palt" 1;
-  }
-
-  .blog-sidebar .name-primary-part {
-    display: block;
-  }
-
-  .blog-sidebar .profile-text {
-    margin-top: 16px;
-    font-size: 0.78em;
-    line-height: 1.55;
   }
 
   .blog-sidebar .blog-toc {
@@ -1401,22 +1345,6 @@ a.blog-tag:hover {
   outline: 2px solid var(--color-border);
   outline-offset: 2px;
   border-radius: 2px;
-}
-
-.blog-layout-footer-profile {
-  margin-top: 56px;
-}
-
-.blog-layout-footer-profile .profile-box .name-primary,
-.blog-layout-footer-profile .profile-box .name-detail-line {
-  font-feature-settings: "palt" 1;
-}
-
-.blog-layout-footer-profile .profile-box .profile-text {
-  font-size: 0.9em;
-  font-weight: 500;
-  line-height: 1.75;
-  letter-spacing: 0.05em;
 }
 
 .blog-layout-footer .quote-footnotes {
