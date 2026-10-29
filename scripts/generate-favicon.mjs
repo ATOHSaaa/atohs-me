@@ -1,4 +1,4 @@
-import { access, writeFile } from 'node:fs/promises';
+import { access, stat, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import toIco from 'to-ico';
@@ -33,6 +33,14 @@ async function exists(path) {
 
 if (!(await exists(SOURCE))) {
   throw new Error(`Site logo not found: ${SOURCE}`);
+}
+
+if ((await exists(OUT)) && !process.argv.includes('--force')) {
+  const [sourceStat, outStat] = await Promise.all([stat(SOURCE), stat(OUT)]);
+  if (sourceStat.mtimeMs <= outStat.mtimeMs) {
+    console.log(`Favicon up to date → ${OUT}`);
+    process.exit(0);
+  }
 }
 
 const pngs = await Promise.all(ICO_SIZES.map((size) => roundedSquarePng(SOURCE, size)));

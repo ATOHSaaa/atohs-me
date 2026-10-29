@@ -21,6 +21,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Cache OG font
+        uses: actions/cache@v4
+        with:
+          path: src/assets/fonts
+          key: og-font-${{ runner.os }}-noto-sans-cjk-jp-bold-v1
+
+      - name: Cache Astro build
+        uses: actions/cache@v4
+        with:
+          path: .astro
+          key: astro-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ hashFiles('src/content/**/*.{jpg,jpeg,png,gif,webp,avif}', 'src/assets/**/*.{jpg,jpeg,png,gif,webp,avif}') }}
+          restore-keys: |
+            astro-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            astro-${{ runner.os }}-
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:

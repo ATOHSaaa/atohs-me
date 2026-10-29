@@ -39,7 +39,7 @@ draft: false
 
 - 一覧: `/blog`
 - 記事: `/blog/<ファイル名>`（例: `blog-open.md` → `/blog/blog-open`）
-- OGP画像: 記事タイトルからビルド時に自動生成（`/blog/<slug>/og.png`）
+- OGP画像: `public/blog/<slug>/og-v9.png` に配置（ビルドでは再生成しない）。新規記事やレイアウト変更時は `npm run og:generate`（不足分のみ）または `npm run og:generate:force`（全記事）
 - 本文用画像: `src/content/blog/img/` に置き、Markdown で `![](./img/ファイル名.png)` と書く
 
 ## デプロイ（GitHub Pages）
@@ -52,7 +52,7 @@ draft: false
 
 ### 静的アセットのキャッシュ（PageSpeed Insights）
 
-GitHub Pages は `Cache-Control: max-age=600`（10 分）固定です。本番は **Cloudflare プロキシ + レスポンスヘッダー** で `/_astro/*` と `/fonts/*` を長期キャッシュします。
+GitHub Pages は `Cache-Control: max-age=600`（10 分）固定です。本番は **Cloudflare プロキシ + レスポンスヘッダー** で静的アセットを長期キャッシュします。
 
 #### 1. Cloudflare にサイトを追加
 
@@ -82,7 +82,9 @@ GitHub リポジトリ **Settings → Pages → Custom domain** に `atohs.me` �
 
 **ルール** → **レスポンス ヘッダーを変更** → **ルールを作成**
 
-- **ルール名**: 例 `Long cache for static assets`
+**ルール A — ハッシュ付き静的アセット（immutable）**
+
+- **ルール名**: 例 `Long cache for hashed assets`
 - **条件（式エディタ）**:
 
 ```
@@ -91,10 +93,32 @@ GitHub リポジトリ **Settings → Pages → Custom domain** に `atohs.me` �
 
 - **操作**: ヘッダー `Cache-Control` を **設定** → `public, max-age=31536000, immutable`
 
+**ルール B — 記事 OGP 画像（同一 URL で差し替えあり）**
+
+`public/blog/<slug>/og-v9.png` は `npm run og:generate` で更新するため、`immutable` は付けない。
+
+- **ルール名**: 例 `Long cache for blog OGP PNG`
+- **条件**:
+
+```
+(http.host eq "atohs.me") and (http.request.uri.path matches "^/blog/[^/]+/og-v[0-9]+\\.png$")
+```
+
+- **操作**: `Cache-Control` → `public, max-age=604800, stale-while-revalidate=86400`
+
 #### 5. 確認
 
 ```bash
 curl -sI https://atohs.me/fonts/roboto-latin-700-normal.woff2 | grep -ei 'cache-control|server|cf-ray'
+curl -sI https://atohs.me/blog/blog-open/og-v9.png | grep -ei 'cache-control|server|cf-ray'
 ```
 
-`cache-control: public, max-age=31536000, immutable` と `server: cloudflare`（または `cf-ray`）が出れば OK。数分後に PSI を再計測。
+`/_astro/` や `/fonts/` は `immutable`、`/blog/*/og-v9.png` は 7 日キャッシュ + SWR が付いていれば OK。数分後に PSI を再計測。
+
+### CI ビルドキャッシュ
+
+`.github/workflows/deploy.yml` で次を GitHub Actions キャッシュしている。
+
+- `src/assets/fonts/` — OGP 用 Noto フォント（`.gitignore` のため CI 初回以外は再 DL しない）
+- `.astro/` — 画像最適化など Astro のビルドキャッシュ（記事 Markdown だけの変更ではヒットしやすい）
+- `npm` — `actions/setup-node` の `cache: npm`

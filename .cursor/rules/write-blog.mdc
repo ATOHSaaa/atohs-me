@@ -42,6 +42,16 @@ tags: 開発
 /Applications/Cursor.app/Contents/Resources/app/bin/cursor "src/content/blog/<slug>.md"
 ```
 
+## 5. OGP 画像（公開前）
+
+記事を初めて公開するとき、またはタイトル・タグ・公開日を変えたとき:
+
+```bash
+npm run og:generate -- --slug=<slug>
+```
+
+OGP レイアウト自体を変えたときだけ `npm run og:generate:force`（全記事の再生成）。
+
 ## 本文・画像・脚注
 
 - 画像は `src/content/blog/img/` に置く（ファイル名は slug が分かるように。例: `started-building-inditer-ui.png`）

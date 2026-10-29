@@ -10,6 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "ensure-og-font": "node scripts/ensure-og-font.mjs",
+    "og:generate": "tsx scripts/generate-blog-og-images.ts",
+    "og:generate:force": "tsx scripts/generate-blog-og-images.ts --force",
+    "link-card-ogp:refresh": "node scripts/update-link-card-ogp.mjs --force",
     "sync:hanoi-clicker": "node scripts/sync-hanoi-clicker.mjs"
   },
   "dependencies": {
@@ -23,6 +26,7 @@
     "satori": "^0.28.0"
   },
   "devDependencies": {
-    "to-ico": "^1.1.5"
+    "to-ico": "^1.1.5",
+    "tsx": "^4.20.6"
   }
 }
