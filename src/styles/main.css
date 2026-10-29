@@ -76,6 +76,10 @@
     0 1px 2px rgba(10, 10, 55, 0.035), 0 2px 8px rgba(10, 10, 55, 0.04);
   --card-shadow-chip-hover:
     0 1px 3px rgba(10, 10, 55, 0.05), 0 4px 12px rgba(10, 10, 55, 0.05);
+  --random-button-shadow:
+    0 1px 1px rgba(10, 10, 55, 0.02), 0 1px 3px rgba(10, 10, 55, 0.025);
+  --random-button-shadow-hover:
+    0 1px 2px rgba(10, 10, 55, 0.028), 0 2px 5px rgba(10, 10, 55, 0.032);
   --outline-frame-shadow:
     0 2px 4px rgba(10, 10, 55, 0.04), 0 5px 14px rgba(10, 10, 55, 0.06);
   --outline-frame-shadow-hover:
@@ -166,6 +170,8 @@
     0 1px 2px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.22);
   --card-shadow-chip-hover:
     0 1px 3px rgba(0, 0, 0, 0.32), 0 4px 12px rgba(0, 0, 0, 0.28);
+  --random-button-shadow: var(--card-shadow-chip);
+  --random-button-shadow-hover: var(--card-shadow-chip-hover);
   --outline-frame-shadow:
     0 2px 6px rgba(0, 0, 0, 0.18), 0 6px 14px rgba(0, 0, 0, 0.2);
   --outline-frame-shadow-hover:
@@ -1131,7 +1137,7 @@ a.keywords-chip {
   line-height: 1;
   color: inherit;
   background-color: var(--card-surface);
-  box-shadow: var(--card-shadow-chip);
+  box-shadow: var(--random-button-shadow);
   cursor: pointer;
   transition: box-shadow 0.12s ease;
 }
@@ -1142,7 +1148,7 @@ a.keywords-chip {
 
 .keywords-random-button:hover,
 .keywords-random-button:focus-visible {
-  box-shadow: var(--card-shadow-chip-hover);
+  box-shadow: var(--random-button-shadow-hover);
 }
 
 .keywords-random-button:focus-visible {
