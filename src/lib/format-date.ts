@@ -8,16 +8,37 @@ const displayDateFormatter = new Intl.DateTimeFormat('en-CA', {
   day: '2-digit',
 });
 
+function getJstYmdParts(date: Date): { year: number; month: number; day: number } {
+  const [year, month, day] = displayDateFormatter.format(date).split('-').map(Number);
+  return { year, month, day };
+}
+
+/** JST のカレンダー上の年・月（月は 1–12） */
+export function getJstYearMonth(date: Date): { year: number; month: number } {
+  const { year, month } = getJstYmdParts(date);
+  return { year, month };
+}
+
+export function isSameJstMonth(a: Date, b: Date): boolean {
+  const ja = getJstYearMonth(a);
+  const jb = getJstYearMonth(b);
+  return ja.year === jb.year && ja.month === jb.month;
+}
+
+export function isSameJstYear(a: Date, b: Date): boolean {
+  return getJstYearMonth(a).year === getJstYearMonth(b).year;
+}
+
 /** サイトの公開日表示（frontmatter の日付は JST 基準で解釈） */
 export const formatDate = (date: Date): string => {
-  const [year, month, day] = displayDateFormatter.format(date).split('-');
-  return `${year}.${month}.${day}`;
+  const { year, month, day } = getJstYmdParts(date);
+  return `${year}.${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')}`;
 };
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 function startOfJstDay(date: Date): number {
-  const [y, m, d] = displayDateFormatter.format(date).split('-').map(Number);
+  const { year: y, month: m, day: d } = getJstYmdParts(date);
   return Date.UTC(y, m - 1, d);
 }
 

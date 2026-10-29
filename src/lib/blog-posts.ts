@@ -1,5 +1,10 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { isPublishedWithinLocalDays } from './format-date';
+import {
+  getJstYearMonth,
+  isPublishedWithinLocalDays,
+  isSameJstMonth,
+  isSameJstYear,
+} from './format-date';
 
 export type BlogPostEntry = CollectionEntry<'blog'>;
 
@@ -20,9 +25,7 @@ export function groupBlogPostsByYearMonth(posts: BlogPostEntry[]): BlogArchiveYe
   const postsByYearMonth = new Map<number, Map<number, BlogPostEntry[]>>();
 
   for (const post of posts) {
-    const date = post.data.pubDate;
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
+    const { year, month } = getJstYearMonth(post.data.pubDate);
 
     if (!postsByYearMonth.has(year)) {
       years.push(year);
@@ -57,33 +60,25 @@ export async function getPublishedBlogPosts(): Promise<BlogPostEntry[]> {
   );
 }
 
-function isSameLocalMonth(a: Date, b: Date): boolean {
-  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
-}
-
-function isSameLocalYear(a: Date, b: Date): boolean {
-  return a.getFullYear() === b.getFullYear();
-}
-
-/** 公開日が当月（ローカル日付）の記事を新しい順で返す。 */
+/** 公開日が当月（JST）の記事を新しい順で返す。 */
 export async function getBlogPostsPublishedInCurrentMonth(
   now = new Date(),
 ): Promise<BlogPostEntry[]> {
   return (await getPublishedBlogPosts()).filter((post) =>
-    isSameLocalMonth(post.data.pubDate, now),
+    isSameJstMonth(post.data.pubDate, now),
   );
 }
 
-/** 公開日が当年（ローカル日付）の記事を新しい順で返す。 */
+/** 公開日が当年（JST）の記事を新しい順で返す。 */
 export async function getBlogPostsPublishedInCurrentYear(
   now = new Date(),
 ): Promise<BlogPostEntry[]> {
   return (await getPublishedBlogPosts()).filter((post) =>
-    isSameLocalYear(post.data.pubDate, now),
+    isSameJstYear(post.data.pubDate, now),
   );
 }
 
-/** 公開日が now から指定日数以内（ローカル日付）の記事を新しい順で返す。 */
+/** 公開日が now から指定日数以内（JST の日付）の記事を新しい順で返す。 */
 export async function getBlogPostsPublishedWithinLocalDays(
   days: number,
   now = new Date(),
@@ -93,4 +88,4 @@ export async function getBlogPostsPublishedWithinLocalDays(
   );
 }
 
-export { isSameLocalMonth, isSameLocalYear };
+export { isSameJstMonth as isSameLocalMonth, isSameJstYear as isSameLocalYear };
