@@ -241,11 +241,12 @@ h1.blog-title {
 .blog-archive-node--month > .blog-archive-toggle {
   grid-column: 1 / -1;
   grid-row: 1;
+  justify-self: start;
   display: grid;
-  grid-template-columns: var(--blog-archive-chevron-col) minmax(0, 1fr);
+  grid-template-columns: var(--blog-archive-chevron-col) auto;
   align-items: center;
   column-gap: 0.15em;
-  width: 100%;
+  width: fit-content;
   max-width: 100%;
   box-sizing: border-box;
   padding: 0;
@@ -253,7 +254,8 @@ h1.blog-title {
 }
 
 .blog-archive-toggle .blog-archive-label {
-  min-width: 0;
+  width: fit-content;
+  max-width: 100%;
   cursor: pointer;
 }
 
