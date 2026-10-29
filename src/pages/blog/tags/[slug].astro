@@ -8,13 +8,20 @@ import {
   getBlogPostsByTag,
   getBlogTagsWithCounts,
 } from '../../../lib/blog-tags';
+import { blogTagPageCacheKey } from '../../../lib/incremental-cache-key';
 
 export async function getStaticPaths() {
   const tagEntries = await getBlogTagsWithCounts();
-  return tagEntries.map(({ tag }) => ({
-    params: { slug: blogTagSlug(tag) },
-    props: { tag },
-  }));
+  return Promise.all(
+    tagEntries.map(async ({ tag }) => {
+      const posts = await getBlogPostsByTag(tag);
+      return {
+        params: { slug: blogTagSlug(tag) },
+        props: { tag },
+        cacheKey: blogTagPageCacheKey(posts),
+      };
+    }),
+  );
 }
 
 interface Props {

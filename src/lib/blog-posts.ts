@@ -57,19 +57,6 @@ export async function getPublishedBlogPosts(): Promise<BlogPostEntry[]> {
   );
 }
 
-/**
- * 記事下の「最近書いた記事」用。
- * 表示中の記事を除き、公開日の新しい順で最大 limit 件。
- */
-export async function getOtherBlogPosts(
-  currentId: string,
-  limit = 5,
-): Promise<BlogPostEntry[]> {
-  return (await getPublishedBlogPosts())
-    .filter((post) => post.id !== currentId)
-    .slice(0, limit);
-}
-
 function isSameLocalMonth(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth();
 }

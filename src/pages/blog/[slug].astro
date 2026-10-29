@@ -4,13 +4,11 @@ import BlogLayout from '../../layouts/BlogLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import BlogToc from '../../components/BlogToc.astro';
-import BlogOtherPosts from '../../components/BlogOtherPosts.astro';
 import BlogPostTags from '../../components/BlogPostTags.astro';
 import BlogQuoteFootnotes from '../../components/BlogQuoteFootnotes.astro';
 import { extractFootnotesFromMarkdown } from '../../lib/blog-footnotes.js';
 import { createPostDescription } from '../../lib/post-description';
 import { extractBlogTocItems } from '../../lib/blog-toc';
-import { getOtherBlogPosts } from '../../lib/blog-posts';
 import { formatDate } from '../../lib/format-date';
 import { postHasTwitterEmbed } from '../../lib/blog-twitter-embed.js';
 import { OG_IMAGE_FILENAME } from '../../lib/og-image';
@@ -20,6 +18,7 @@ export async function getStaticPaths() {
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { post },
+    cacheKey: String(post.digest),
   }));
 }
 
@@ -29,7 +28,6 @@ const postUrl = `https://atohs.me/blog/${post.id}`;
 const ogImage = `https://atohs.me/blog/${post.id}/${OG_IMAGE_FILENAME}`;
 const description = createPostDescription(post.body ?? '');
 const tocItems = extractBlogTocItems(post.body ?? '');
-const otherPosts = await getOtherBlogPosts(post.id, 5);
 const hasTwitterEmbed = postHasTwitterEmbed(post.body);
 const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
 ---
@@ -74,7 +72,6 @@ const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
       </aside>
       <div class="blog-layout-footer">
         <BlogQuoteFootnotes sources={footnotes} />
-        <BlogOtherPosts posts={otherPosts} />
       </div>
     </article>
     <div class="blog-share-float" aria-label="記事をシェア">

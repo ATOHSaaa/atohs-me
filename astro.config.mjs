@@ -36,6 +36,9 @@ const postLastmodByPath = getBlogLastmodByPath();
 export default defineConfig({
   site: 'https://atohs.me',
   output: 'static',
+  experimental: {
+    incrementalBuild: true,
+  },
   build: {
     // 小さなサイト CSS を HTML に埋め、PSI のレンダリングブロックを避ける
     inlineStylesheets: 'always',
