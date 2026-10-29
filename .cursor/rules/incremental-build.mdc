@@ -11,6 +11,6 @@ alwaysApply: true
 
 - `experimental.incrementalBuild` は実験機能
 - `getStaticPaths()` には必ず `cacheKey`（新規動的ルートも同様）
-- 記事 `cacheKey` が digest のみのとき、他記事依存 UI は他記事更新で古くなりうる → 依存を `cacheKey` に含める
+- 記事 `cacheKey` は現状 `digest` のみで可。他記事依存 UI を足すなら依存を `cacheKey` に含める
 - ミドルウェア変更などは `astro build --force` を検討。テンプレート/CSS は import グラフで多くは再生成される
 - `build.concurrency` > 1 は不可。キャッシュは `node_modules/.astro/`

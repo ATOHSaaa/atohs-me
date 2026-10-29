@@ -142,7 +142,7 @@ curl -sI https://atohs.me/blog/blog-open/og-v9.png | grep -ei 'cache-control|ser
 
 1. **実験機能** — 将来の Astro でフラグ名や仕様が変わる可能性がある。
 2. **`cacheKey` は動的ルートで必須** — 新しい `[param].astro` を足すときは `getStaticPaths()` の各エントリに、内容が変わったとき必ず変わる `cacheKey` を付ける（コンテンツコレクションなら `String(entry.digest)` など）。
-3. **記事ページは当該記事の `digest` のみ** — 現状の `src/pages/blog/[slug].astro` は `cacheKey: String(post.digest)` のみ。記事下の「最近書いた記事」（`getOtherBlogPosts`）のように**他記事のタイトル・並びに依存する表示**を増やす場合は、依存する記事の digest なども `cacheKey` に含めないと、他記事だけ編集したときスキップされた HTML が古い関連リンクのまま残る。
+3. **記事ページの `cacheKey`** — `src/pages/blog/[slug].astro` は当該記事の `String(post.digest)` のみでよい（記事本文・フロントmatter の変更だけがそのページの出力に効く）。**他記事のタイトル・並びなど他記事データに依存する表示**を将来足す場合は、依存する digest なども `cacheKey` に含める。含めないと他記事だけ編集したときスキップされた HTML が古いまま残る（PR #23 で「最近書いた記事」削除前に再現確認済み）。
 4. **レイアウト・コンポーネント・CSS・ミドルウェア** — ページから import されるテンプレート・CSS の変更は、多くの場合モジュール依存ハッシュで該当ルートが再生成される（本リポジトリでは `BaseLayout` が `blog.css` を読み込むため、CSS 変更は広い範囲が再生成されうる）。**ミドルウェア**は公式ドキュメントどおり、変更がキャッシュ済み prerender ページに反映されないことがある。心配な変更後のデプロイでは `astro build --force` を使うか、Actions のキャッシュキーに `src/**` や該当パスを含めて古い `node_modules/.astro` を復元しないようにする。
 5. **`build.concurrency` を 1 より大きくしない** — 設定すると増分キャッシュは無効になる。
 6. **フル再生成** — ローカルまたは CI で `npm run build -- --force`（`astro build --force`）。
@@ -161,8 +161,9 @@ npm run build          # 2 回目: ログに (restored) が並ぶ
 
 | 懸念 | 結果 |
 |------|------|
-| (3) 他記事タイトル変更で `brew-coffee` が `(restored)` のまま | **再現した**。関連欄のリンク文言は古いタイトルのまま。`cacheKey` に関連記事の digest を含める必要あり。 |
-| (4) `BlogOtherPosts.astro` 変更 | **再生成**（`+3ms`）。import グラフで無効化。 |
+| (3) 他記事タイトル変更（「最近書いた記事」あり） | **再現した**（当該 UI 削除前）。関連欄が古いタイトルのまま残った。 |
+| (3) 再検証（「最近書いた記事」削除後） | 他記事タイトルのみ変更 → 当該記事のみ再生成、他記事ページは `(restored)` で**他記事タイトルへの参照なし**（問題なし）。 |
+| (4) コンポーネント変更 | import グラフで該当ルート**再生成**（削除前の `BlogOtherPosts.astro` で確認）。 |
 | (4) `blog.css` 1 行変更 | **BaseLayout 経由のため多数ページが再生成**（skills も含む）。通常の CSS デプロイで `--force` は必須ではない。 |
 | (4) ミドルウェア | 本リポジトリに middleware 未使用。公式: 変更時は `--force` 推奨。 |
 

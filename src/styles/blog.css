@@ -415,7 +415,6 @@ h1.blog-title {
 }
 
 .blog-list--archive .blog-list-title-wrap a,
-.blog-other-posts .blog-list-title-wrap a,
 .home-recent-blog-list .blog-list-title-wrap a {
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -423,10 +422,6 @@ h1.blog-title {
 
 .blog-list--archive .blog-list-item a {
   line-height: 1.75;
-  text-underline-offset: 0.18em;
-}
-
-.blog-other-posts .blog-list-title-wrap a {
   text-underline-offset: 0.18em;
 }
 
@@ -1618,45 +1613,6 @@ a.blog-tag:hover {
 .blog-body + .share-buttons,
 .blog-layout-footer > .share-buttons:first-child {
   margin: 48px 0 32px;
-}
-
-.blog-other-posts {
-  margin-top: 40px;
-}
-
-.blog-other-posts-heading {
-  margin: 0 0 16px;
-  font-size: 1.2em;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-}
-
-.blog-other-posts-list {
-  margin: 0;
-}
-
-@media (min-width: 721px) {
-  .blog-other-posts {
-    font-size: 16px;
-  }
-
-  .blog-other-posts-heading {
-    margin-bottom: 1em;
-  }
-
-  .blog-other-posts .blog-list-item {
-    margin-bottom: 1.8em;
-    line-height: 1.8;
-  }
-
-  .blog-other-posts .blog-list-item:last-child {
-    margin-bottom: 0;
-  }
-
-  .blog-other-posts .blog-list-item a,
-  .blog-other-posts .blog-list-title-wrap a {
-    line-height: 1.8;
-  }
 }
 
 .share-button {
