@@ -564,6 +564,12 @@ a.blog-tag:hover {
   }
 }
 
+@media (max-width: 720px) {
+  .blog-body {
+    font-size: 15px;
+  }
+}
+
 [data-theme="dark"] .blog-body {
   color: color-mix(in srgb, var(--color-text) 92%, var(--color-bg));
 }
