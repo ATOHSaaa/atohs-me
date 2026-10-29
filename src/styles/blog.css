@@ -392,6 +392,11 @@ h1.blog-title {
   border-left: none;
 }
 
+/* /blog/ アーカイブ: 月を開いた直下の記事一覧左端のガイド線 */
+.main--blog-index .blog-archive-node--month > .blog-archive-children--leaves {
+  border-left: 1px solid var(--color-border);
+}
+
 .blog-list--archive .blog-list-item {
   display: flex;
   flex-direction: row;
