@@ -13,6 +13,15 @@
 5. **`build.concurrency` > 1** — 増分キャッシュは無効。設定しない。
 6. **キャッシュディレクトリ** — `node_modules/.astro/`（GitHub Actions でもここを保存・復元する）。
 
+## デプロイ（Cloudflare Workers）
+
+- 設定: ルートの `wrangler.jsonc`（静的アセットのみ、`dist/`）
+- プレビュー: `npm run build` → `npm run deploy:cf`（`workers.dev`）。トークンは `CLOUDFLARE_API_TOKEN`（必須）、アカウントは `CLOUDFLARE_ACCOUNT_ID`（任意）
+- 本番リリース: **`npm run ship`** — commit 済みであること。1 回 `build` のあと `wrangler deploy` と `git push` を並列（`scripts/ship.sh`）
+- CI（`.github/workflows/ci.yml`）はビルドのみ。増分キャッシュキーは Pages 時代と同じ考え方（`node_modules/.astro` + `package-lock.json` / `astro.config.mjs` / `src/content/**`）。**CI の成功だけでは本番は更新されない。**
+
+詳細は [README.md のデプロイ](./README.md#デプロイcloudflare-workers) を参照。
+
 ## その他
 
 - 日本語 Markdown 本文: [.cursor/rules/japanese-prose.mdc](./.cursor/rules/japanese-prose.mdc)
