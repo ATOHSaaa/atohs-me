@@ -1772,7 +1772,7 @@ a.blog-tag:hover {
   flex-shrink: 0;
 }
 
-.blog-stats-nav-link {
+.blog-title-row-link {
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -1780,7 +1780,7 @@ a.blog-tag:hover {
   color: var(--color-text-muted);
 }
 
-.blog-stats-nav-link:hover {
+.blog-title-row-link:hover {
   color: var(--color-text);
   text-decoration: underline;
 }
