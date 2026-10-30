@@ -558,16 +558,11 @@ a.blog-tag:hover {
 
 .blog-body {
   color: var(--color-text);
+  font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.04em;
   text-align: justify;
   text-spacing-trim: trim-start;
-}
-
-@media (min-width: 721px) {
-  .blog-body {
-    font-size: 16px;
-  }
 }
 
 @media (max-width: 720px) {
@@ -1765,3 +1760,293 @@ a.blog-tag:hover {
     margin-bottom: 0;
   }
 }
+
+/* ==========================================================================
+   Blog Stats (/stats)
+   ========================================================================== */
+
+.blog-title-row-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.blog-stats-nav-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  color: var(--color-text-muted);
+}
+
+.blog-stats-nav-link:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+.main--blog-stats {
+  max-width: min(calc(100% - 2 * var(--site-gutter)), 920px);
+}
+
+.main--blog-stats h1.blog-title {
+  margin-bottom: 16px;
+}
+
+.blog-stats-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 28px;
+}
+
+.blog-stats-tab {
+  margin: 0;
+  padding: 6px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.blog-stats-tab:hover {
+  border-color: color-mix(in srgb, var(--color-border) 70%, var(--color-text));
+}
+
+.blog-stats-tab.is-active {
+  background: var(--color-text);
+  border-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+.blog-stats-tab:focus-visible {
+  outline: 2px solid var(--color-border-strong);
+  outline-offset: 2px;
+}
+
+.blog-stats-panel:not(.is-active) {
+  display: none;
+}
+
+.blog-stats-cal-toolbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.blog-stats-cal-toolbar .blog-stats-heading {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.blog-stats-cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+}
+
+.blog-stats-cal-label {
+  min-width: 4.6em;
+  padding: 0 2px;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.blog-stats-cal-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.blog-stats-cal-arrow:hover:not(:disabled) {
+  opacity: 0.6;
+}
+
+.blog-stats-cal-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.blog-stats-cal-arrow:focus-visible {
+  outline: 2px solid var(--color-border-strong);
+  outline-offset: 2px;
+}
+
+.blog-stats-cal-panel .blog-stats-section {
+  margin-top: 0;
+}
+
+.blog-stats-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 20px;
+  margin: 0 0 40px;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .blog-stats-summary {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.blog-stats-summary-item {
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.blog-stats-summary-item dt {
+  margin: 0 0 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: inherit;
+  letter-spacing: 0.06em;
+}
+
+.blog-stats-summary-item dd {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.blog-stats-unit {
+  margin-left: 0.15em;
+  font-size: 0.72em;
+  font-weight: 700;
+}
+
+.blog-stats-section + .blog-stats-section {
+  margin-top: 72px;
+}
+
+.blog-stats-panel > .blog-stats-monthly {
+  margin-top: 72px;
+}
+
+.blog-stats-heading {
+  margin: 0 0 8px;
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.blog-stats-heatmap-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 4px;
+}
+
+.blog-stats-heatmap-chart {
+  --blog-stats-grass-0: color-mix(in srgb, var(--color-border) 28%, var(--color-bg));
+  --blog-stats-grass-1: color-mix(in srgb, #9be9a8 55%, var(--color-bg));
+  --blog-stats-grass-2: color-mix(in srgb, #40c463 70%, var(--color-bg));
+  --blog-stats-grass-3: color-mix(in srgb, #30a14e 82%, var(--color-bg));
+  --blog-stats-grass-4: color-mix(in srgb, #216e39 88%, var(--color-bg));
+  display: block;
+  overflow: visible;
+}
+
+[data-theme="dark"] .blog-stats-heatmap-chart {
+  --blog-stats-grass-0: color-mix(in srgb, var(--color-border) 35%, var(--color-bg));
+  --blog-stats-grass-1: #196c2e;
+  --blog-stats-grass-2: #238636;
+  --blog-stats-grass-3: #2ea043;
+  --blog-stats-grass-4: #56d364;
+}
+
+.blog-stats-heatmap-cell--0 {
+  fill: var(--blog-stats-grass-0);
+}
+
+.blog-stats-heatmap-month {
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0;
+  fill: var(--color-text-muted);
+}
+
+.blog-stats-heatmap-cell--1 {
+  fill: var(--blog-stats-grass-1);
+}
+
+.blog-stats-heatmap-cell--2 {
+  fill: var(--blog-stats-grass-2);
+}
+
+.blog-stats-heatmap-cell--3 {
+  fill: var(--blog-stats-grass-3);
+}
+
+.blog-stats-heatmap-cell--4 {
+  fill: var(--blog-stats-grass-4);
+}
+
+.blog-stats-table-wrap {
+  overflow-x: auto;
+}
+
+.blog-stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.blog-stats-table th,
+.blog-stats-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 32%, transparent);
+  text-align: left;
+  vertical-align: top;
+}
+
+.blog-stats-table thead th {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 45%, transparent);
+}
+
+.blog-stats-table tbody th[scope="row"] {
+  font-weight: 600;
+}
+
+.blog-stats-table-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+

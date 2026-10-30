@@ -1,0 +1,29 @@
+---
+import type { BlogStats } from '../lib/blog-stats';
+
+interface Props {
+  stats: BlogStats;
+}
+
+const { stats } = Astro.props;
+const formatJa = (n: number) => n.toLocaleString('ja-JP');
+---
+
+<dl class="blog-stats-summary">
+  <div class="blog-stats-summary-item">
+    <dt>公開記事</dt>
+    <dd>{formatJa(stats.postCount)}<span class="blog-stats-unit">本</span></dd>
+  </div>
+  <div class="blog-stats-summary-item">
+    <dt>総字数</dt>
+    <dd>{formatJa(stats.totalCharCount)}<span class="blog-stats-unit">字</span></dd>
+  </div>
+  <div class="blog-stats-summary-item">
+    <dt>字数 / 記事数</dt>
+    <dd>{formatJa(stats.averageCharCount)}<span class="blog-stats-unit">字</span></dd>
+  </div>
+  <div class="blog-stats-summary-item">
+    <dt>更新日数</dt>
+    <dd>{formatJa(stats.updateDayCount)}<span class="blog-stats-unit">日</span></dd>
+  </div>
+</dl>

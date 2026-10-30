@@ -12,6 +12,7 @@ const isContact = pathname === '/contact';
 const isKeywords = pathname === '/keywords' || pathname.startsWith('/keywords/');
 const isAbout = pathname === '/about';
 const isResume = pathname === '/resume';
+const isStats = pathname === '/stats';
 ---
 
 <header class="header-top">
@@ -70,6 +71,14 @@ const isResume = pathname === '/resume';
               aria-current={isKeywords ? 'page' : undefined}
             >
               <HeaderNavLabel label="Keywords" />
+            </a>
+            <a
+              class="header-link"
+              style="--title-line-count: 1"
+              href="/stats"
+              aria-current={isStats ? 'page' : undefined}
+            >
+              <HeaderNavLabel label="Stats" />
             </a>
           </div>
         </details>

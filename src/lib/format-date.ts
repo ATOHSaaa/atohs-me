@@ -42,6 +42,36 @@ function startOfJstDay(date: Date): number {
   return Date.UTC(y, m - 1, d);
 }
 
+/** JST の日付キー（`YYYY-MM-DD`） */
+export function formatJstDateKey(date: Date): string {
+  const { year, month, day } = getJstYmdParts(date);
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+/** JST カレンダー上で日付を加算する（`days` 日）。 */
+export function addJstDays(date: Date, days: number): Date {
+  return new Date(startOfJstDay(date) + days * MS_PER_DAY);
+}
+
+/** JST の月初日（その日 00:00 相当の Date） */
+export function startOfJstMonth(year: number, month: number): Date {
+  return new Date(Date.UTC(year, month - 1, 1));
+}
+
+/** JST の月末日 */
+export function endOfJstMonth(year: number, month: number): Date {
+  const next =
+    month === 12
+      ? new Date(Date.UTC(year + 1, 0, 1))
+      : new Date(Date.UTC(year, month, 1));
+  return addJstDays(next, -1);
+}
+
+/** JST 上の曜日（0 = 日曜 … 6 = 土曜） */
+export function getJstDayOfWeek(date: Date): number {
+  return new Date(startOfJstDay(date)).getUTCDay();
+}
+
 /** 公開日が now から指定日数以内（JST の日付・当日含む）か。days=7 なら今日〜6日前。 */
 export function isPublishedWithinLocalDays(
   date: Date,

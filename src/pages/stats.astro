@@ -1,0 +1,118 @@
+---
+import BlogLayout from '../layouts/BlogLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import BlogStatsHeatmap from '../components/BlogStatsHeatmap.astro';
+import BlogStatsYearCalendar from '../components/BlogStatsYearCalendar.astro';
+import BlogStatsMonthlyTable from '../components/BlogStatsMonthlyTable.astro';
+import BlogStatsSummary from '../components/BlogStatsSummary.astro';
+import { getPublishedBlogPosts } from '../lib/blog-posts';
+import { buildBlogStats, type BlogStatsRange } from '../lib/blog-stats';
+
+const posts = await getPublishedBlogPosts();
+const now = new Date();
+
+const ranges: { id: BlogStatsRange; label: string }[] = [
+  { id: 'month', label: '今月' },
+  { id: 'year', label: '今年' },
+  { id: 'all', label: '全期間' },
+];
+
+const statsByRange = Object.fromEntries(
+  ranges.map(({ id }) => [id, buildBlogStats(posts, id, now)]),
+) as Record<BlogStatsRange, ReturnType<typeof buildBlogStats>>;
+
+const defaultRange: BlogStatsRange = 'year';
+---
+
+<BlogLayout
+  title="Stats | atohs.me"
+  description="atohs.me ブログの公開記事数・字数・公開カレンダー（JST）。"
+  ogUrl="https://atohs.me/stats"
+>
+  <SiteHeader />
+  <main id="main-content" class="main main--blog-stats">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="blog-title">Stats</h1>
+
+    <div class="blog-stats-range">
+      <div class="blog-stats-tabs" role="tablist" aria-label="集計期間">
+        {
+          ranges.map(({ id, label }) => (
+            <button
+              type="button"
+              class:list={['blog-stats-tab', id === defaultRange && 'is-active']}
+              role="tab"
+              id={`blog-stats-tab-${id}`}
+              aria-selected={id === defaultRange ? 'true' : 'false'}
+              aria-controls={`blog-stats-panel-${id}`}
+              data-range={id}
+            >
+              {label}
+            </button>
+          ))
+        }
+      </div>
+
+      {
+        ranges.map(({ id }) => (
+          <div
+            id={`blog-stats-panel-${id}`}
+            class:list={['blog-stats-panel', id === defaultRange && 'is-active']}
+            role="tabpanel"
+            aria-labelledby={`blog-stats-tab-${id}`}
+            data-range={id}
+            hidden={id !== defaultRange}
+          >
+            <BlogStatsSummary stats={statsByRange[id]} />
+            {
+              id === 'all' ? (
+                <BlogStatsYearCalendar posts={posts} now={now} />
+              ) : (
+                <BlogStatsHeatmap stats={statsByRange[id]} idSuffix={`-${id}`} />
+              )
+            }
+            {id !== 'month' && (
+              <BlogStatsMonthlyTable stats={statsByRange[id]} idSuffix={`-${id}`} />
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </main>
+</BlogLayout>
+
+<script>
+  function initBlogStatsRangeTabs() {
+    const root = document.querySelector('.blog-stats-range');
+    if (!root || root.dataset.bound === 'true') return;
+    root.dataset.bound = 'true';
+
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+
+    const activate = (range: string) => {
+      for (const tab of tabs) {
+        const active = tab.dataset.range === range;
+        tab.classList.toggle('is-active', active);
+        tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      }
+      for (const panel of panels) {
+        const active = panel.dataset.range === range;
+        panel.classList.toggle('is-active', active);
+        panel.hidden = !active;
+      }
+    };
+
+    for (const tab of tabs) {
+      tab.addEventListener('click', () => {
+        const range = tab.dataset.range;
+        if (range) activate(range);
+      });
+    }
+  }
+
+  initBlogStatsRangeTabs();
+  document.addEventListener('astro:page-load', initBlogStatsRangeTabs);
+</script>

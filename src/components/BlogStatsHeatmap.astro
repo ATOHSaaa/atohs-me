@@ -1,0 +1,91 @@
+---
+import { buildHeatmapMonthColumnLabels, type BlogStats } from '../lib/blog-stats';
+
+interface Props {
+  stats: BlogStats;
+  idSuffix?: string;
+  showHeading?: boolean;
+  showMonthAxis?: boolean;
+}
+
+const { stats, idSuffix = '', showHeading = true, showMonthAxis = true } = Astro.props;
+
+const formatJa = (n: number) => n.toLocaleString('ja-JP');
+
+const heatmapAriaLabel = `${stats.heatmapStartKey} から ${stats.heatmapEndKey} までの公開日（JST）。1日あたりの記事数を色の濃さで示しています。`;
+
+const heatmapMonthLabels = buildHeatmapMonthColumnLabels(stats.heatmapWeeks);
+const cell = 11;
+const gap = 3;
+const pitch = cell + gap;
+const gridWidth = stats.heatmapWeeks.length * pitch - gap;
+const gridHeight = 7 * pitch - gap;
+const chartHeight = showMonthAxis ? gridHeight + 18 : gridHeight;
+---
+
+<section
+  class="blog-stats-section"
+  aria-labelledby={showHeading ? `blog-stats-heatmap-heading${idSuffix}` : undefined}
+>
+  {
+    showHeading && (
+      <h2 id={`blog-stats-heatmap-heading${idSuffix}`} class="blog-stats-heading">
+        公開カレンダー
+      </h2>
+    )
+  }
+  <div class="blog-stats-heatmap-wrap">
+    <svg
+      class="blog-stats-heatmap-chart"
+      width={gridWidth}
+      height={chartHeight}
+      viewBox={`0 0 ${gridWidth} ${chartHeight}`}
+      role="img"
+      aria-label={heatmapAriaLabel}
+    >
+      {
+        stats.heatmapWeeks.map((week, weekIndex) =>
+          week.days.map((day, dayIndex) => {
+            const title = day.outOfRange
+              ? `${day.dateKey}（範囲外）`
+              : day.postCount === 0
+                ? `${day.dateKey}：記事なし`
+                : `${day.dateKey}：${day.postCount}本・${formatJa(day.charCount)}字`;
+            return (
+              <rect
+                class:list={[
+                  'blog-stats-heatmap-cell',
+                  `blog-stats-heatmap-cell--${day.level}`,
+                ]}
+                x={weekIndex * pitch}
+                y={dayIndex * pitch}
+                width={cell}
+                height={cell}
+                rx="2"
+              >
+                <title>{title}</title>
+              </rect>
+            );
+          }),
+        )
+      }
+      {
+        showMonthAxis &&
+          heatmapMonthLabels.map(
+            (label, labelIndex) =>
+              label && (
+                <text
+                  class="blog-stats-heatmap-month"
+                  x={labelIndex * pitch + cell / 2}
+                  y={gridHeight + 15}
+                  text-anchor="middle"
+                  aria-hidden="true"
+                >
+                  {label}
+                </text>
+              ),
+          )
+      }
+    </svg>
+  </div>
+</section>

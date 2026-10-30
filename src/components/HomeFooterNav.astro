@@ -1,6 +1,9 @@
 ---
 import SiteTwitterLink from './SiteTwitterLink.astro';
 import SiteYondaLink from './SiteYondaLink.astro';
+
+const pathname = Astro.url.pathname;
+const isStats = pathname === '/stats';
 ---
 
 <nav class="home-footer-nav" aria-label="サイトメニュー">
@@ -15,6 +18,8 @@ import SiteYondaLink from './SiteYondaLink.astro';
   <a class="home-footer-nav-link" href="/keywords">Keywords</a>
   <span class="home-footer-nav-sep" aria-hidden="true">/</span>
   <a class="home-footer-nav-link" href="/contact">Contact</a>
+  <span class="home-footer-nav-sep" aria-hidden="true">/</span>
+  <a class="home-footer-nav-link" href="/stats" aria-current={isStats ? 'page' : undefined}>Stats</a>
   <span class="home-footer-nav-sep" aria-hidden="true">/</span>
   <SiteYondaLink variant="home-footer" />
   <span class="home-footer-nav-sep" aria-hidden="true">/</span>
