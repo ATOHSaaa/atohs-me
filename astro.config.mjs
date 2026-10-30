@@ -52,7 +52,7 @@ export default defineConfig({
   integrations: [
     sitemap({
       customPages: ['https://atohs.me/works/hanoi-clicker/'],
-      filter: (page) => !/\/og(-v\d+)?\.png\/?$/.test(new URL(page).pathname),
+      filter: (page) => !/\/og\.png\/?$/.test(new URL(page).pathname),
       serialize(item) {
         const path = new URL(item.url).pathname;
         const pubDate = postLastmodByPath[path];

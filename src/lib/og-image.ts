@@ -26,8 +26,8 @@ const FOOTER_FONT_SIZE = 36;
 const TEXT_COLOR = 'rgb(10, 10, 55)';
 /** 記事メタの `--color-text-muted`（light / contrast 100%）に近い */
 const FOOTER_TEXT_COLOR = 'rgba(10, 10, 55, 0.6)';
-/** OGP 描画ロジック変更時にファイル名を上げる（`og.png` は CDN に古い画像が残ることがある） */
-export const OG_IMAGE_FILENAME = 'og-v9.png';
+/** 記事 OGP のファイル名（`public/blog/<slug>/` に配置） */
+export const OG_IMAGE_FILENAME = 'og.png';
 
 export type GenerateOgImageOptions = {
   tags?: string[];

@@ -51,7 +51,7 @@ draft: false
 
 - 一覧: `/blog`
 - 記事: `/blog/<ファイル名>`（例: `blog-open.md` → `/blog/blog-open`）
-- OGP画像: `public/blog/<slug>/og-v9.png` に配置（ビルドでは再生成しない）。新規記事やレイアウト変更時は `npm run og:generate`（不足分のみ）または `npm run og:generate:force`（全記事）
+- OGP画像: `public/blog/<slug>/og.png` に配置（ビルドでは再生成しない）。新規記事やレイアウト変更時は `npm run og:generate`（不足分のみ）または `npm run og:generate:force`（全記事）
 - 本文用画像: `src/content/blog/img/` に置き、Markdown で `![](./img/ファイル名.png)` と書く
 
 ## デプロイ（Cloudflare Workers）
@@ -136,13 +136,13 @@ GitHub Pages 用の `185.199.*` / `2606:50c0:*` レコードは、Workers カス
 
 **ルール B — 記事 OGP 画像（同一 URL で差し替えあり）**
 
-`public/blog/<slug>/og-v9.png` は `npm run og:generate` で更新するため、`immutable` は付けない。
+`public/blog/<slug>/og.png` は `npm run og:generate` で更新するため、`immutable` は付けない。
 
 - **ルール名**: 例 `Long cache for blog OGP PNG`
 - **条件**:
 
 ```
-(http.host eq "atohs.me") and (http.request.uri.path matches "^/blog/[^/]+/og-v[0-9]+\\.png$")
+(http.host eq "atohs.me") and (http.request.uri.path matches "^/blog/[^/]+/og\\.png$")
 ```
 
 - **操作**: `Cache-Control` → `public, max-age=604800, stale-while-revalidate=86400`
@@ -151,10 +151,10 @@ GitHub Pages 用の `185.199.*` / `2606:50c0:*` レコードは、Workers カス
 
 ```bash
 curl -sI https://atohs.me/fonts/roboto-latin-700-normal.woff2 | grep -ei 'cache-control|server|cf-ray'
-curl -sI https://atohs.me/blog/blog-open/og-v9.png | grep -ei 'cache-control|server|cf-ray'
+curl -sI https://atohs.me/blog/blog-open/og.png | grep -ei 'cache-control|server|cf-ray'
 ```
 
-`/_astro/` や `/fonts/` は `immutable`、`/blog/*/og-v9.png` は 7 日キャッシュ + SWR が付いていれば OK。数分後に PSI を再計測。
+`/_astro/` や `/fonts/` は `immutable`、`/blog/*/og.png` は 7 日キャッシュ + SWR が付いていれば OK。数分後に PSI を再計測。
 
 ### CI ビルドキャッシュ
 
