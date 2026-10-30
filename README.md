@@ -26,7 +26,7 @@ npm run preview
 |-----------|----------|
 | 新規記事・タイトル/タグ/公開日変更 | `npm run og:generate -- --slug=<slug>` |
 | OGP レイアウト変更 | `npm run og:generate:force` |
-| `site-logo.png` 変更 | `npm run favicon:generate` |
+| `site-logo.png` 変更 | `npm run favicon:generate`（favicon と OGP 用円形ロゴ PNG） |
 | リンクカード定義変更 | `npm run link-card-ogp:refresh` |
 | Hanoi Clicker を同期 | `npm run sync:hanoi-clicker` |
 

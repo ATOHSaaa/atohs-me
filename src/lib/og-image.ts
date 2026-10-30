@@ -1,6 +1,5 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import sharp from 'sharp';
 import satori from 'satori';
 import { Resvg } from '@resvg/resvg-js';
 import { formatDate } from './format-date';
@@ -13,7 +12,12 @@ const PAD_BOTTOM = 72;
 /** タイトル長に依存せず常に同じサイズ（note の自動 OGP 画像に近い扱い） */
 const TITLE_FONT_SIZE = 72;
 const SUBTITLE_FONT_SIZE = 48;
-const BRAND_ICON_SIZE = 56;
+/** `scripts/generate-favicon.mjs` が生成（サイズ変更時はスクリプト側も合わせる） */
+export const BRAND_ICON_SIZE = 56;
+const BRAND_ICON_CIRCLE_PATH = join(
+  process.cwd(),
+  `src/assets/site-logo-circle-${BRAND_ICON_SIZE}.png`,
+);
 const BRAND_ICON_GAP = 16;
 /** Satori の行ボックス余白でアイコンが上に見えるのを補正 */
 const BRAND_ICON_NUDGE_Y = 7;
@@ -35,21 +39,16 @@ async function loadFont() {
   return readFile(fontPath);
 }
 
-function circleMaskSvg(size: number) {
-  const r = size / 2;
-  return `<svg width="${size}" height="${size}" xmlns="http://www.w3.org/2000/svg"><circle cx="${r}" cy="${r}" r="${r}" fill="#fff"/></svg>`;
-}
-
-/** ヘッダー favicon と同じく site-logo を円形に切り抜く */
-async function loadCircularSiteLogoDataUrl(size: number): Promise<string> {
-  const source = join(process.cwd(), 'src/assets/site-logo.png');
-  const mask = Buffer.from(circleMaskSvg(size));
-  const png = await sharp(source)
-    .resize(size, size, { fit: 'cover', position: 'centre' })
-    .ensureAlpha()
-    .composite([{ input: mask, blend: 'dest-in' }])
-    .png()
-    .toBuffer();
+/** favicon 生成と同じ円形ロゴ（事前生成 PNG） */
+async function loadBrandIconDataUrl(): Promise<string> {
+  let png: Buffer;
+  try {
+    png = await readFile(BRAND_ICON_CIRCLE_PATH);
+  } catch {
+    throw new Error(
+      `OG brand icon not found: ${BRAND_ICON_CIRCLE_PATH}. Run npm run favicon:generate`,
+    );
+  }
   return `data:image/png;base64,${png.toString('base64')}`;
 }
 
@@ -218,7 +217,7 @@ export async function generateOgImage(
   const dateLabel = pubDate ? formatDate(pubDate) : '';
 
   const font = await loadFont();
-  const brandIconSrc = await loadCircularSiteLogoDataUrl(BRAND_ICON_SIZE);
+  const brandIconSrc = await loadBrandIconDataUrl();
   const contentWidth = WIDTH - PAD_X * 2;
   /** Satori より少し狭く見積もり、再折り返しを避けつつ行幅をできるだけ使う */
   const wrapWidth = Math.floor(contentWidth * 0.99);
