@@ -65,7 +65,7 @@ draft: false
 
 ```bash
 export CLOUDFLARE_API_TOKEN='…'
-export CLOUDFLARE_ACCOUNT_ID='9e79ad62d9d02398901caa5d333e6bb7'  # 任意。wrangler がアカウントを解決できないとき用
+# CLOUDFLARE_ACCOUNT_ID は npm run ship / deploy:cf が scripts/cloudflare-account-id.sh で既定値を付与（上書き可）
 ```
 
 3. ビルドして Workers にアップロード（**git は触らない** — プレビュー用）:
@@ -85,6 +85,7 @@ npm run deploy:cf
 npm run ship
 ```
 
+- `ship.sh` はデプロイ前に `scripts/cloudflare-account-id.sh` で `CLOUDFLARE_ACCOUNT_ID` を付与（複数 Cloudflare アカウント環境向け。上書きする場合は実行前に export）
 - 未コミットの変更があると終了する（push 前に commit すること）
 - ビルド失敗時は deploy / push しない
 - force push はしない

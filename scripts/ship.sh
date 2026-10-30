@@ -3,6 +3,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# shellcheck source=cloudflare-account-id.sh
+source "$ROOT/scripts/cloudflare-account-id.sh"
 cd "$ROOT"
 
 if ! git diff --quiet --ignore-submodules HEAD 2>/dev/null || ! git diff --cached --quiet --ignore-submodules 2>/dev/null; then

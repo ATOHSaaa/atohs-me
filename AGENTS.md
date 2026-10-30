@@ -16,7 +16,7 @@
 ## デプロイ（Cloudflare Workers）
 
 - 設定: ルートの `wrangler.jsonc`（静的アセットのみ、`dist/`）。`npm run build` で `dist/_redirects`（末尾スラッシュ **301**）も生成される
-- プレビュー: `npm run build` → `npm run deploy:cf`（`workers.dev`）。トークンは `CLOUDFLARE_API_TOKEN`（必須）、アカウントは `CLOUDFLARE_ACCOUNT_ID`（任意）
+- プレビュー: `npm run build` → `npm run deploy:cf`（`workers.dev`）。トークンは `CLOUDFLARE_API_TOKEN`（必須）。`CLOUDFLARE_ACCOUNT_ID` は `ship` / `deploy:cf` が `scripts/cloudflare-account-id.sh` で付与（環境変数で上書き可）
 - 本番リリース: **`npm run ship`** — commit 済みであること。1 回 `build` のあと `wrangler deploy` と `git push` を並列（`scripts/ship.sh`）
 - CI（`.github/workflows/ci.yml`）はビルドのみ。増分キャッシュキーは Pages 時代と同じ考え方（`node_modules/.astro` + `package-lock.json` / `astro.config.mjs` / `src/content/**`）。**CI の成功だけでは本番は更新されない。**
 

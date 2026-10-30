@@ -22,6 +22,9 @@ const BRAND_ICON_GAP = 16;
 /** Satori の行ボックス余白でアイコンが上に見えるのを補正 */
 const BRAND_ICON_NUDGE_Y = 7;
 const LINE_HEIGHT = 1.35;
+/** タイトル折り返し: 先頭 `[A-Za-z0-9]` から `[A-Za-z0-9_:/.-]*` までを1トークン（`og:image` などを途中で切らない） */
+const TITLE_ASCII_WORD_HEAD = /[A-Za-z0-9]/;
+const TITLE_ASCII_WORD_TAIL = /[A-Za-z0-9_:/.-]/;
 const FOOTER_FONT_SIZE = 36;
 const TEXT_COLOR = 'rgb(10, 10, 55)';
 /** 記事メタの `--color-text-muted`（light / contrast 100%）に近い */
@@ -62,25 +65,38 @@ function charWidth(ch: string, fontSize: number) {
   return fontSize;
 }
 
-/** `@` と直後の非空白を1トークンにし、行の途中で `@` だけ孤立しないようにする */
+/** `@` 句、`og:image` などの ASCII 語、それ以外は1文字（和字）単位 */
 function titleTokens(title: string): string[] {
   const tokens: string[] = [];
   const chars = [...title];
 
   for (let i = 0; i < chars.length; i++) {
     const ch = chars[i];
-    if (!isAtSign(ch)) {
-      tokens.push(ch);
+    if (isAtSign(ch)) {
+      let token = ch;
+      i++;
+      while (i < chars.length && chars[i] !== ' ' && chars[i] !== '\n' && chars[i] !== '\t') {
+        token += chars[i];
+        i++;
+      }
+      tokens.push(token);
+      i--;
       continue;
     }
 
-    let token = ch;
-    i++;
-    while (i < chars.length && chars[i] !== ' ' && chars[i] !== '\n' && chars[i] !== '\t') {
-      token += chars[i];
+    if (TITLE_ASCII_WORD_HEAD.test(ch)) {
+      let token = ch;
       i++;
+      while (i < chars.length && TITLE_ASCII_WORD_TAIL.test(chars[i])) {
+        token += chars[i];
+        i++;
+      }
+      tokens.push(token);
+      i--;
+      continue;
     }
-    tokens.push(token);
+
+    tokens.push(ch);
   }
 
   return tokens;
@@ -201,7 +217,7 @@ function wrapTitleLines(title: string, fontSize: number, contentWidth: number): 
 
   if (line.text) lines.push(line.text);
 
-  return lines;
+  return lines.length > 0 ? lines : [''];
 }
 
 function formatOgTags(tags: string[]): string {

@@ -1,7 +1,7 @@
 {
   // Cloudflare Workers（静的アセットのみ）。Worker スクリプトは不要。
   // 認証: CLOUDFLARE_API_TOKEN（リポジトリに含めない）
-  // アカウント: CLOUDFLARE_ACCOUNT_ID（任意。未設定時は wrangler が解決）
+  // アカウント ID: npm run ship / deploy:cf が scripts/cloudflare-account-id.sh で付与（環境変数で上書き可）
   "name": "atohs-me",
   "compatibility_date": "2025-06-01",
   "assets": {

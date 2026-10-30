@@ -11,7 +11,7 @@ alwaysApply: true
 
 1. **未コミットの変更があれば先に commit する**（ユーザーが ship だけ言った場合も含む）。commit メッセージは変更内容に沿ってユーザー向け git ルールに従う。
 2. 作業ツリーが clean であることを確認する。
-3. **`npm run ship`** を実行する（内部で `build` → `wrangler deploy` と `git push` が並列）。
+3. **`npm run ship`** を実行する（内部で `build` → `wrangler deploy` と `git push` が並列）。`ship.sh` は `scripts/cloudflare-account-id.sh` 経由で `CLOUDFLARE_ACCOUNT_ID` を付けるので、エージェント実行時もコマンド先頭に ID を付けなくてよい（トークンは別途必要）。
 
 ## 例外・注意
 
