@@ -1785,10 +1785,6 @@ a.blog-tag:hover {
   text-decoration: underline;
 }
 
-.main--blog-stats {
-  max-width: min(calc(100% - 2 * var(--site-gutter)), 920px);
-}
-
 .main--blog-stats h1.blog-title {
   margin-bottom: 16px;
 }
