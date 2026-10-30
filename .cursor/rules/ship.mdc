@@ -1,0 +1,27 @@
+---
+description: 「ship して」と言われたときの本番反映（commit → npm run ship）
+alwaysApply: true
+---
+
+# ship（本番反映）
+
+ユーザーが **ship して**（または同義の「ship」「本番 ship」など）と依頼したら、**`git push` や `deploy:cf` だけでは済ませない**。本番反映は **`npm run ship`**（`scripts/ship.sh`）を正とする。
+
+## 手順
+
+1. **未コミットの変更があれば先に commit する**（ユーザーが ship だけ言った場合も含む）。commit メッセージは変更内容に沿ってユーザー向け git ルールに従う。
+2. 作業ツリーが clean であることを確認する。
+3. **`npm run ship`** を実行する（内部で `build` → `wrangler deploy` と `git push` が並列）。
+
+## 例外・注意
+
+- **push だけ** / **Cloudflare だけ** / **ビルドだけ** を明示されたときは、その指示を優先する。
+- `ship` は未コミットがあると失敗する。commit を省略しない。
+- 秘密情報（`.env` など）は commit しない。
+- Cloudflare 認証は README のとおり（`CLOUDFLARE_API_TOKEN` など）。失敗したらログを見て報告する。
+- ミドルウェア変更など増分キャッシュが心配なデプロイでは、ユーザーが `--force` ビルドを求めた場合のみ `npm run build -- --force` を検討（通常の ship は `npm run build` のまま）。
+
+## 参照
+
+- [README.md のデプロイ](../../README.md#デプロイcloudflare-workers)
+- [AGENTS.md のデプロイ](../../AGENTS.md)
