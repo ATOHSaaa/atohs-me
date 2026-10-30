@@ -55,7 +55,7 @@ export function resolveBlogTagFromSlug(
   return undefined;
 }
 
-/** 公開記事に付いたタグと件数（タグ名の五十音順）。 */
+/** 公開記事に付いたタグと件数（件数の多い順、同数はタグ名の五十音順）。 */
 export async function getBlogTagsWithCounts(): Promise<BlogTagEntry[]> {
   const posts = await getPublishedBlogPosts();
   const counts = new Map<string, number>();
@@ -70,7 +70,9 @@ export async function getBlogTagsWithCounts(): Promise<BlogTagEntry[]> {
 
   return [...counts.entries()]
     .map(([tag, count]) => ({ tag, count }))
-    .sort((a, b) => a.tag.localeCompare(b.tag, 'ja'));
+    .sort(
+      (a, b) => b.count - a.count || a.tag.localeCompare(b.tag, 'ja'),
+    );
 }
 
 /** 指定タグが付いた公開記事（新しい順）。 */
