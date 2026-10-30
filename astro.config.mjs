@@ -44,6 +44,7 @@ export default defineConfig({
     inlineStylesheets: 'always',
   },
   redirects: {
+    '/stats': '/blog/stats/',
     '/my-business-experience': '/resume#career',
     '/education': '/resume#education',
     '/career': '/resume#career',

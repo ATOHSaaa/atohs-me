@@ -1,12 +1,12 @@
 ---
-import BlogLayout from '../layouts/BlogLayout.astro';
-import SiteHeader from '../components/SiteHeader.astro';
-import BlogStatsHeatmap from '../components/BlogStatsHeatmap.astro';
-import BlogStatsYearCalendar from '../components/BlogStatsYearCalendar.astro';
-import BlogStatsMonthlyTable from '../components/BlogStatsMonthlyTable.astro';
-import BlogStatsSummary from '../components/BlogStatsSummary.astro';
-import { getPublishedBlogPosts } from '../lib/blog-posts';
-import { buildBlogStats, type BlogStatsRange } from '../lib/blog-stats';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import BlogStatsHeatmap from '../../components/BlogStatsHeatmap.astro';
+import BlogStatsYearCalendar from '../../components/BlogStatsYearCalendar.astro';
+import BlogStatsMonthlyTable from '../../components/BlogStatsMonthlyTable.astro';
+import BlogStatsSummary from '../../components/BlogStatsSummary.astro';
+import { getPublishedBlogPosts } from '../../lib/blog-posts';
+import { buildBlogStats, type BlogStatsRange } from '../../lib/blog-stats';
 
 const posts = await getPublishedBlogPosts();
 const now = new Date();
@@ -25,14 +25,15 @@ const defaultRange: BlogStatsRange = 'year';
 ---
 
 <BlogLayout
-  title="Stats | atohs.me"
+  title="Stats | Blog | atohs.me"
   description="atohs.me ブログの公開記事数・字数・公開カレンダー（JST）。"
-  ogUrl="https://atohs.me/stats"
+  ogUrl="https://atohs.me/blog/stats"
 >
   <SiteHeader />
   <main id="main-content" class="main main--blog-stats">
     <nav class="breadcrumb" aria-label="パンくずリスト">
-      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span><a href="/blog">Blog</a><span
+        class="breadcrumb-slash">/</span>
     </nav>
     <h1 class="blog-title">Stats</h1>
 
