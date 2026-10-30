@@ -844,23 +844,26 @@ html[data-theme="dark"] .theme-toggle-icon--light {
 }
 
 .home-profile .name-box {
-  flex-direction: column;
+  display: flex;
+  flex-direction: row;
   margin-top: 0;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 16px;
-  text-align: center;
+  text-align: left;
 }
 
 .home-profile-icon {
-  width: 88px;
-  height: 88px;
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
 }
 
 .home-profile .name-detail {
   margin: 0;
   flex: 1 1 auto;
   min-width: 0;
-  text-align: center;
+  text-align: left;
   font-feature-settings: "palt" 1;
 }
 
@@ -871,7 +874,7 @@ html[data-theme="dark"] .theme-toggle-icon--light {
 }
 
 .home-profile .name-detail-line:not(.name-primary) {
-  max-width: 22em;
+  max-width: none;
   overflow-wrap: normal;
   word-break: normal;
 }
@@ -881,6 +884,14 @@ html[data-theme="dark"] .theme-toggle-icon--light {
   font-size: 1.05em;
 }
 
+.home-profile .name-primary-part {
+  display: inline;
+}
+
+.home-profile .name-primary-part:first-child::after {
+  content: ",";
+}
+
 .home-profile .profile-text {
   margin-top: 40px;
 }
@@ -888,37 +899,20 @@ html[data-theme="dark"] .theme-toggle-icon--light {
 @media (min-width: 720px) {
   .home-profile .name-box {
     --home-profile-icon-size: calc(1.2em * 1.45 + 10px + 2 * 1em * 1.45);
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
     gap: 20px;
-    text-align: left;
   }
 
   .home-profile-icon {
-    flex-shrink: 0;
     width: var(--home-profile-icon-size);
     height: var(--home-profile-icon-size);
   }
 
   .home-profile .name-detail {
     flex: 0 1 auto;
-    min-width: 0;
-    text-align: left;
   }
 
   .home-profile .name-detail-line:not(.name-primary) {
-    max-width: none;
     white-space: nowrap;
-  }
-
-  .home-profile .name-primary-part {
-    display: inline;
-  }
-
-  .home-profile .name-primary-part:first-child::after {
-    content: ",";
   }
 }
 
@@ -1987,31 +1981,13 @@ h1.page-title {
     gap: 12px;
   }
 
-  .home-profile-icon {
-    width: 72px;
-    height: 72px;
-  }
-
   .home-profile .name-detail-line {
     font-size: 0.85em;
-  }
-
-  .home-profile .name-detail-line:not(.name-primary) {
-    max-width: min(100%, 16.5em);
-    margin-inline: auto;
   }
 
   .home-profile .name-detail-line.name-primary {
     margin-bottom: 6px;
     font-size: 1.05em;
-  }
-
-  .home-profile .name-primary-part {
-    display: block;
-  }
-
-  .home-profile .name-primary-part:first-child::after {
-    content: none;
   }
 
   .home-footer-zone {
