@@ -571,6 +571,28 @@ a.blog-tag:hover {
   }
 }
 
+/* 記事本文: 本文フォント1字分の内側余白。見出しは左にずらして intro 列端に揃える */
+.blog-layout .blog-body {
+  --blog-body-inline-inset: 1em;
+  padding-inline: var(--blog-body-inline-inset);
+}
+
+.blog-layout .blog-body h2 {
+  margin-inline-start: calc(-1em / 1.5);
+}
+
+.blog-layout .blog-body h3 {
+  margin-inline-start: calc(-1em / 1.2);
+}
+
+.blog-layout .blog-body h4 {
+  margin-inline-start: calc(-1em / 1.1);
+}
+
+.blog-layout .blog-body :is(h5, h6) {
+  margin-inline-start: -1em;
+}
+
 [data-theme="dark"] .blog-body {
   color: color-mix(in srgb, var(--color-text) 92%, var(--color-bg));
 }
