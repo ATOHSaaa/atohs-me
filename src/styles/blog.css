@@ -563,7 +563,7 @@ a.blog-tag:hover {
   letter-spacing: 0.04em;
   text-align: justify;
   text-justify: inter-character;
-  word-break: normal;
+  word-break: break-all;
   overflow-wrap: break-word;
   text-spacing-trim: trim-start;
 }
