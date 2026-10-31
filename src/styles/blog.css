@@ -610,6 +610,7 @@ a.blog-tag:hover {
 .blog-body p {
   line-height: 1.8;
   margin-bottom: 1.8em;
+  text-justify: inter-character;
 }
 
 .blog-body blockquote:not(.twitter-tweet) {
@@ -621,6 +622,7 @@ a.blog-tag:hover {
   margin: 0 0 0.75em;
   line-height: 1.85;
   white-space: pre-line;
+  text-justify: inter-character;
 }
 
 .blog-body blockquote:not(.twitter-tweet) p:last-child {
@@ -675,6 +677,7 @@ a.blog-tag:hover {
 
 .blog-body li {
   line-height: 1.8;
+  text-justify: inter-character;
 }
 
 .blog-body ul ul,
@@ -756,7 +759,8 @@ a.blog-tag:hover {
   font-family: var(--font-mono);
   font-size: 0.88em;
   font-weight: 500;
-  letter-spacing: 0;
+  letter-spacing: inherit;
+  text-justify: inherit;
   margin-inline: 1px;
   padding: 0.12em 0.4em;
   border-radius: 4px;
