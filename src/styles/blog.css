@@ -561,7 +561,8 @@ a.blog-tag:hover {
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.04em;
-  text-align: start;
+  text-align: justify;
+  word-break: break-all;
   text-spacing-trim: trim-start;
 }
 
