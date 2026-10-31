@@ -1279,10 +1279,11 @@ a.keywords-chip {
 
 .keywords-index-link {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   height: 100%;
-  min-height: 11.5rem;
-  padding: 18px 18px;
+  min-height: 2.75rem;
+  padding: 12px 16px;
   text-decoration: none;
   color: inherit;
 }
@@ -1298,38 +1299,6 @@ a.keywords-chip {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
-}
-
-.keywords-index-preview-wrap {
-  position: relative;
-  flex: 1 1 auto;
-  margin-top: 14px;
-  min-height: calc(5 * 1.5em + 12px);
-  max-height: calc(5 * 1.5em + 12px);
-  overflow: hidden;
-}
-
-.keywords-index-preview {
-  margin: 0;
-  padding-left: 1.15em;
-  font-size: 0.78em;
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
-  color: var(--color-text);
-  list-style-type: disc;
-}
-
-.keywords-index-preview li {
-  margin: 0 0 4px;
-}
-
-.keywords-index-preview li:last-child {
-  margin-bottom: 0;
-}
-
-.keywords-index-preview li.is-truncated::after {
-  content: "...";
 }
 
 .keywords-list li {
