@@ -1092,28 +1092,6 @@ a.blog-tag:hover {
   box-shadow: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  [data-theme="dark"] .share-button:hover {
-    --color-text: var(--outline-frame-fg-on-hover);
-    --color-text-muted: var(--outline-frame-fg-muted-on-hover);
-    color: var(--color-text);
-  }
-}
-
-[data-theme="dark"] .share-button:focus-visible {
-  --color-text: var(--outline-frame-fg-on-hover);
-  --color-text-muted: var(--outline-frame-fg-muted-on-hover);
-  color: var(--color-text);
-}
-
-@media (hover: none) {
-  [data-theme="dark"] .share-button:active {
-    --color-text: var(--outline-frame-fg-on-hover);
-    --color-text-muted: var(--outline-frame-fg-muted-on-hover);
-    color: var(--color-text);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .share-button-face {
     transition:
@@ -1696,21 +1674,18 @@ a.blog-tag:hover {
 
 @media (hover: hover) and (pointer: fine) {
   .share-button:hover .share-button-face {
-    background-color: var(--outline-frame-bg-hover);
     box-shadow: var(--outline-frame-shadow-hover);
     transform: scale(var(--outline-frame-hover-scale));
   }
 }
 
 .share-button:focus-visible .share-button-face {
-  background-color: var(--outline-frame-bg-hover);
   box-shadow: var(--outline-frame-shadow-hover);
   transform: scale(var(--outline-frame-hover-scale));
 }
 
 @media (hover: none) {
   .share-button:active .share-button-face {
-    background-color: var(--outline-frame-bg-hover);
     box-shadow: var(--outline-frame-shadow-hover);
   }
 }

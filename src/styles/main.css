@@ -84,9 +84,6 @@
     0 2px 4px rgba(10, 10, 55, 0.04), 0 5px 14px rgba(10, 10, 55, 0.06);
   --outline-frame-shadow-hover:
     0 3px 6px rgba(10, 10, 55, 0.05), 0 7px 16px rgba(10, 10, 55, 0.07);
-  --outline-frame-bg-hover: #ffee00;
-  --outline-frame-fg-on-hover: rgb(10, 10, 55);
-  --outline-frame-fg-muted-on-hover: var(--color-text-muted);
   --outline-frame-border: var(--color-text);
   --outline-frame-hover-scale: 1.02;
   --outline-frame-radius: 4px;
@@ -943,7 +940,6 @@ a.keywords-chip {
   a.keywords-index-link:hover,
   .container .item:has(.item-link:hover),
   a.keywords-chip:hover:not(.keywords-chip--current) {
-    background-color: var(--outline-frame-bg-hover);
     box-shadow: var(--outline-frame-shadow-hover);
     transform: scale(var(--outline-frame-hover-scale));
   }
@@ -953,43 +949,18 @@ a.keywords-chip {
     z-index: 1;
     overflow: visible;
   }
-
-  [data-theme="dark"] a.keywords-index-link:hover,
-  [data-theme="dark"] .container .item:has(.item-link:hover),
-  [data-theme="dark"] a.keywords-chip:hover:not(.keywords-chip--current) {
-    --color-text: var(--outline-frame-fg-on-hover);
-    --color-text-muted: var(--outline-frame-fg-muted-on-hover);
-    color: var(--color-text);
-  }
 }
 
 .container .item:has(.item-link:focus-visible) {
-  background-color: var(--outline-frame-bg-hover);
   box-shadow: var(--outline-frame-shadow-hover);
   transform: scale(var(--outline-frame-hover-scale));
-}
-
-[data-theme="dark"] .container .item:has(.item-link:focus-visible),
-[data-theme="dark"] .keywords-chip--current {
-  --color-text: var(--outline-frame-fg-on-hover);
-  --color-text-muted: var(--outline-frame-fg-muted-on-hover);
-  color: var(--color-text);
 }
 
 @media (hover: none) {
   a.keywords-index-link:active,
   .container .item:has(.item-link:active),
   a.keywords-chip:active:not(.keywords-chip--current) {
-    background-color: var(--outline-frame-bg-hover);
     box-shadow: var(--outline-frame-shadow-hover);
-  }
-
-  [data-theme="dark"] a.keywords-index-link:active,
-  [data-theme="dark"] .container .item:has(.item-link:active),
-  [data-theme="dark"] a.keywords-chip:active:not(.keywords-chip--current) {
-    --color-text: var(--outline-frame-fg-on-hover);
-    --color-text-muted: var(--outline-frame-fg-muted-on-hover);
-    color: var(--color-text);
   }
 }
 
@@ -1357,8 +1328,8 @@ a.keywords-chip {
 }
 
 .keywords-chip--current {
-  background-color: var(--outline-frame-bg-hover);
-  color: var(--outline-frame-fg-on-hover);
+  background-color: var(--color-text);
+  color: var(--color-bg);
   cursor: default;
 }
 
