@@ -563,8 +563,10 @@ a.blog-tag:hover {
   letter-spacing: 0.04em;
   text-align: justify;
   text-justify: inter-character;
-  word-break: break-all;
+  word-break: normal;
   overflow-wrap: break-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
   text-spacing-trim: trim-start;
 }
 
@@ -760,6 +762,7 @@ a.blog-tag:hover {
   border-radius: 4px;
   background-color: color-mix(in srgb, var(--color-text) 7%, var(--color-bg));
   color: var(--color-text);
+  hyphens: none;
   word-break: break-all;
 }
 
@@ -777,6 +780,7 @@ a.blog-tag:hover {
   line-height: 1.65;
   letter-spacing: 0;
   font-size: 0.88em;
+  hyphens: none;
   overflow-x: auto;
 }
 
