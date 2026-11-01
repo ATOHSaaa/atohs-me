@@ -26,8 +26,10 @@ const tagEntries = await getBlogTagsWithCounts();
         <ul class="blog-tag-index">
           {tagEntries.map(({ tag, count }) => (
             <li class="blog-tag-index-item">
-              <a class="blog-tag" href={blogTagHref(tag)}>#{tag}</a>
-              <span class="blog-tag-index-count">{count}件</span>
+              <a class="blog-tag" href={blogTagHref(tag)}>
+                #{tag}
+                <span class="blog-tag-index-count">{count}件</span>
+              </a>
             </li>
           ))}
         </ul>

@@ -76,6 +76,11 @@
     0 1px 2px rgba(10, 10, 55, 0.035), 0 2px 8px rgba(10, 10, 55, 0.04);
   --card-shadow-chip-hover:
     0 1px 3px rgba(10, 10, 55, 0.05), 0 4px 12px rgba(10, 10, 55, 0.05);
+  --keywords-chip-shadow:
+    0 1px 2px rgba(10, 10, 55, 0.02), 0 1px 3px rgba(10, 10, 55, 0.024);
+  --keywords-chip-shadow-hover:
+    0 1px 2px rgba(10, 10, 55, 0.03), 0 2px 5px rgba(10, 10, 55, 0.028);
+  --pill-cloud-heading-gap: 24px;
   --random-button-shadow:
     0 1px 1px rgba(10, 10, 55, 0.02), 0 1px 3px rgba(10, 10, 55, 0.025);
   --random-button-shadow-hover:
@@ -167,6 +172,11 @@
     0 1px 2px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.22);
   --card-shadow-chip-hover:
     0 1px 3px rgba(0, 0, 0, 0.32), 0 4px 12px rgba(0, 0, 0, 0.28);
+  --keywords-chip-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.14);
+  --keywords-chip-shadow-hover:
+    0 1px 2px rgba(0, 0, 0, 0.2), 0 2px 5px rgba(0, 0, 0, 0.18);
+  --pill-cloud-heading-gap: 24px;
   --random-button-shadow: var(--card-shadow-chip);
   --random-button-shadow-hover: var(--card-shadow-chip-hover);
   --outline-frame-shadow:
@@ -917,8 +927,7 @@ html[data-theme="dark"] .theme-toggle-icon--light {
    Outline frame surfaces (home cards, works, keywords, blog sidebar)
    ========================================================================== */
 
-.container .item,
-.keywords-chip {
+.container .item {
   border: 2px solid var(--outline-frame-border);
   border-radius: var(--outline-frame-radius);
   background-color: var(--color-bg);
@@ -937,7 +946,7 @@ a.keywords-chip {
 @media (hover: hover) and (pointer: fine) {
   .container .item:has(.item-link:hover),
   a.keywords-chip:hover:not(.keywords-chip--current) {
-    box-shadow: var(--outline-frame-shadow-hover);
+    box-shadow: var(--keywords-chip-shadow-hover);
     transform: scale(var(--outline-frame-hover-scale));
   }
 
@@ -956,7 +965,7 @@ a.keywords-chip {
 @media (hover: none) {
   .container .item:has(.item-link:active),
   a.keywords-chip:active:not(.keywords-chip--current) {
-    box-shadow: var(--outline-frame-shadow-hover);
+    box-shadow: var(--keywords-chip-shadow-hover);
   }
 }
 
@@ -1062,7 +1071,7 @@ a.keywords-chip {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 12px;
-  margin-bottom: 16px;
+  margin-bottom: 0;
 }
 
 .keywords-heading-row .keywords-heading,
@@ -1177,7 +1186,7 @@ a.keywords-chip {
 }
 
 .keywords-other .keywords-heading-row {
-  margin-bottom: 16px;
+  margin-bottom: 0;
 }
 
 .keywords-other .keywords-heading {
@@ -1206,8 +1215,9 @@ a.keywords-chip {
 }
 
 .keywords-body + .keywords-list,
+.keywords-heading-row + .keywords-list,
 .main .page-title + .keywords-list {
-  margin-top: 24px;
+  margin-top: var(--pill-cloud-heading-gap);
 }
 
 .keywords-list li {
@@ -1216,6 +1226,7 @@ a.keywords-chip {
   max-width: 100%;
 }
 
+/* Keywords ピル（タグ一覧は blog.css の .blog-tag-index .blog-tag） */
 .keywords-chip {
   display: inline-flex;
   align-items: center;
@@ -1223,13 +1234,18 @@ a.keywords-chip {
   max-width: 100%;
   min-height: 2.25rem;
   padding: 0.35em 1.05em;
+  border: 2px solid var(--outline-frame-border);
   border-radius: 9999px;
+  background-color: var(--color-bg);
+  box-shadow: var(--keywords-chip-shadow);
+  box-sizing: border-box;
   font-size: 0.82em;
   font-weight: 600;
   line-height: 1.25;
   letter-spacing: 0.02em;
   text-decoration: none;
   color: inherit;
+  white-space: nowrap;
 }
 
 .keywords-chip-label {
@@ -1243,6 +1259,7 @@ a.keywords-chip {
 .keywords-chip--current {
   background-color: var(--color-text);
   color: var(--color-bg);
+  box-shadow: var(--keywords-chip-shadow);
   cursor: default;
 }
 
