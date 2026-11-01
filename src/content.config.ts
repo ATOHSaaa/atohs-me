@@ -19,6 +19,8 @@ const blog = defineCollection({
       .default([])
       .transform(parseBlogTags),
     draft: z.boolean().default(false),
+    /** OGP ヒーロー画像（省略時は本文の最初の画像。`false` でテキストのみ） */
+    ogImage: z.union([z.string(), z.literal(false)]).optional(),
   }),
 });
 

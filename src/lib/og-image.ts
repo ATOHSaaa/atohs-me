@@ -26,6 +26,17 @@ const LINE_HEIGHT = 1.35;
 const TITLE_ASCII_WORD_HEAD = /[A-Za-z0-9]/;
 const TITLE_ASCII_WORD_TAIL = /[A-Za-z0-9_:/.-]/;
 const FOOTER_FONT_SIZE = 36;
+/** 本文画像があるとき右下に載せるヒーロー（16:9）。高さは computeHeroLayout で決める */
+const HERO_ASPECT = 16 / 9;
+/** ヒーロー回り込み前に全幅のままにするタイトル行数（1行目・2行目） */
+const FULL_WIDTH_TITLE_LINES = 2;
+/** 2行目の下に空けてからヒーローを置く（Satori の行高見積もり誤差用） */
+const HERO_TOP_BUFFER_PX = 20;
+const HERO_BORDER_RADIUS = 12;
+/** タイトルとヒーローの間・ヒーローとフッターの間 */
+const HERO_GAP = 24;
+const FOOTER_MARGIN_TOP = 24;
+const TITLE_LINE_HEIGHT_PX = TITLE_FONT_SIZE * LINE_HEIGHT;
 const TEXT_COLOR = 'rgb(10, 10, 55)';
 /** 記事メタの `--color-text-muted`（light / contrast 100%）に近い */
 const FOOTER_TEXT_COLOR = 'rgba(10, 10, 55, 0.6)';
@@ -35,6 +46,8 @@ export const OG_IMAGE_FILENAME = 'og.png';
 export type GenerateOgImageOptions = {
   tags?: string[];
   pubDate?: Date;
+  /** 右下ヒーロー（data URL）。未指定なら従来のテキストのみレイアウト */
+  heroImageSrc?: string;
 };
 
 async function loadFont() {
@@ -220,15 +233,182 @@ function wrapTitleLines(title: string, fontSize: number, contentWidth: number): 
   return lines.length > 0 ? lines : [''];
 }
 
+type HeroWrapBand = {
+  /** タイトル先頭行の baseline 付近からの px（ヒーロー上端） */
+  top: number;
+  /** タイトル先頭行の baseline 付近からの px（ヒーロー下端） */
+  bottom: number;
+};
+
+type HeroLayout = {
+  width: number;
+  height: number;
+  band: HeroWrapBand;
+};
+
+function computeTitleZoneHeight(): number {
+  const innerHeight = HEIGHT - PAD_TOP - PAD_BOTTOM;
+  const footerBlockHeight = FOOTER_MARGIN_TOP + FOOTER_FONT_SIZE * LINE_HEIGHT;
+  const mainColumnHeight = innerHeight - footerBlockHeight;
+  const brandBlockHeight = BRAND_ICON_SIZE + 32;
+  return mainColumnHeight - brandBlockHeight;
+}
+
+/** 2行目まで全幅のあと、右下に収まる最大サイズ（16:9） */
+function computeHeroLayout(): HeroLayout {
+  const titleZoneHeight = computeTitleZoneHeight();
+  const heroBottom = titleZoneHeight;
+  const heroTopMin = FULL_WIDTH_TITLE_LINES * TITLE_LINE_HEIGHT_PX + HERO_TOP_BUFFER_PX;
+  const height = Math.max(0, Math.floor(heroBottom - heroTopMin));
+  const width = Math.max(0, Math.round(height * HERO_ASPECT));
+  const heroTop = heroBottom - height;
+  return {
+    width,
+    height,
+    band: { top: heroTop, bottom: heroBottom },
+  };
+}
+
+function lineIndexOverlapsHeroBand(lineIndex: number, band: HeroWrapBand): boolean {
+  if (lineIndex < FULL_WIDTH_TITLE_LINES) return false;
+  const lineTop = lineIndex * TITLE_LINE_HEIGHT_PX;
+  const lineBottom = lineTop + TITLE_LINE_HEIGHT_PX;
+  return lineBottom > band.top && lineTop < band.bottom;
+}
+
+/** 行インデックスごとに折り返し幅が変わるタイトル（右下ヒーロー回り込み） */
+function wrapTitleLinesWithVariableWidth(
+  title: string,
+  fontSize: number,
+  widthForLineIndex: (lineIndex: number) => number,
+): string[] {
+  const lines: string[] = [];
+  const line = { text: '', width: 0 };
+
+  const maxWidth = () => widthForLineIndex(lines.length);
+
+  for (const token of titleTokens(title)) {
+    const width = tokenWidth(token, fontSize);
+    if (line.text && line.width + width > maxWidth()) {
+      if (width <= maxWidth()) {
+        lines.push(line.text);
+        line.text = token;
+        line.width = width;
+        continue;
+      }
+      lines.push(line.text);
+      line.text = '';
+      line.width = 0;
+      for (const unit of wrapUnitsFromToken(token)) {
+        appendUnitToLine(lines, line, unit, fontSize, maxWidth());
+      }
+      continue;
+    }
+
+    line.text += token;
+    line.width += width;
+  }
+
+  if (line.text) lines.push(line.text);
+
+  return lines.length > 0 ? lines : [''];
+}
+
+/** ヒーロー帯と重なる行だけ狭い幅で折り返す（収束するまで再計算） */
+function wrapTitleLinesAroundHero(
+  title: string,
+  fontSize: number,
+  contentWidth: number,
+  hero: HeroLayout,
+): string[] {
+  const fullWidth = Math.floor(contentWidth * 0.99);
+  const narrowWidth = Math.floor((contentWidth - hero.width - HERO_GAP) * 0.99);
+  const widthForLineIndex = (lineIndex: number) =>
+    lineIndexOverlapsHeroBand(lineIndex, hero.band) ? narrowWidth : fullWidth;
+
+  let lines = wrapTitleLines(title, fontSize, fullWidth);
+
+  for (let iter = 0; iter < 12; iter++) {
+    const next = wrapTitleLinesWithVariableWidth(title, fontSize, widthForLineIndex);
+    if (next.length === lines.length && next.every((line, i) => line === lines[i])) {
+      return next;
+    }
+    lines = next;
+  }
+
+  return wrapTitleLinesWithVariableWidth(title, fontSize, widthForLineIndex);
+}
+
+function buildHeroImageNode(heroImageSrc: string, width: number, height: number) {
+  return {
+    type: 'img',
+    props: {
+      src: heroImageSrc,
+      width,
+      height,
+      style: {
+        width,
+        height,
+        flexShrink: 0,
+        objectFit: 'cover',
+        borderRadius: HERO_BORDER_RADIUS,
+      },
+    },
+  };
+}
+
 function formatOgTags(tags: string[]): string {
   return tags.map((tag) => `#${tag}`).join(' ');
+}
+
+function buildFooterNode(contentWidth: number, tagsLabel: string, dateLabel: string) {
+  return {
+    type: 'div',
+    props: {
+      style: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        width: `${contentWidth}px`,
+        flexShrink: 0,
+        marginTop: FOOTER_MARGIN_TOP,
+        fontSize: FOOTER_FONT_SIZE,
+        fontWeight: 700,
+        lineHeight: LINE_HEIGHT,
+        color: FOOTER_TEXT_COLOR,
+      },
+      children: [
+        {
+          type: 'div',
+          props: {
+            style: {
+              flex: 1,
+              paddingRight: 24,
+            },
+            children: tagsLabel,
+          },
+        },
+        {
+          type: 'div',
+          props: {
+            style: {
+              flexShrink: 0,
+              textAlign: 'right',
+            },
+            children: dateLabel,
+          },
+        },
+      ],
+    },
+  };
 }
 
 export async function generateOgImage(
   title: string,
   options: GenerateOgImageOptions = {},
 ): Promise<Buffer> {
-  const { tags = [], pubDate } = options;
+  const { tags = [], pubDate, heroImageSrc } = options;
   const tagsLabel = formatOgTags(tags);
   const dateLabel = pubDate ? formatDate(pubDate) : '';
 
@@ -237,7 +417,83 @@ export async function generateOgImage(
   const contentWidth = WIDTH - PAD_X * 2;
   /** Satori より少し狭く見積もり、再折り返しを避けつつ行幅をできるだけ使う */
   const wrapWidth = Math.floor(contentWidth * 0.99);
-  const titleLines = wrapTitleLines(title, TITLE_FONT_SIZE, wrapWidth);
+  const heroLayout = heroImageSrc ? computeHeroLayout() : undefined;
+  const titleLines = heroLayout
+    ? wrapTitleLinesAroundHero(title, TITLE_FONT_SIZE, contentWidth, heroLayout)
+    : wrapTitleLines(title, TITLE_FONT_SIZE, wrapWidth);
+  const footerNode = buildFooterNode(contentWidth, tagsLabel, dateLabel);
+
+  const titleBlockChildren = heroLayout
+    ? [
+        {
+          type: 'div',
+          props: {
+            style: {
+              display: 'flex',
+              flexDirection: 'column',
+              width: `${contentWidth}px`,
+              flexShrink: 0,
+            },
+            children: titleLines.map((line) => ({
+              type: 'div',
+              props: {
+                style: {
+                  fontSize: TITLE_FONT_SIZE,
+                  fontWeight: 700,
+                  lineHeight: LINE_HEIGHT,
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
+                },
+                children: line,
+              },
+            })),
+          },
+        },
+        {
+          type: 'div',
+          props: {
+            style: {
+              position: 'absolute',
+              right: 0,
+              bottom: 0,
+              width: heroLayout.width,
+              height: heroLayout.height,
+            },
+            children: [
+              buildHeroImageNode(heroImageSrc!, heroLayout.width, heroLayout.height),
+            ],
+          },
+        },
+      ]
+    : titleLines.map((line) => ({
+        type: 'div',
+        props: {
+          style: {
+            fontSize: TITLE_FONT_SIZE,
+            fontWeight: 700,
+            lineHeight: LINE_HEIGHT,
+            whiteSpace: 'nowrap',
+            flexShrink: 0,
+          },
+          children: line,
+        },
+      }));
+
+  const titleContainerStyle = heroLayout
+    ? {
+        display: 'flex',
+        flexDirection: 'column' as const,
+        flex: 1,
+        width: `${contentWidth}px`,
+        minHeight: 0,
+        position: 'relative' as const,
+      }
+    : {
+        display: 'flex',
+        flexDirection: 'column' as const,
+        width: `${contentWidth}px`,
+        flexShrink: 0,
+      };
 
   const svg = await satori(
     {
@@ -319,70 +575,14 @@ export async function generateOgImage(
                 {
                   type: 'div',
                   props: {
-                    style: {
-                      display: 'flex',
-                      flexDirection: 'column',
-                      width: `${contentWidth}px`,
-                      flexShrink: 0,
-                    },
-                    children: titleLines.map((line) => ({
-                      type: 'div',
-                      props: {
-                        style: {
-                          fontSize: TITLE_FONT_SIZE,
-                          fontWeight: 700,
-                          lineHeight: LINE_HEIGHT,
-                          whiteSpace: 'nowrap',
-                          flexShrink: 0,
-                        },
-                        children: line,
-                      },
-                    })),
+                    style: titleContainerStyle,
+                    children: titleBlockChildren,
                   },
                 },
               ],
             },
           },
-          {
-            type: 'div',
-            props: {
-              style: {
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'flex-end',
-                width: `${contentWidth}px`,
-                flexShrink: 0,
-                marginTop: 24,
-                fontSize: FOOTER_FONT_SIZE,
-                fontWeight: 700,
-                lineHeight: LINE_HEIGHT,
-                color: FOOTER_TEXT_COLOR,
-              },
-              children: [
-                {
-                  type: 'div',
-                  props: {
-                    style: {
-                      flex: 1,
-                      paddingRight: 24,
-                    },
-                    children: tagsLabel,
-                  },
-                },
-                {
-                  type: 'div',
-                  props: {
-                    style: {
-                      flexShrink: 0,
-                      textAlign: 'right',
-                    },
-                    children: dateLabel,
-                  },
-                },
-              ],
-            },
-          },
+          footerNode,
         ],
       },
     },
