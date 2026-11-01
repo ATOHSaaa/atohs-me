@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 import { remarkBracketUrlLinks } from './src/lib/remark-bracket-url-links.js';
 import { remarkTwitterEmbeds } from './src/lib/remark-twitter-embeds.js';
@@ -65,14 +66,16 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [
-      remarkBracketUrlLinks,
-      remarkTwitterEmbeds,
-      remarkAmazonCards,
-      remarkLinkCards,
-      remarkBracketFootnotes,
-    ],
-    rehypePlugins: [rehypeSlug, rehypeExternalLinks, rehypeContentImages],
+    processor: unified({
+      remarkPlugins: [
+        remarkBracketUrlLinks,
+        remarkTwitterEmbeds,
+        remarkAmazonCards,
+        remarkLinkCards,
+        remarkBracketFootnotes,
+      ],
+      rehypePlugins: [rehypeSlug, rehypeExternalLinks, rehypeContentImages],
+    }),
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,
