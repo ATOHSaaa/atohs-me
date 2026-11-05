@@ -37,6 +37,42 @@ const HERO_BORDER_RADIUS = 12;
 const HERO_GAP = 24;
 const FOOTER_MARGIN_TOP = 24;
 const TITLE_LINE_HEIGHT_PX = TITLE_FONT_SIZE * LINE_HEIGHT;
+/** 行頭に来てはいけない文字（禁則処理） */
+const LINE_START_PROHIBITED = new Set([
+  '、',
+  '。',
+  '，',
+  '．',
+  '：',
+  '；',
+  '？',
+  '！',
+  '‼',
+  '⁉',
+  '・',
+  '…',
+  '‥',
+  'ー',
+  '—',
+  '−',
+  ')',
+  '）',
+  ']',
+  '］',
+  '}',
+  '｝',
+  '〉',
+  '》',
+  '」',
+  '』',
+  '】',
+  '〕',
+  '〙',
+  '〛',
+  'ゝ',
+  'ゞ',
+  '々',
+]);
 const TEXT_COLOR = 'rgb(10, 10, 55)';
 /** 記事メタの `--color-text-muted`（light / contrast 100%）に近い */
 const FOOTER_TEXT_COLOR = 'rgba(10, 10, 55, 0.6)';
@@ -144,6 +180,29 @@ function tokenWidth(token: string, fontSize: number): number {
   return width;
 }
 
+/** 折り返し後に行頭禁則（、。など）を前行へ寄せる */
+function fixKinsokuLineBreaks(lines: string[]): string[] {
+  if (lines.length <= 1) return lines;
+
+  const result = [...lines];
+  let changed = true;
+
+  while (changed) {
+    changed = false;
+    for (let i = 1; i < result.length; i++) {
+      while (result[i].length > 0) {
+        const first = [...result[i]][0];
+        if (!LINE_START_PROHIBITED.has(first)) break;
+        result[i] = [...result[i]].slice(1).join('');
+        result[i - 1] += first;
+        changed = true;
+      }
+    }
+  }
+
+  return result.filter((line) => line.length > 0);
+}
+
 function appendCharToLine(
   lines: string[],
   line: { text: string; width: number },
@@ -230,7 +289,7 @@ function wrapTitleLines(title: string, fontSize: number, contentWidth: number): 
 
   if (line.text) lines.push(line.text);
 
-  return lines.length > 0 ? lines : [''];
+  return fixKinsokuLineBreaks(lines.length > 0 ? lines : ['']);
 }
 
 type HeroWrapBand = {
@@ -311,7 +370,7 @@ function wrapTitleLinesWithVariableWidth(
 
   if (line.text) lines.push(line.text);
 
-  return lines.length > 0 ? lines : [''];
+  return fixKinsokuLineBreaks(lines.length > 0 ? lines : ['']);
 }
 
 /** ヒーロー帯と重なる行だけ狭い幅で折り返す（収束するまで再計算） */
