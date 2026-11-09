@@ -16,6 +16,8 @@ interface Props {
   ogSiteName?: string;
   /** 記事内 X 埋め込み用（preconnect のみ。widgets.js はページ側で読み込む） */
   twitterEmbeds?: boolean;
+  /** メモなど検索避けページ用 */
+  robotsNoindex?: boolean;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   ogImage = 'https://atohs.me/src/ogp.png',
   ogSiteName = 'atohs.me',
   twitterEmbeds = false,
+  robotsNoindex = false,
 } = Astro.props;
 
 await import('../styles/main.css');
@@ -79,6 +82,7 @@ await import('../styles/blog.css');
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {robotsNoindex && <meta name="robots" content="noindex, nofollow" />}
 
     <meta property="og:url" content={ogUrl} />
     <meta property="og:type" content="website" />

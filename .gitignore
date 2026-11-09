@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .astro/
+.scrapbox-cache/
 .wrangler/
 .wrangler-dry-run/
 src/assets/fonts/

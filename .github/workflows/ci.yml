@@ -29,6 +29,15 @@ jobs:
             astro-incr-${{ runner.os }}-${{ hashFiles('package-lock.json', 'astro.config.mjs') }}-
             astro-incr-${{ runner.os }}-
 
+      - name: Cache Scrapbox page details
+        uses: actions/cache@v4
+        with:
+          path: .scrapbox-cache
+          key: scrapbox-${{ runner.os }}-atohs-memo-${{ hashFiles('src/lib/scrapbox/**') }}
+          restore-keys: |
+            scrapbox-${{ runner.os }}-atohs-memo-
+            scrapbox-${{ runner.os }}-
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -39,4 +48,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          SCRAPBOX_SID: ${{ secrets.SCRAPBOX_SID }}
+          SCRAPBOX_PUBLISH_TAG: ${{ vars.SCRAPBOX_PUBLISH_TAG }}
+          SCRAPBOX_FORCE_REFRESH: ${{ vars.SCRAPBOX_FORCE_REFRESH }}
         run: npm run build

@@ -54,6 +54,67 @@ draft: false
 - OGP画像: `public/blog/<slug>/og.png` に配置（ビルドでは再生成しない）。新規記事やレイアウト変更時は `npm run og:generate`（不足分のみ）または `npm run og:generate:force`（全記事）
 - 本文用画像: `src/content/blog/img/` に置き、Markdown で `![](./img/ファイル名.png)` と書く
 
+## Memo（Scrapbox / Cosense 連携）
+
+ビルド時に [Scrapbox API](https://scrapbox.io/api/pages/atohs-memo) から `atohs-memo` プロジェクトのページを取得し、静的ページとして `/memo/` 以下に出力する。ランタイムの API 呼び出しは行わない。取得に失敗した場合は **ビルドを明示的に失敗**させる（古い HTML を黙って配信しないため）。
+
+- 一覧: `/memo/`（カードグリッド・更新日時の新しい順）
+- 各ページ: `/memo/<タイトル>/`
+- 同名ページのないタグ: `/memo/tag/<タグ>/`（そのタグを含む公開メモ一覧）
+- 記事下にリンク・バックリンク・2 ホップ（共通リンク先ごとの関連メモ）をカード表示
+- `[ページ]` / `#タグ` は公開ページへリンク（タイトルは大文字小文字・空白と `_` を同一視）。未公開・未存在は Scrapbox 風の非リンク表示
+- 行内に `#private` があるページはビルド対象から除外
+- すべての Memo ページは `noindex`（サイトマップにも含めない）
+
+### 増分インポート（ローカルキャッシュ）
+
+詳細 API のレスポンスは `.scrapbox-cache/<プロジェクト>.json` に保存する（Git 管理外）。ビルドのたびに:
+
+1. 一覧 API を `limit=10&skip=N&sort=updated` で**全件**ページネーション（要約のみ・削除検出用）
+2. キャッシュ済み `updated` と比較し、**新規・更新分だけ**詳細 API を取得
+3. あるバッチがすべてキャッシュどおり更新されていれば、以降のバッチでは詳細取得を打ち切り（一覧の巡回は続行）
+4. 一覧に無いタイトルはキャッシュから削除（削除・リネーム後の名残対策）。リネームは旧タイトル削除＋新タイトルを次回差分で取得
+
+リンクグラフ・2 ホップ・バックリンクは **キャッシュ上の全公開ページ** から毎回再計算する。
+
+GitHub Actions では `.scrapbox-cache/` を `actions/cache` でラン間保存する（`ci.yml` / `scheduled-rebuild.yml`）。
+
+**全件再取得**（キャッシュ無視）:
+
+```bash
+SCRAPBOX_FORCE_REFRESH=1 npm run build
+```
+
+Scheduled workflow では `workflow_dispatch` の `force_refresh` 入力でも同様。リポジトリ Variable `SCRAPBOX_FORCE_REFRESH=1` でも可。
+
+### 環境変数（任意）
+
+| 変数 | 用途 |
+|------|------|
+| `SCRAPBOX_PROJECT` | プロジェクト名（既定: `atohs-memo`） |
+| `SCRAPBOX_SID` | 非公開プロジェクト用。ブラウザの `connect.sid` クッキー値をそのまま渡す（`Cookie: connect.sid=...` として送信）。**ログや README に値を書かない** |
+| `SCRAPBOX_PUBLISH_TAG` | 設定した場合、行内に `#<タグ>` を含むページ**だけ**を公開（例: `publish` → `#publish`）。非公開プロジェクトを SID で取り込むときに、意図しない全ページ公開を防ぐ |
+| `SCRAPBOX_FORCE_REFRESH` | `1` / `true` で Scrapbox 詳細を全件再取得 |
+
+ローカル例:
+
+```bash
+export SCRAPBOX_SID='（connect.sid の値）'
+export SCRAPBOX_PUBLISH_TAG=publish   # 必要なときだけ
+npm run build
+```
+
+### `connect.sid` の入手と GitHub 登録
+
+1. [scrapbox.io](https://scrapbox.io) にログインした状態で、対象プロジェクトを開く
+2. ブラウザの開発者ツール → **Application**（またはストレージ）→ **Cookies** → `https://scrapbox.io` の `connect.sid` をコピー
+3. **GitHub**: リポジトリ → **Settings** → **Secrets and variables** → **Actions**
+   - **Secrets** に `SCRAPBOX_SID` を追加（値は `connect.sid` のみ。名前は `connect.sid=` ではない）
+   - 公開タグ制限を使うときは **Variables** に `SCRAPBOX_PUBLISH_TAG`（例: `publish`）を追加
+4. クッキーは期限切れするため、CI が 401/403 で落ちたら値の取り直しが必要
+
+定期ビルドの雛形は `.github/workflows/scheduled-rebuild.yml`（デフォルトで毎日 UTC 16:00）。止めるときは `on.schedule` をコメントアウトするかファイルを削除する。**CI の成功だけでは本番は更新されない**（本番は `npm run ship`）。
+
 ## デプロイ（Cloudflare Workers）
 
 本番は **Cloudflare Workers の静的アセット**（Worker 名 `atohs-me`、`wrangler.jsonc` の `./dist`）で配信する。GitHub Actions（`.github/workflows/ci.yml`）は **ビルド検証のみ**（push / PR）。Pages への自動デプロイは行わない。
