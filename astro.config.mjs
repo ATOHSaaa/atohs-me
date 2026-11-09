@@ -54,7 +54,12 @@ export default defineConfig({
   integrations: [
     sitemap({
       customPages: ['https://atohs.me/works/hanoi-clicker/'],
-      filter: (page) => !/\/og\.png\/?$/.test(new URL(page).pathname),
+      filter: (page) => {
+        const pathname = new URL(page).pathname;
+        if (/\/og\.png\/?$/.test(pathname)) return false;
+        if (pathname === '/memo/' || pathname.startsWith('/memo/')) return false;
+        return true;
+      },
       serialize(item) {
         const path = new URL(item.url).pathname;
         const pubDate = postLastmodByPath[path];

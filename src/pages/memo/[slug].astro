@@ -1,0 +1,44 @@
+---
+import '../../styles/memo.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import { formatDate } from '../../lib/format-date';
+import { loadMemosForBuild } from '../../lib/scrapbox/load-memos';
+
+export async function getStaticPaths() {
+  const result = await loadMemosForBuild();
+  return result.pages.map((page) => ({
+    params: { slug: page.slug },
+    props: { page },
+    cacheKey: page.cacheKey,
+  }));
+}
+
+const { page } = Astro.props;
+const updatedAt = new Date(page.updated * 1000);
+const pageUrl = `https://atohs.me/memo/${page.slug}/`;
+---
+
+<BaseLayout
+  title={`${page.title} | Memo | atohs.me`}
+  description={page.description}
+  ogUrl={pageUrl}
+  robotsNoindex={true}
+>
+  <SiteHeader />
+  <main id="main-content" class="main blog-main memo-main">
+    <article class="blog-layout memo-layout">
+      <div class="blog-layout-intro">
+        <nav class="breadcrumb" aria-label="パンくずリスト">
+          <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+          <a href="/memo/">Memo</a><span class="breadcrumb-slash">/</span>
+        </nav>
+        <h1 class="blog-title">{page.title}</h1>
+        <p class="blog-meta memo-meta">
+          <time datetime={updatedAt.toISOString()}>{formatDate(updatedAt)}</time>
+        </p>
+      </div>
+      <div class="blog-body memo-body" set:html={page.bodyHtml} />
+    </article>
+  </main>
+</BaseLayout>

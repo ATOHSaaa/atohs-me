@@ -39,4 +39,7 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          SCRAPBOX_SID: ${{ secrets.SCRAPBOX_SID }}
+          SCRAPBOX_PUBLISH_TAG: ${{ vars.SCRAPBOX_PUBLISH_TAG }}
         run: npm run build

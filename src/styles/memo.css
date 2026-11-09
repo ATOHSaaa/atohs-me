@@ -1,0 +1,82 @@
+.main--memo-index .memo-index-lead {
+  margin: 0 0 24px;
+  max-width: 42em;
+  line-height: 1.75;
+  font-size: 0.95em;
+  color: color-mix(in srgb, var(--color-text) 88%, var(--color-bg));
+}
+
+.memo-list {
+  margin-top: 8px;
+}
+
+.memo-layout.blog-layout {
+  display: block;
+  max-width: var(--blog-content-max-width, 720px);
+  margin-inline: auto;
+}
+
+.memo-main .blog-layout-intro {
+  margin-bottom: 32px;
+}
+
+.memo-meta {
+  margin-top: 8px;
+}
+
+.memo-body.blog-body {
+  padding-inline: 0;
+  text-align: left;
+}
+
+.memo-body .memo-outline {
+  list-style: disc;
+  margin: 0 0 1em;
+  padding-left: 1.35em;
+}
+
+.memo-body .memo-outline .memo-outline {
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
+  list-style: circle;
+}
+
+.memo-body .memo-outline li {
+  margin-bottom: 0.5em;
+}
+
+.memo-body .memo-hashtag {
+  font-weight: 700;
+  color: color-mix(in srgb, var(--color-text) 70%, var(--color-accent, var(--color-text)));
+}
+
+.memo-body .memo-figure {
+  margin: 1.2em 0;
+  padding: 0;
+}
+
+.memo-body .memo-figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm, 4px);
+}
+
+.memo-body .memo-code {
+  margin: 0.75em 0;
+  padding: 0.85em 1em;
+  overflow-x: auto;
+  font-size: 0.88em;
+  line-height: 1.55;
+  background: color-mix(in srgb, var(--color-text) 6%, var(--color-bg));
+  border-radius: var(--radius-sm, 4px);
+}
+
+[data-theme="dark"] .memo-body .memo-code {
+  background: color-mix(in srgb, var(--color-text) 10%, var(--color-bg));
+}
+
+.memo-body li.memo-code-item {
+  list-style: none;
+  margin-left: -1.35em;
+}
