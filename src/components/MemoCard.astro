@@ -1,5 +1,4 @@
 ---
-import { formatDate } from '../lib/format-date';
 import { memoPagePath } from '../lib/scrapbox/slug';
 import type { BuiltMemoPage } from '../lib/scrapbox/types';
 
@@ -9,7 +8,6 @@ interface Props {
 }
 
 const { page, compact = false } = Astro.props;
-const updatedAt = new Date(page.updated * 1000);
 const href = memoPagePath(page.slug);
 ---
 
@@ -30,9 +28,6 @@ const href = memoPagePath(page.slug);
       ) : null
     }
     <div class="memo-card-text">
-      <time class="memo-card-date" datetime={updatedAt.toISOString()}>
-        {formatDate(updatedAt)}
-      </time>
       <h3 class="memo-card-title">{page.title}</h3>
       <p class="memo-card-excerpt">{page.excerpt}</p>
     </div>
