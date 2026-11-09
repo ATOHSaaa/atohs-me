@@ -1,7 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import { skillCategories, getSkillsByCategory } from '../../lib/skills';
+import {
+  SKILLS_SECTION_PUBLISHED,
+  skillCategories,
+  getSkillsByCategory,
+} from '../../lib/skills';
+
+export const prerender = SKILLS_SECTION_PUBLISHED;
 ---
 
 <BaseLayout

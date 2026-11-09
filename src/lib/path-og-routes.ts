@@ -1,5 +1,5 @@
 import { BLOG_TAG_SLUG_BY_NAME } from '../data/blog-tags.config';
-import { skills } from './skills';
+import { SKILLS_SECTION_PUBLISHED, skills } from './skills';
 
 function blogTagSlugForPath(tag: string): string {
   const normalized = tag.trim();
@@ -23,7 +23,7 @@ export const PATH_OG_STATIC_PATHNAMES: readonly string[] = [
   '/contact',
   '/works',
   '/resume',
-  '/skills',
+  ...(SKILLS_SECTION_PUBLISHED ? (['/skills'] as const) : []),
   '/keywords',
   '/blog',
   '/blog/stats',
@@ -33,6 +33,7 @@ export const PATH_OG_STATIC_PATHNAMES: readonly string[] = [
 ];
 
 export function skillDetailPathnames(): string[] {
+  if (!SKILLS_SECTION_PUBLISHED) return [];
   return skills.map((skill) => `/skills/${skill.slug}`);
 }
 

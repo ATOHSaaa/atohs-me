@@ -28,4 +28,6 @@ if (( fail != 0 )); then
   exit 1
 fi
 
-echo "ship: 完了（Cloudflare + git push）"
+npm run indexnow:submit
+
+echo "ship: 完了（Cloudflare + git push + IndexNow）"

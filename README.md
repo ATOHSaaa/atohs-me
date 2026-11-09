@@ -120,7 +120,7 @@ npm run deploy:cf
 
 ### 本番リリース（`ship`）
 
-変更を **commit 済み**の状態で、**1 回ビルド**したあと **wrangler deploy** と **git push** を並列実行する。
+変更を **commit 済み**の状態で、**1 回ビルド**したあと **wrangler deploy** と **git push** を並列実行し、成功後に **IndexNow** でサイトマップ内 URL を送信する。
 
 ```bash
 npm run ship
@@ -129,6 +129,7 @@ npm run ship
 - `ship.sh` はデプロイ前に `scripts/cloudflare-account-id.sh` で `CLOUDFLARE_ACCOUNT_ID` を付与（複数 Cloudflare アカウント環境向け。上書きする場合は実行前に export）
 - 未コミットの変更があると終了する（push 前に commit すること）
 - ビルド失敗時は deploy / push しない
+- IndexNow のキーは `public/indexnow-key.txt`（または `INDEXNOW_KEY`）。手動のみ: `npm run indexnow:submit` / `npm run indexnow:memo`
 - force push はしない
 
 DNS がまだ GitHub Pages のときは `ship` で Cloudflare 側だけ先に更新しても、一般ユーザーは Pages を見続ける。カスタムドメイン切替は下記 DNS を参照。
@@ -139,7 +140,7 @@ DNS がまだ GitHub Pages のときは `ship` で Cloudflare 側だけ先に更
 |------|------|
 | 出力 | Astro `dist/`（directory 形式の `index.html`、ルートに `404.html`） |
 | 404 | `assets.not_found_handling`: `404-page` → 最寄りの `404.html` を HTTP 404 で返す |
-| 末尾スラッシュ | `html_handling`: `auto-trailing-slash` + ビルド生成の `dist/_redirects` で **301**（`/about` → `/about/`。`html_handling` 単体は 307） |
+| 末尾スラッシュ | `html_handling`: `auto-trailing-slash` + ビルド生成の `dist/_redirects` で **301**（`/about` → `/about/`。`html_handling` 単体は 307）。`canonical` / `og:url` は `src/lib/canonical-url.ts` で同じ形に正規化 |
 | リダイレクト | Astro `redirects` で生成された HTML（例: `/my-business-experience/` → `/resume#career`） |
 | CNAME | `public/CNAME` → ビルド後 `dist/CNAME`（DNS 切替までは GitHub Pages 設定もそのまま） |
 
