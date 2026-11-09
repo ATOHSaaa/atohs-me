@@ -625,7 +625,7 @@ export async function generateOgImage(
                             alignItems: 'center',
                             height: BRAND_ICON_SIZE,
                           },
-                          children: 'atohs.me/blog',
+                          children: 'atohs.me/Blog',
                         },
                       },
                     ],
@@ -669,13 +669,14 @@ export async function generateOgImage(
   return Buffer.from(resvg.render().asPng());
 }
 
-const MEMO_OG_ICON_SIZE = 104;
-const MEMO_OG_FONT_SIZE = 108;
-const MEMO_OG_PATH_LABEL = 'atohs.me/memo';
-const MEMO_OG_ICON_NUDGE_Y = 12;
+const CENTERED_PATH_OG_ICON_SIZE = 104;
+const CENTERED_PATH_OG_FONT_SIZE = 108;
+const CENTERED_PATH_OG_ICON_NUDGE_Y = 12;
 
-/** メモ共通 OGP: 中央にロゴ + パスを1行で大きく */
-export async function generateMemoOgImage(): Promise<Buffer> {
+/** 中央にロゴ + パスを1行で大きく（トップ・Memo など） */
+export async function generateCenteredPathOgImage(
+  pathLabel: string,
+): Promise<Buffer> {
   const font = await loadFont();
   const brandIconSrc = await loadBrandIconDataUrl();
 
@@ -712,13 +713,13 @@ export async function generateMemoOgImage(): Promise<Buffer> {
                   type: 'img',
                   props: {
                     src: brandIconSrc,
-                    width: MEMO_OG_ICON_SIZE,
-                    height: MEMO_OG_ICON_SIZE,
+                    width: CENTERED_PATH_OG_ICON_SIZE,
+                    height: CENTERED_PATH_OG_ICON_SIZE,
                     style: {
-                      width: MEMO_OG_ICON_SIZE,
-                      height: MEMO_OG_ICON_SIZE,
+                      width: CENTERED_PATH_OG_ICON_SIZE,
+                      height: CENTERED_PATH_OG_ICON_SIZE,
                       flexShrink: 0,
-                      marginTop: MEMO_OG_ICON_NUDGE_Y,
+                      marginTop: CENTERED_PATH_OG_ICON_NUDGE_Y,
                     },
                   },
                 },
@@ -726,12 +727,12 @@ export async function generateMemoOgImage(): Promise<Buffer> {
                   type: 'div',
                   props: {
                     style: {
-                      fontSize: MEMO_OG_FONT_SIZE,
+                      fontSize: CENTERED_PATH_OG_FONT_SIZE,
                       fontWeight: 700,
                       lineHeight: 1,
                       whiteSpace: 'nowrap',
                     },
-                    children: MEMO_OG_PATH_LABEL,
+                    children: pathLabel,
                   },
                 },
               ],
@@ -762,4 +763,14 @@ export async function generateMemoOgImage(): Promise<Buffer> {
   });
 
   return Buffer.from(resvg.render().asPng());
+}
+
+/** メモ共通 OGP */
+export async function generateMemoOgImage(): Promise<Buffer> {
+  return generateCenteredPathOgImage('atohs.me/memo');
+}
+
+/** トップ OGP */
+export async function generateHomeOgImage(): Promise<Buffer> {
+  return generateCenteredPathOgImage('atohs.me');
 }

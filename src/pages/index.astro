@@ -4,9 +4,14 @@ import SiteHeader from '../components/SiteHeader.astro';
 import HomeRecentBlogPosts from '../components/HomeRecentBlogPosts.astro';
 import HomeFooterNav from '../components/HomeFooterNav.astro';
 import SiteLogo from '../components/SiteLogo.astro';
+import { HOME_OG_IMAGE_URL } from '../lib/home-og';
 ---
 
-<BaseLayout title="atohs.me | あとーすのプロフィール">
+<BaseLayout
+  title="atohs.me | あとーすのプロフィール"
+  ogUrl="https://atohs.me/"
+  ogImage={HOME_OG_IMAGE_URL}
+>
   <SiteHeader />
   <div class="home-layout">
     <main id="main-content" class="main main-home">

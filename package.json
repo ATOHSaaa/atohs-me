@@ -18,6 +18,7 @@
     "sync:hanoi-clicker": "node scripts/sync-hanoi-clicker.mjs",
     "memo:sync": "tsx scripts/sync-memo-from-scrapbox.ts",
     "memo:og:generate": "tsx scripts/generate-memo-og-image.ts",
+    "home:og:generate": "tsx scripts/generate-home-og-image.ts",
     "indexnow:submit": "node scripts/indexnow-submit.mjs",
     "indexnow:memo": "node scripts/indexnow-submit.mjs --memo",
     "deploy:cf": "bash scripts/deploy-cf.sh",
