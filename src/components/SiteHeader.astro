@@ -7,6 +7,7 @@ import ThemeToggle from './ThemeToggle.astro';
 
 const pathname = Astro.url.pathname;
 const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
+const isMemo = pathname === '/memo' || pathname.startsWith('/memo/');
 const isWorks = pathname === '/works' || pathname.startsWith('/works/');
 const isContact = pathname === '/contact';
 const isKeywords = pathname === '/keywords' || pathname.startsWith('/keywords/');
@@ -70,6 +71,14 @@ const isResume = pathname === '/resume';
               aria-current={isKeywords ? 'page' : undefined}
             >
               <HeaderNavLabel label="Keywords" />
+            </a>
+            <a
+              class="header-link"
+              style="--title-line-count: 1"
+              href="/memo/"
+              aria-current={isMemo ? 'page' : undefined}
+            >
+              <HeaderNavLabel label="Memo" />
             </a>
           </div>
         </details>
