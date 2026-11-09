@@ -2,8 +2,9 @@
 import '../../styles/memo.css';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import { formatDate } from '../../lib/format-date';
+import { formatJstDateKey } from '../../lib/format-date';
 import { loadMemosForBuild } from '../../lib/scrapbox/load-memos';
+import { memoPagePath } from '../../lib/scrapbox/slug';
 import MemoPageLinks from '../../components/MemoPageLinks.astro';
 
 export async function getStaticPaths() {
@@ -16,15 +17,20 @@ export async function getStaticPaths() {
 }
 
 const { page, build } = Astro.props;
+const createdAt = new Date(page.created * 1000);
 const updatedAt = new Date(page.updated * 1000);
-const pageUrl = `https://atohs.me/memo/${page.slug}/`;
+const publishedLabel = formatJstDateKey(createdAt);
+const updatedLabel = formatJstDateKey(updatedAt);
+const pageUrl = new URL(memoPagePath(page.slug), 'https://atohs.me').href;
 ---
 
 <BaseLayout
   title={`${page.title} | Memo | atohs.me`}
-  description={page.description}
+  description={page.excerpt}
   ogUrl={pageUrl}
-  robotsNoindex={true}
+  schemaHeadline={page.title}
+  datePublished={createdAt.toISOString()}
+  dateModified={updatedAt.toISOString()}
 >
   <SiteHeader />
   <main id="main-content" class="main blog-main memo-main">
@@ -36,7 +42,14 @@ const pageUrl = `https://atohs.me/memo/${page.slug}/`;
         </nav>
         <h1 class="blog-title">{page.title}</h1>
         <p class="blog-meta memo-meta">
-          <time datetime={updatedAt.toISOString()}>{formatDate(updatedAt)}</time>
+          <span class="memo-meta-item">
+            公開:
+            <time datetime={publishedLabel}>{publishedLabel}</time>
+          </span>
+          <span class="memo-meta-item">
+            更新:
+            <time datetime={updatedLabel}>{updatedLabel}</time>
+          </span>
         </p>
       </div>
       <div class="blog-body memo-body" set:html={page.bodyHtml} />

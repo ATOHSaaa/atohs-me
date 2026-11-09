@@ -36,7 +36,6 @@ export interface BuiltMemoPage {
   excerpt: string;
   thumbnailUrl?: string;
   cacheKey: string;
-  noindex: true;
   outLinkSlugs: string[];
   backLinkSlugs: string[];
   twoHop: MemoTwoHopGroup[];

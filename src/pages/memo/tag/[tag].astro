@@ -23,14 +23,17 @@ export async function getStaticPaths() {
 }
 
 const { tag, pages } = Astro.props;
-const pageUrl = `https://atohs.me${memoTagPath(tag.tag)}`;
+const pageUrl = new URL(memoTagPath(tag.tag), 'https://atohs.me').href;
+const tagDescription =
+  pages[0]?.excerpt != null
+    ? `タグ #${tag.tag} のメモ: ${pages[0].excerpt}`
+    : `タグ #${tag.tag} が付いたメモ一覧です。`;
 ---
 
 <BaseLayout
   title={`#${tag.tag} | Memo | atohs.me`}
-  description={`タグ #${tag.tag} が付いたメモ一覧です。`}
+  description={tagDescription}
   ogUrl={pageUrl}
-  robotsNoindex={true}
 >
   <SiteHeader />
   <main id="main-content" class="main main--memo-index">
