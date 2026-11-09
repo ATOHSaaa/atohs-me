@@ -5,22 +5,26 @@
  *   INDEXNOW_KEY — 省略時は public/indexnow-key.txt の内容
  *   INDEXNOW_HOST — 既定 atohs.me
  */
-import { readFileSync, existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-const HOST = (process.env.INDEXNOW_HOST || 'atohs.me').replace(/^https?:\/\//, '');
-const KEY_PATH = join(process.cwd(), 'public', 'indexnow-key.txt');
+import {
+  ensureIndexNowKeyFile,
+  readIndexNowKey,
+} from './ensure-indexnow-key-file.mjs';
 
-function readKey() {
-  const fromEnv = process.env.INDEXNOW_KEY?.trim();
-  if (fromEnv) return fromEnv;
-  if (!existsSync(KEY_PATH)) {
-    throw new Error(
-      `IndexNow key が見つかりません（${KEY_PATH} または INDEXNOW_KEY）`,
-    );
-  }
-  return readFileSync(KEY_PATH, 'utf8').trim();
-}
+const HOST = (process.env.INDEXNOW_HOST || 'atohs.me').replace(/^https?:\/\//, '');
+
+/** Bing / IndexNow ハブ。ここが通らないと通知は無効扱い */
+const REQUIRED_ENDPOINTS = [
+  'https://api.indexnow.org/indexnow',
+  'https://www.bing.com/indexnow',
+];
+
+const OPTIONAL_ENDPOINTS = [
+  'https://yandex.com/indexnow',
+  'https://search.seznam.cz/indexnow',
+];
 
 function parseArgs(argv) {
   const urls = [];
@@ -52,40 +56,69 @@ function urlsFromSitemap(memoOnly) {
     : found;
 }
 
+/** 本番の {key}.txt がキーと一致するか（ship は deploy 後に実行すること） */
+async function verifyKeyOnLive(key) {
+  const url = `https://${HOST}/${key}.txt`;
+  const res = await fetch(url, { redirect: 'follow' });
+  if (!res.ok) {
+    throw new Error(
+      `IndexNow キーファイルが本番で取得できません: ${url} (HTTP ${res.status})。deploy 後に再実行してください。`,
+    );
+  }
+  const body = (await res.text()).trim();
+  if (body !== key) {
+    throw new Error(`IndexNow キーファイルの内容が一致しません: ${url}`);
+  }
+  console.log(`key file OK: ${url}`);
+}
+
+async function postEndpoint(endpoint, body) {
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    body: JSON.stringify(body),
+  });
+  const text = await res.text();
+  console.log(`${endpoint}: HTTP ${res.status}`);
+  if (text) console.log(text.slice(0, 500));
+  return res.ok;
+}
+
 async function submit(urlList) {
   if (urlList.length === 0) {
     console.log('送信する URL がありません。');
     return;
   }
 
-  const key = readKey();
-  const keyLocation = `https://${HOST}/indexnow-key.txt`;
+  ensureIndexNowKeyFile();
+  const key = readIndexNowKey();
+  await verifyKeyOnLive(key);
+
   const body = {
     host: HOST,
     key,
-    keyLocation,
+    keyLocation: `https://${HOST}/${key}.txt`,
     urlList,
   };
 
-  const endpoints = [
-    'https://api.indexnow.org/indexnow',
-    'https://www.bing.com/indexnow',
-  ];
+  let requiredFailed = false;
+  for (const endpoint of REQUIRED_ENDPOINTS) {
+    const ok = await postEndpoint(endpoint, body);
+    if (!ok) requiredFailed = true;
+  }
 
-  for (const endpoint of endpoints) {
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: JSON.stringify(body),
-    });
-    console.log(`${endpoint}: HTTP ${res.status}`);
-    if (!res.ok) {
-      const text = await res.text();
-      if (text) console.log(text.slice(0, 500));
-    }
+  for (const endpoint of OPTIONAL_ENDPOINTS) {
+    await postEndpoint(endpoint, body);
   }
 
   console.log(`Submitted ${urlList.length} URL(s).`);
+
+  if (requiredFailed) {
+    console.error(
+      'IndexNow: api.indexnow.org または Bing が受理しませんでした（キー検証失敗の可能性）。',
+    );
+    process.exit(1);
+  }
 }
 
 const { urls, memoOnly } = parseArgs(process.argv.slice(2));

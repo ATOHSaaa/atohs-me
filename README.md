@@ -129,7 +129,7 @@ npm run ship
 - `ship.sh` はデプロイ前に `scripts/cloudflare-account-id.sh` で `CLOUDFLARE_ACCOUNT_ID` を付与（複数 Cloudflare アカウント環境向け。上書きする場合は実行前に export）
 - 未コミットの変更があると終了する（push 前に commit すること）
 - ビルド失敗時は deploy / push しない
-- IndexNow のキーは `public/indexnow-key.txt`（または `INDEXNOW_KEY`）。手動のみ: `npm run indexnow:submit` / `npm run indexnow:memo`
+- IndexNow: キーは `public/indexnow-key.txt`（または `INDEXNOW_KEY`）。ビルド時に `public/{key}.txt` を生成（IndexNow 公式の検証用パス）。`api.indexnow.org` / Bing が 403 なら ship は失敗。手動: `npm run indexnow:submit` / `npm run indexnow:memo`
 - force push はしない
 
 DNS がまだ GitHub Pages のときは `ship` で Cloudflare 側だけ先に更新しても、一般ユーザーは Pages を見続ける。カスタムドメイン切替は下記 DNS を参照。
