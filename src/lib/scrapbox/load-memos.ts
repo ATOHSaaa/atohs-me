@@ -12,7 +12,10 @@ import {
   memoExcerptFromLines,
   renderScrapboxBody,
 } from './parse';
-import { memoSlugFromTitle, memoTagPath } from './slug';
+import {
+  memoSlugFromMemoEntry,
+  memoTagPath,
+} from './slug';
 import { collectHashtagsFromLines, pageHasHashtag } from './tags';
 import { normalizeScrapboxKey } from './title-match';
 import type {
@@ -98,7 +101,10 @@ async function buildMemos(): Promise<MemoBuildResult> {
   });
 
   const publishedSlugs = new Map(
-    publishedDetails.map((d) => [d.title, memoSlugFromTitle(d.title)]),
+    publishedDetails.map((d) => {
+      const entry = entryByTitle.get(d.title)!;
+      return [d.title, memoSlugFromMemoEntry(d.title, entry.id)] as const;
+    }),
   );
 
   const targetRows = publishedDetails.map((detail) => ({

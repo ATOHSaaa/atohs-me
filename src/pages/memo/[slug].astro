@@ -4,14 +4,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import { formatJstDateKey } from '../../lib/format-date';
 import { loadMemosForBuild } from '../../lib/scrapbox/load-memos';
-import { memoPagePath } from '../../lib/scrapbox/slug';
+import { memoPagePath, memoRouteParam } from '../../lib/scrapbox/slug';
 import { MEMO_OG_IMAGE_URL } from '../../lib/memo-og';
 import MemoPageLinks from '../../components/MemoPageLinks.astro';
 
 export async function getStaticPaths() {
   const result = await loadMemosForBuild();
   return result.pages.map((page) => ({
-    params: { slug: page.slug },
+    params: { slug: memoRouteParam(page.slug) },
     props: { page, build: { pages: result.pages } },
     cacheKey: page.cacheKey,
   }));
