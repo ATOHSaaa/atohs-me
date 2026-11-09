@@ -93,6 +93,8 @@ SCRAPBOX_FORCE_REFRESH=1 npm run memo:sync
 
 API 用の差分キャッシュは `.scrapbox-cache/`（Git 管理外）。日常の編集は `.md` を直して commit する。
 
+**定期取り込み**: `.github/workflows/scheduled-memo-sync.yml` が毎日 Cosense から `npm run memo:sync` し、`src/content/memo/` に差分があれば commit して `npm run ship` する（`SCRAPBOX_SID`・`CLOUDFLARE_API_TOKEN` が Actions Secrets に必要。`SCRAPBOX_PUBLISH_TAG` は Variables）。手動は Actions の **Scheduled memo sync** → **Run workflow**。
+
 ## デプロイ（Cloudflare Workers）
 
 本番は **Cloudflare Workers の静的アセット**（Worker 名 `atohs-me`、`wrangler.jsonc` の `./dist`）で配信する。GitHub Actions（`.github/workflows/ci.yml`）は **ビルド検証のみ**（push / PR）。Pages への自動デプロイは行わない。
