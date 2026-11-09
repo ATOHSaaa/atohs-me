@@ -122,7 +122,6 @@ async function buildMemos(): Promise<MemoBuildResult> {
       excerpt: '',
       thumbnailUrl,
       cacheKey,
-      noindex: true,
       outLinkSlugs: [],
       backLinkSlugs: [],
       twoHop: [],

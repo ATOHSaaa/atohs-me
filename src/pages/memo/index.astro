@@ -10,9 +10,8 @@ const { pages } = await loadMemosForBuild();
 
 <BaseLayout
   title="Memo | atohs.me"
-  description="Scrapbox（Cosense）からビルド時に同期したメモ一覧です。"
+  description="atohs(あとーす)のメモ一覧です。Scrapbox（Cosense）から同期した日記・メモを掲載しています。"
   ogUrl="https://atohs.me/memo/"
-  robotsNoindex={true}
 >
   <SiteHeader />
   <main id="main-content" class="main main--memo-index">
@@ -20,9 +19,6 @@ const { pages } = await loadMemosForBuild();
       <a href="/">Home</a><span class="breadcrumb-slash">/</span>
     </nav>
     <h1 class="blog-title">Memo</h1>
-    <p class="memo-index-lead">
-      公開 Scrapbox プロジェクトの内容をビルド時に取り込んで表示しています。検索エンジンには載せない設定（noindex）です。
-    </p>
     {
       pages.length === 0 ? (
         <p>表示できるメモはありません。</p>
