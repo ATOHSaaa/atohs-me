@@ -4,17 +4,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import { formatDate } from '../../lib/format-date';
 import { loadMemosForBuild } from '../../lib/scrapbox/load-memos';
+import MemoPageLinks from '../../components/MemoPageLinks.astro';
 
 export async function getStaticPaths() {
   const result = await loadMemosForBuild();
   return result.pages.map((page) => ({
     params: { slug: page.slug },
-    props: { page },
+    props: { page, build: { pages: result.pages } },
     cacheKey: page.cacheKey,
   }));
 }
 
-const { page } = Astro.props;
+const { page, build } = Astro.props;
 const updatedAt = new Date(page.updated * 1000);
 const pageUrl = `https://atohs.me/memo/${page.slug}/`;
 ---
@@ -39,6 +40,7 @@ const pageUrl = `https://atohs.me/memo/${page.slug}/`;
         </p>
       </div>
       <div class="blog-body memo-body" set:html={page.bodyHtml} />
+      <MemoPageLinks page={page} build={build} />
     </article>
   </main>
 </BaseLayout>

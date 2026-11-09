@@ -10,3 +10,12 @@ export function memoTitleFromSlug(slug: string): string {
 export function memoPagePath(titleOrSlug: string): string {
   return `/memo/${encodeURIComponent(titleOrSlug)}/`;
 }
+
+export function memoTagPath(tag: string): string {
+  return `/memo/tag/${encodeURIComponent(tag)}/`;
+}
+
+/** `getStaticPaths` の params（Astro が URL エンコードを担当） */
+export function memoTagParam(tag: string): string {
+  return tag;
+}

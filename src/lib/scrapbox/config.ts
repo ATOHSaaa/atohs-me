@@ -27,3 +27,14 @@ export function getScrapboxPublishTag(): string | undefined {
 }
 
 export const SCRAPBOX_API_BASE = 'https://scrapbox.io/api';
+
+/** `1` / `true` でキャッシュを無視し全ページ詳細を再取得 */
+export function scrapboxForceRefresh(): boolean {
+  const raw =
+    typeof process !== 'undefined'
+      ? process.env.SCRAPBOX_FORCE_REFRESH
+      : undefined;
+  if (!raw) return false;
+  const v = raw.trim().toLowerCase();
+  return v === '1' || v === 'true' || v === 'yes';
+}

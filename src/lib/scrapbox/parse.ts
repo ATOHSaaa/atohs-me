@@ -1,5 +1,6 @@
-import { SCRAPBOX_PROJECT } from './config';
-import { memoPagePath, memoSlugFromTitle } from './slug';
+import type { MemoParseContext } from './link-context';
+import { memoPagePath, memoTagPath } from './slug';
+import { isValidMemoHashtag } from './tags';
 import type { ScrapboxLine } from './types';
 
 function escapeHtml(text: string): string {
@@ -40,21 +41,19 @@ function externalLink(href: string, label: string): string {
   return `<a href="${safeHref}" rel="noopener noreferrer" target="_blank">${safeLabel}</a>`;
 }
 
-function internalMemoLink(title: string, label: string): string {
-  const slug = memoSlugFromTitle(title);
-  const safeHref = escapeHtml(memoPagePath(slug));
-  const safeLabel = escapeHtml(label);
-  return `<a href="${safeHref}">${safeLabel}</a>`;
+function memoPageAnchor(href: string, label: string): string {
+  return `<a href="${escapeHtml(href)}">${escapeHtml(label)}</a>`;
 }
 
-function parseBracketContent(
-  inner: string,
-  knownTitles: Set<string>,
-): string {
+function memoEmptyLink(label: string): string {
+  return `<span class="memo-empty-link">${escapeHtml(label)}</span>`;
+}
+
+function parseBracketContent(inner: string, ctx: MemoParseContext): string {
   const trimmed = inner.trim();
   if (trimmed.startsWith('*')) {
     const boldText = trimmed.slice(1).trimStart();
-    return `<strong>${parseInline(boldText, knownTitles)}</strong>`;
+    return `<strong>${parseInline(boldText, ctx)}</strong>`;
   }
 
   const spaceIdx = trimmed.search(/\s/);
@@ -64,13 +63,11 @@ function parseBracketContent(
     if (isProbablyUrl(rest)) {
       return externalLink(rest, label);
     }
-    if (knownTitles.has(rest)) {
-      return internalMemoLink(rest, label);
+    const resolved = ctx.resolvePageTitle(rest);
+    if (resolved) {
+      return memoPageAnchor(memoPagePath(resolved.slug), label);
     }
-    return externalLink(
-      `https://scrapbox.io/${encodeURIComponent(SCRAPBOX_PROJECT)}/${encodeURIComponent(rest)}`,
-      label,
-    );
+    return memoEmptyLink(label);
   }
 
   if (isProbablyUrl(trimmed)) {
@@ -81,37 +78,65 @@ function parseBracketContent(
     return externalLink(href, href);
   }
 
-  if (knownTitles.has(trimmed)) {
-    return internalMemoLink(trimmed, trimmed);
+  const page = ctx.resolvePageTitle(trimmed);
+  if (page) {
+    return memoPageAnchor(memoPagePath(page.slug), trimmed);
   }
 
-  return escapeHtml(`[${trimmed}]`);
+  return memoEmptyLink(trimmed);
 }
 
-function parseInline(text: string, knownTitles: Set<string>): string {
+function renderHashtag(tag: string, ctx: MemoParseContext): string {
+  const safeTag = escapeHtml(tag);
+  const page = ctx.resolvePageTitle(tag);
+  if (page) {
+    return `<a class="memo-hashtag" href="${escapeHtml(memoPagePath(page.slug))}">#${safeTag}</a>`;
+  }
+  return `<a class="memo-hashtag" href="${escapeHtml(memoTagPath(tag))}">#${safeTag}</a>`;
+}
+
+function parseInline(text: string, ctx: MemoParseContext): string {
   let out = '';
   let i = 0;
   while (i < text.length) {
     const bracketStart = text.indexOf('[', i);
-    if (bracketStart === -1) {
+  const hashStart = text.indexOf('#', i);
+    const nextSpecial =
+      bracketStart === -1
+        ? hashStart
+        : hashStart === -1
+          ? bracketStart
+          : Math.min(bracketStart, hashStart);
+
+    if (nextSpecial === -1) {
       out += escapeHtml(text.slice(i));
       break;
     }
-    out += escapeHtml(text.slice(i, bracketStart));
-    const bracketEnd = text.indexOf(']', bracketStart + 1);
+
+    out += escapeHtml(text.slice(i, nextSpecial));
+
+    if (nextSpecial === hashStart && (hashStart < bracketStart || bracketStart === -1)) {
+      const tail = text.slice(hashStart + 1);
+      const match = tail.match(/^([^\s#＃\[\]<>:=,，。、~]+)/u);
+      if (match && isValidMemoHashtag(match[1])) {
+        out += renderHashtag(match[1], ctx);
+        i = hashStart + 1 + match[1].length;
+        continue;
+      }
+      out += escapeHtml('#');
+      i = hashStart + 1;
+      continue;
+    }
+
+    const bracketEnd = text.indexOf(']', nextSpecial + 1);
     if (bracketEnd === -1) {
-      out += escapeHtml(text.slice(bracketStart));
+      out += escapeHtml(text.slice(nextSpecial));
       break;
     }
-    const inner = text.slice(bracketStart + 1, bracketEnd);
-    out += parseBracketContent(inner, knownTitles);
+    const inner = text.slice(nextSpecial + 1, bracketEnd);
+    out += parseBracketContent(inner, ctx);
     i = bracketEnd + 1;
   }
-
-  out = out.replace(
-    /#([^\s#＃\[\]<>]+)/gu,
-    '<span class="memo-hashtag">#$1</span>',
-  );
 
   return out;
 }
@@ -122,8 +147,8 @@ interface OutlineNode {
   type: 'item' | 'code';
 }
 
-function lineToHtml(body: string, knownTitles: Set<string>): string {
-  return parseInline(body, knownTitles);
+function lineToHtml(body: string, ctx: MemoParseContext): string {
+  return parseInline(body, ctx);
 }
 
 function buildOutlineHtml(nodes: OutlineNode[]): string {
@@ -161,7 +186,7 @@ function parseCodeBlock(
   lines: ScrapboxLine[],
   startIndex: number,
   baseIndent: number,
-  knownTitles: Set<string>,
+  _ctx: MemoParseContext,
 ): { html: string; nextIndex: number } {
   const header = stripIndent(lines[startIndex].text);
   const lang = header.replace(/^code:?/, '').trim();
@@ -182,7 +207,7 @@ function parseCodeBlock(
 export function renderScrapboxBody(
   title: string,
   lines: ScrapboxLine[],
-  knownTitles: Set<string>,
+  ctx: MemoParseContext,
 ): string {
   const nodes: OutlineNode[] = [];
   let i = 0;
@@ -196,14 +221,14 @@ export function renderScrapboxBody(
     const indent = measureIndent(raw);
     const codeHeader = body.match(/^code(?::\S*)?$/i);
     if (codeHeader) {
-      const block = parseCodeBlock(lines, i, indent, knownTitles);
+      const block = parseCodeBlock(lines, i, indent, ctx);
       nodes.push({ depth: indent, html: block.html, type: 'code' });
       i = block.nextIndex;
       continue;
     }
     nodes.push({
       depth: indent,
-      html: lineToHtml(body, knownTitles),
+      html: lineToHtml(body, ctx),
       type: 'item',
     });
     i += 1;
@@ -212,23 +237,78 @@ export function renderScrapboxBody(
   return buildOutlineHtml(nodes);
 }
 
+function plainTextFromScrapboxLine(body: string): string {
+  return body
+    .replace(/\[[^\]]*\]/g, ' ')
+    .replace(/#\S+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function imageUrlFromBracketInner(inner: string): string | undefined {
+  const trimmed = inner.trim();
+  if (trimmed.startsWith('*')) return undefined;
+
+  const spaceIdx = trimmed.search(/\s/);
+  if (spaceIdx > 0) {
+    const rest = trimmed.slice(spaceIdx + 1).trim();
+    if (isProbablyUrl(rest)) {
+      const href = rest.startsWith('//') ? `https:${rest}` : rest;
+      return isImageUrl(href) ? href : undefined;
+    }
+  }
+
+  if (isProbablyUrl(trimmed)) {
+    const href = trimmed.startsWith('//') ? `https:${trimmed}` : trimmed;
+    return isImageUrl(href) ? href : undefined;
+  }
+  return undefined;
+}
+
+export function extractFirstImageUrl(
+  lines: ScrapboxLine[],
+  summaryImage?: string | null,
+): string | undefined {
+  const fromSummary = summaryImage?.trim();
+  if (fromSummary) return fromSummary;
+
+  for (const line of lines) {
+    const body = stripIndent(line.text);
+    for (const match of body.matchAll(/\[([^\]]+)\]/g)) {
+      const url = imageUrlFromBracketInner(match[1]);
+      if (url) return url;
+    }
+  }
+  return undefined;
+}
+
+export function memoExcerptFromLines(
+  title: string,
+  lines: ScrapboxLine[],
+  maxLines = 3,
+  maxTotal = 220,
+): string {
+  const parts: string[] = [];
+  for (const line of lines) {
+    const body = stripIndent(line.text);
+    if (!body || body === title) continue;
+    if (/^code(?::\S*)?$/i.test(body)) continue;
+    const plain = plainTextFromScrapboxLine(body);
+    if (!plain) continue;
+    parts.push(plain);
+    if (parts.length >= maxLines) break;
+  }
+  const joined = parts.join(' ');
+  if (!joined) return title;
+  return joined.length <= maxTotal ? joined : `${joined.slice(0, maxTotal)}…`;
+}
+
 export function memoDescriptionFromLines(
   title: string,
   lines: ScrapboxLine[],
   maxLen = 120,
 ): string {
-  for (const line of lines) {
-    const body = stripIndent(line.text);
-    if (!body || body === title) continue;
-    if (/^code(?::\S*)?$/i.test(body)) continue;
-    const plain = body
-      .replace(/\[[^\]]*\]/g, ' ')
-      .replace(/#\S+/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-    if (plain.length > 0) {
-      return plain.length <= maxLen ? plain : `${plain.slice(0, maxLen)}…`;
-    }
-  }
-  return title;
+  const excerpt = memoExcerptFromLines(title, lines, 1, maxLen);
+  if (excerpt === title) return title;
+  return excerpt.length <= maxLen ? excerpt : `${excerpt.slice(0, maxLen)}…`;
 }

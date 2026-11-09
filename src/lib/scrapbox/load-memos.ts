@@ -1,9 +1,23 @@
 import { getScrapboxPublishTag } from './config';
-import { fetchScrapboxPageDetail, fetchScrapboxPageList } from './fetch';
-import { memoDescriptionFromLines, renderScrapboxBody } from './parse';
-import { memoSlugFromTitle } from './slug';
-import { pageHasHashtag } from './tags';
-import type { BuiltMemoPage, MemoBuildResult } from './types';
+import { cacheDetails, syncScrapboxCache } from './cache';
+import { extractLinkTargets } from './extract-links';
+import { buildMemoParseContext } from './link-context';
+import { computePageLinkSections } from './link-graph';
+import {
+  extractFirstImageUrl,
+  memoDescriptionFromLines,
+  memoExcerptFromLines,
+  renderScrapboxBody,
+} from './parse';
+import { memoSlugFromTitle, memoTagPath } from './slug';
+import { collectHashtagsFromLines, pageHasHashtag } from './tags';
+import { normalizeScrapboxKey } from './title-match';
+import type {
+  BuiltMemoPage,
+  BuiltMemoTagIndex,
+  MemoBuildResult,
+  ScrapboxPageDetail,
+} from './types';
 
 const PRIVATE_TAG = 'private';
 
@@ -18,30 +32,6 @@ function shouldIncludePage(lineTexts: string[]): boolean {
   return true;
 }
 
-async function mapPool<T, R>(
-  items: T[],
-  concurrency: number,
-  fn: (item: T) => Promise<R>,
-): Promise<R[]> {
-  const results: R[] = new Array(items.length);
-  let next = 0;
-
-  async function worker(): Promise<void> {
-    while (next < items.length) {
-      const index = next;
-      next += 1;
-      results[index] = await fn(items[index]);
-    }
-  }
-
-  const workers = Array.from(
-    { length: Math.min(concurrency, items.length) },
-    () => worker(),
-  );
-  await Promise.all(workers);
-  return results;
-}
-
 let memoBuildPromise: Promise<MemoBuildResult> | undefined;
 
 export function loadMemosForBuild(): Promise<MemoBuildResult> {
@@ -51,39 +41,132 @@ export function loadMemosForBuild(): Promise<MemoBuildResult> {
   return memoBuildPromise;
 }
 
-async function buildMemos(): Promise<MemoBuildResult> {
-  const summaries = await fetchScrapboxPageList();
-  const titles = new Set(summaries.map((p) => p.title));
-
-  const details = await mapPool(summaries, 8, (summary) =>
-    fetchScrapboxPageDetail(summary.title),
+function buildTagIndex(
+  publishedDetails: ScrapboxPageDetail[],
+  publishedSlugs: Map<string, string>,
+): BuiltMemoTagIndex[] {
+  const publishedTitleKeys = new Set(
+    publishedDetails.map((d) => normalizeScrapboxKey(d.title)),
   );
+  const tagMap = new Map<string, { display: string; slugs: Set<string> }>();
+
+  for (const detail of publishedDetails) {
+    const slug = publishedSlugs.get(detail.title)!;
+    const lineTexts = detail.lines?.map((l) => l.text) ?? [];
+    for (const tag of collectHashtagsFromLines(lineTexts)) {
+      const key = normalizeScrapboxKey(tag);
+      if (publishedTitleKeys.has(key)) continue;
+      const entry = tagMap.get(key) ?? { display: tag, slugs: new Set() };
+      entry.slugs.add(slug);
+      tagMap.set(key, entry);
+    }
+  }
+
+  return [...tagMap.entries()].map(([key, { display, slugs }]) => ({
+    tag: display,
+    slug: display,
+    key,
+    pageSlugs: [...slugs].sort(),
+    cacheKey: `${[...slugs].join(',')}:${display}`,
+  }));
+}
+
+async function buildMemos(): Promise<MemoBuildResult> {
+  const cache = await syncScrapboxCache();
+  const details = cacheDetails(cache);
+  const summaryByTitle = new Map(
+    details.map((d) => [d.title, d] as const),
+  );
+
+  const publishedDetails = details.filter((detail) => {
+    const lineTexts = detail.lines?.map((l) => l.text) ?? [];
+    return shouldIncludePage(lineTexts);
+  });
+
+  const publishedSlugs = new Map(
+    publishedDetails.map((d) => [d.title, memoSlugFromTitle(d.title)]),
+  );
+
+  const targetRows = publishedDetails.map((detail) => ({
+    slug: publishedSlugs.get(detail.title)!,
+    targets: extractLinkTargets(detail.lines ?? [], detail.links),
+  }));
+
+  const targetIndex = new Map<string, Set<string>>();
+  for (const row of targetRows) {
+    for (const target of row.targets) {
+      if (!targetIndex.has(target.key)) targetIndex.set(target.key, new Set());
+      targetIndex.get(target.key)!.add(row.slug);
+    }
+  }
 
   const pages: BuiltMemoPage[] = [];
 
-  for (const detail of details) {
-    const lineTexts = detail.lines?.map((l) => l.text) ?? [];
-    if (!shouldIncludePage(lineTexts)) continue;
+  for (const detail of publishedDetails) {
+    const summary = summaryByTitle.get(detail.title);
+    const slug = publishedSlugs.get(detail.title)!;
+    const targets = extractLinkTargets(detail.lines ?? [], detail.links);
+    const thumbnailUrl = extractFirstImageUrl(
+      detail.lines ?? [],
+      summary?.image ?? detail.image,
+    );
+    const cacheKey = `${detail.updated}:${detail.lines?.length ?? 0}:${thumbnailUrl ?? ''}:${targets.map((t) => t.key).join(',')}`;
 
-    const bodyHtml = renderScrapboxBody(detail.title, detail.lines ?? [], titles);
-    const slug = memoSlugFromTitle(detail.title);
-    const cacheKey = `${detail.updated}:${detail.lines?.length ?? 0}`;
-
-    pages.push({
+    const stub: BuiltMemoPage = {
       title: detail.title,
       slug,
       created: detail.created,
       updated: detail.updated,
-      bodyHtml,
-      description: memoDescriptionFromLines(detail.title, detail.lines ?? []),
+      bodyHtml: '',
+      description: '',
+      excerpt: '',
+      thumbnailUrl,
       cacheKey,
       noindex: true,
-    });
+      outLinkSlugs: [],
+      backLinkSlugs: [],
+      twoHop: [],
+    };
+    pages.push(stub);
+  }
+
+  const parseCtx = buildMemoParseContext(pages);
+
+  for (let i = 0; i < publishedDetails.length; i++) {
+    const detail = publishedDetails[i];
+    const page = pages[i];
+    page.bodyHtml = renderScrapboxBody(
+      detail.title,
+      detail.lines ?? [],
+      parseCtx,
+    );
+    page.description = memoDescriptionFromLines(
+      detail.title,
+      detail.lines ?? [],
+    );
+    page.excerpt = memoExcerptFromLines(detail.title, detail.lines ?? []);
+    const targets = extractLinkTargets(detail.lines ?? [], detail.links);
+    const sections = computePageLinkSections(
+      page,
+      pages,
+      targetIndex,
+      targets,
+    );
+    page.outLinkSlugs = sections.outLinkSlugs;
+    page.backLinkSlugs = sections.backLinkSlugs;
+    page.twoHop = sections.twoHop;
+    page.cacheKey = `${page.cacheKey}:${sections.twoHop.length}`;
   }
 
   pages.sort((a, b) => b.updated - a.updated);
 
-  return { pages, titles };
+  const tags = buildTagIndex(publishedDetails, publishedSlugs);
+
+  return {
+    pages,
+    titles: new Set(pages.map((p) => p.title)),
+    tags,
+  };
 }
 
 export function getMemoBySlug(
@@ -92,3 +175,22 @@ export function getMemoBySlug(
 ): BuiltMemoPage | undefined {
   return result.pages.find((p) => p.slug === slug);
 }
+
+export function getMemoTagBySlug(
+  result: MemoBuildResult,
+  tagSlug: string,
+): BuiltMemoTagIndex | undefined {
+  return result.tags.find((t) => t.slug === tagSlug);
+}
+
+export function getPagesForSlugs(
+  result: MemoBuildResult,
+  slugs: string[],
+): BuiltMemoPage[] {
+  const bySlug = new Map(result.pages.map((p) => [p.slug, p]));
+  return slugs
+    .map((slug) => bySlug.get(slug))
+    .filter((p): p is BuiltMemoPage => p !== undefined);
+}
+
+export { memoTagPath };

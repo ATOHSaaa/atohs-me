@@ -2,7 +2,7 @@
 import '../../styles/memo.css';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import MemoListItem from '../../components/MemoListItem.astro';
+import MemoCard from '../../components/MemoCard.astro';
 import { loadMemosForBuild } from '../../lib/scrapbox/load-memos';
 
 const { pages } = await loadMemosForBuild();
@@ -27,11 +27,11 @@ const { pages } = await loadMemosForBuild();
       pages.length === 0 ? (
         <p>表示できるメモはありません。</p>
       ) : (
-        <ul class="blog-list blog-list--archive memo-list">
+        <div class="container memo-index-grid">
           {pages.map((page) => (
-            <MemoListItem page={page} />
+            <MemoCard page={page} />
           ))}
-        </ul>
+        </div>
       )
     }
   </main>
