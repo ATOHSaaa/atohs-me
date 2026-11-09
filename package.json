@@ -16,6 +16,7 @@
     "og:generate:force": "tsx scripts/generate-blog-og-images.ts --force",
     "link-card-ogp:refresh": "node scripts/update-link-card-ogp.mjs --force",
     "sync:hanoi-clicker": "node scripts/sync-hanoi-clicker.mjs",
+    "memo:sync": "tsx scripts/sync-memo-from-scrapbox.ts",
     "deploy:cf": "bash scripts/deploy-cf.sh",
     "deploy:cf:dry-run": "bash scripts/deploy-cf.sh --dry-run --outdir=.wrangler-dry-run",
     "ship": "bash scripts/ship.sh"

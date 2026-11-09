@@ -1,5 +1,9 @@
 import { getScrapboxPublishTag } from './config';
-import { cacheDetails, syncScrapboxCache } from './cache';
+import {
+  loadMemoContentEntries,
+  memoContentGlobalCacheKey,
+  scrapboxDetailFromMemoEntry,
+} from './load-memo-content';
 import { extractLinkTargets } from './extract-links';
 import { buildMemoParseContext } from './link-context';
 import { computePageLinkSections } from './link-graph';
@@ -62,21 +66,32 @@ function buildTagIndex(
     }
   }
 
+  const createdBySlug = new Map(
+    publishedDetails.map((d) => [publishedSlugs.get(d.title)!, d.created] as const),
+  );
+
   return [...tagMap.entries()].map(([key, { display, slugs }]) => ({
     tag: display,
     slug: display,
     key,
-    pageSlugs: [...slugs].sort(),
+    pageSlugs: [...slugs].sort(
+      (a, b) => (createdBySlug.get(b) ?? 0) - (createdBySlug.get(a) ?? 0),
+    ),
     cacheKey: `${[...slugs].join(',')}:${display}`,
   }));
 }
 
 async function buildMemos(): Promise<MemoBuildResult> {
-  const cache = await syncScrapboxCache();
-  const details = cacheDetails(cache);
-  const summaryByTitle = new Map(
-    details.map((d) => [d.title, d] as const),
+  const entries = await loadMemoContentEntries();
+  const entryByTitle = new Map(
+    entries.map((entry) => [
+      scrapboxDetailFromMemoEntry(entry).title,
+      entry,
+    ] as const),
   );
+  const globalCacheKey = memoContentGlobalCacheKey(entries);
+
+  const details = entries.map(scrapboxDetailFromMemoEntry);
 
   const publishedDetails = details.filter((detail) => {
     const lineTexts = detail.lines?.map((l) => l.text) ?? [];
@@ -103,14 +118,11 @@ async function buildMemos(): Promise<MemoBuildResult> {
   const pages: BuiltMemoPage[] = [];
 
   for (const detail of publishedDetails) {
-    const summary = summaryByTitle.get(detail.title);
     const slug = publishedSlugs.get(detail.title)!;
     const targets = extractLinkTargets(detail.lines ?? [], detail.links);
-    const thumbnailUrl = extractFirstImageUrl(
-      detail.lines ?? [],
-      summary?.image ?? detail.image,
-    );
-    const cacheKey = `${detail.updated}:${detail.lines?.length ?? 0}:${thumbnailUrl ?? ''}:${targets.map((t) => t.key).join(',')}`;
+    const thumbnailUrl = extractFirstImageUrl(detail.lines ?? [], undefined);
+    const entry = entryByTitle.get(detail.title)!;
+    const cacheKey = `${String(entry.digest)}:${globalCacheKey}:${detail.updated}:${targets.map((t) => t.key).join(',')}`;
 
     const stub: BuiltMemoPage = {
       title: detail.title,
@@ -154,10 +166,10 @@ async function buildMemos(): Promise<MemoBuildResult> {
     page.outLinkSlugs = sections.outLinkSlugs;
     page.backLinkSlugs = sections.backLinkSlugs;
     page.twoHop = sections.twoHop;
-    page.cacheKey = `${page.cacheKey}:${sections.twoHop.length}`;
+    page.cacheKey = `${page.cacheKey}:${sections.outLinkSlugs.join(',')}:${sections.backLinkSlugs.join(',')}:${sections.twoHop.length}`;
   }
 
-  pages.sort((a, b) => b.updated - a.updated);
+  pages.sort((a, b) => b.created - a.created);
 
   const tags = buildTagIndex(publishedDetails, publishedSlugs);
 

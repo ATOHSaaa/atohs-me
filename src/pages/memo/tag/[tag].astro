@@ -9,6 +9,7 @@ import {
   loadMemosForBuild,
   memoTagPath,
 } from '../../../lib/scrapbox/load-memos';
+import { isMemoDailyTitle } from '../../../lib/scrapbox/slug';
 
 export async function getStaticPaths() {
   const result = await loadMemosForBuild();
@@ -22,7 +23,8 @@ export async function getStaticPaths() {
   }));
 }
 
-const { tag, pages } = Astro.props;
+const { tag, pages: tagPages } = Astro.props;
+const pages = tagPages.filter((page) => isMemoDailyTitle(page.title));
 const pageUrl = new URL(memoTagPath(tag.tag), 'https://atohs.me').href;
 const tagDescription =
   pages[0]?.excerpt != null

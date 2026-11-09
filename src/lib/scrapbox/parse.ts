@@ -204,11 +204,26 @@ function parseCodeBlock(
   return { html, nextIndex: i };
 }
 
+function minContentIndent(
+  title: string,
+  lines: ScrapboxLine[],
+): number {
+  let min = Infinity;
+  for (const line of lines) {
+    const raw = line.text;
+    const body = stripIndent(raw);
+    if (!body || body === title) continue;
+    min = Math.min(min, measureIndent(raw));
+  }
+  return Number.isFinite(min) ? min : 0;
+}
+
 export function renderScrapboxBody(
   title: string,
   lines: ScrapboxLine[],
   ctx: MemoParseContext,
 ): string {
+  const indentBaseline = minContentIndent(title, lines);
   const nodes: OutlineNode[] = [];
   let i = 0;
   while (i < lines.length) {
@@ -219,15 +234,16 @@ export function renderScrapboxBody(
       continue;
     }
     const indent = measureIndent(raw);
+    const depth = Math.max(0, indent - indentBaseline);
     const codeHeader = body.match(/^code(?::\S*)?$/i);
     if (codeHeader) {
       const block = parseCodeBlock(lines, i, indent, ctx);
-      nodes.push({ depth: indent, html: block.html, type: 'code' });
+      nodes.push({ depth, html: block.html, type: 'code' });
       i = block.nextIndex;
       continue;
     }
     nodes.push({
-      depth: indent,
+      depth,
       html: lineToHtml(body, ctx),
       type: 'item',
     });

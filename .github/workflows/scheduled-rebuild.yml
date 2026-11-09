@@ -1,4 +1,4 @@
-# Scrapbox メモの定期ビルド検証（本番反映は npm run ship が別途必要）。
+# 増分ビルドの定期検証（本番反映は npm run ship が別途必要）。
 # 止めるときはこのファイルを削除するか、on.schedule をコメントアウトする。
 name: Scheduled rebuild
 
@@ -6,12 +6,6 @@ on:
   schedule:
     - cron: '0 16 * * *'
   workflow_dispatch:
-    inputs:
-      force_refresh:
-        description: Scrapbox 全ページ詳細を再取得（SCRAPBOX_FORCE_REFRESH=1）
-        type: boolean
-        default: false
-
 permissions:
   contents: read
 
@@ -35,15 +29,6 @@ jobs:
             astro-incr-${{ runner.os }}-${{ hashFiles('package-lock.json', 'astro.config.mjs') }}-
             astro-incr-${{ runner.os }}-
 
-      - name: Cache Scrapbox page details
-        uses: actions/cache@v4
-        with:
-          path: .scrapbox-cache
-          key: scrapbox-${{ runner.os }}-atohs-memo-${{ hashFiles('src/lib/scrapbox/**') }}
-          restore-keys: |
-            scrapbox-${{ runner.os }}-atohs-memo-
-            scrapbox-${{ runner.os }}-
-
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -54,8 +39,4 @@ jobs:
         run: npm ci
 
       - name: Build
-        env:
-          SCRAPBOX_SID: ${{ secrets.SCRAPBOX_SID }}
-          SCRAPBOX_PUBLISH_TAG: ${{ vars.SCRAPBOX_PUBLISH_TAG }}
-          SCRAPBOX_FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' && inputs.force_refresh == true && '1' || vars.SCRAPBOX_FORCE_REFRESH }}
         run: npm run build

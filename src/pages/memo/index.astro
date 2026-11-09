@@ -4,8 +4,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import MemoCard from '../../components/MemoCard.astro';
 import { loadMemosForBuild } from '../../lib/scrapbox/load-memos';
+import { isMemoDailyTitle } from '../../lib/scrapbox/slug';
 
 const { pages } = await loadMemosForBuild();
+const indexPages = pages.filter((page) => isMemoDailyTitle(page.title));
 ---
 
 <BaseLayout
@@ -20,11 +22,11 @@ const { pages } = await loadMemosForBuild();
     </nav>
     <h1 class="blog-title">Memo</h1>
     {
-      pages.length === 0 ? (
+      indexPages.length === 0 ? (
         <p>表示できるメモはありません。</p>
       ) : (
         <div class="container memo-index-grid">
-          {pages.map((page) => (
+          {indexPages.map((page) => (
             <MemoCard page={page} />
           ))}
         </div>

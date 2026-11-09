@@ -37,7 +37,7 @@ export function computePageLinkSections(
     .sort((a, b) => {
       const pa = pageBySlug.get(a);
       const pb = pageBySlug.get(b);
-      return (pb?.updated ?? 0) - (pa?.updated ?? 0);
+      return (pb?.created ?? 0) - (pa?.created ?? 0);
     });
 
   const twoHop: MemoTwoHopGroup[] = [];
@@ -51,7 +51,7 @@ export function computePageLinkSections(
     linkerSlugs.sort((a, b) => {
       const pa = pageBySlug.get(a);
       const pb = pageBySlug.get(b);
-      return (pb?.updated ?? 0) - (pa?.updated ?? 0);
+      return (pb?.created ?? 0) - (pa?.created ?? 0);
     });
 
     twoHop.push({

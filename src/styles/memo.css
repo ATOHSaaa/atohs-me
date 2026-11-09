@@ -1,3 +1,9 @@
+.main--memo-index,
+.memo-main {
+  --memo-radius: 1.5rem;
+  --memo-radius-surface: var(--radius-md);
+}
+
 .main--memo-index .memo-index-grid.container {
   grid-template-columns: 1fr;
   margin-top: 24px;
@@ -21,10 +27,31 @@
   }
 }
 
-.memo-card.item {
-  --memo-card-radius: 1.25rem;
-  border-radius: var(--memo-card-radius);
+.main--memo-index .container .memo-card.item,
+.memo-main .container .memo-card.item {
+  border-radius: var(--memo-radius);
   overflow: hidden;
+  box-shadow: none;
+}
+
+.main--memo-index .container .memo-card.item:has(.item-link:focus-visible),
+.memo-main .container .memo-card.item:has(.item-link:focus-visible) {
+  box-shadow: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .main--memo-index .container .memo-card.item:has(.item-link:hover),
+  .memo-main .container .memo-card.item:has(.item-link:hover) {
+    overflow: hidden;
+    box-shadow: none;
+  }
+}
+
+@media (hover: none) {
+  .main--memo-index .container .memo-card.item:has(.item-link:active),
+  .memo-main .container .memo-card.item:has(.item-link:active) {
+    box-shadow: none;
+  }
 }
 
 .memo-card .memo-card-link {
@@ -39,7 +66,7 @@
   overflow: hidden;
   background: color-mix(in srgb, var(--color-text) 6%, var(--color-bg));
   border-bottom: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
-  border-radius: var(--memo-card-radius) var(--memo-card-radius) 0 0;
+  border-radius: var(--memo-radius) var(--memo-radius) 0 0;
 }
 
 .memo-card-media img {
@@ -128,13 +155,14 @@
 .memo-body .memo-figure {
   margin: 1.2em 0;
   padding: 0;
+  border-radius: var(--memo-radius-surface);
+  overflow: hidden;
 }
 
 .memo-body .memo-figure img {
   display: block;
   max-width: 100%;
   height: auto;
-  border-radius: var(--radius-sm, 4px);
 }
 
 .memo-body .memo-code {
@@ -144,7 +172,7 @@
   font-size: 0.88em;
   line-height: 1.55;
   background: color-mix(in srgb, var(--color-text) 6%, var(--color-bg));
-  border-radius: var(--radius-sm, 4px);
+  border-radius: var(--memo-radius-surface);
 }
 
 [data-theme="dark"] .memo-body .memo-code {
@@ -161,7 +189,7 @@
   color: color-mix(in srgb, var(--color-text) 50%, var(--color-bg));
   background: color-mix(in srgb, var(--color-text) 10%, var(--color-bg));
   padding: 0 0.2em;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   font-weight: 600;
 }
 

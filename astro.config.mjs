@@ -33,31 +33,35 @@ function getBlogLastmodByPath() {
 }
 
 function getMemoLastmodByPath() {
-  const project = process.env.SCRAPBOX_PROJECT || 'atohs-memo';
-  const cachePath = join(process.cwd(), '.scrapbox-cache', `${project}.json`);
-  if (!existsSync(cachePath)) return {};
+  const memoDir = './src/content/memo';
+  if (!existsSync(memoDir)) return {};
 
-  try {
-    const data = JSON.parse(readFileSync(cachePath, 'utf-8'));
-    const result = { '/memo/': undefined };
-    let latest = 0;
+  const result = {};
+  let latest = 0;
 
-    for (const [title, entry] of Object.entries(data.pages ?? {})) {
-      const updated = entry?.updated;
-      if (typeof updated !== 'number') continue;
-      latest = Math.max(latest, updated);
-      const slug = encodeURIComponent(title);
-      result[`/memo/${slug}/`] = new Date(updated * 1000);
-    }
+  for (const entry of readdirSync(memoDir, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
 
-    if (latest > 0) {
-      result['/memo/'] = new Date(latest * 1000);
-    }
+    const content = readFileSync(join(memoDir, entry.name), 'utf-8');
+    if (/^draft:\s*true\s*$/m.test(content)) continue;
+    const updatedMatch = content.match(/^updated:\s*(.+)$/m);
+    const createdMatch = content.match(/^created:\s*(.+)$/m);
+    const iso = updatedMatch?.[1]?.trim() ?? createdMatch?.[1]?.trim();
+    if (!iso) continue;
 
-    return result;
-  } catch {
-    return {};
+    const updated = new Date(iso).getTime();
+    if (!Number.isFinite(updated)) continue;
+    latest = Math.max(latest, updated);
+
+    const title = entry.name.replace(/\.md$/, '');
+    result[`/memo/${encodeURIComponent(title)}/`] = new Date(updated);
   }
+
+  if (latest > 0) {
+    result['/memo/'] = new Date(latest);
+  }
+
+  return result;
 }
 
 const postLastmodByPath = getBlogLastmodByPath();
