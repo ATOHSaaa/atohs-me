@@ -84,6 +84,15 @@ async function postEndpoint(endpoint, body) {
   return res.ok;
 }
 
+async function postRequiredEndpoints(body) {
+  let requiredFailed = false;
+  for (const endpoint of REQUIRED_ENDPOINTS) {
+    const ok = await postEndpoint(endpoint, body);
+    if (!ok) requiredFailed = true;
+  }
+  return requiredFailed;
+}
+
 async function submit(urlList) {
   if (urlList.length === 0) {
     console.log('送信する URL がありません。');
@@ -101,10 +110,14 @@ async function submit(urlList) {
     urlList,
   };
 
-  let requiredFailed = false;
-  for (const endpoint of REQUIRED_ENDPOINTS) {
-    const ok = await postEndpoint(endpoint, body);
-    if (!ok) requiredFailed = true;
+  let requiredFailed = await postRequiredEndpoints(body);
+  if (requiredFailed) {
+    const waitMs = 45_000;
+    console.log(
+      `IndexNow: 必須エンドポイントが失敗。キー検証クロール待ち ${waitMs / 1000} 秒後に再試行…`,
+    );
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+    requiredFailed = await postRequiredEndpoints(body);
   }
 
   for (const endpoint of OPTIONAL_ENDPOINTS) {
@@ -115,7 +128,7 @@ async function submit(urlList) {
 
   if (requiredFailed) {
     console.error(
-      'IndexNow: api.indexnow.org または Bing が受理しませんでした（キー検証失敗の可能性）。',
+      'IndexNow: api.indexnow.org または Bing が受理しませんでした。Bing Webmaster Tools に atohs.me を登録するか、しばらくして再 ship してください。',
     );
     process.exit(1);
   }
