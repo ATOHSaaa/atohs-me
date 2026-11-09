@@ -1,5 +1,6 @@
 ---
 import { getImage } from 'astro:assets';
+import { pathOgImageUrl } from '../lib/path-og';
 import { SITE_FAVICON_SRC, siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
 const siteLogoPreload = await getImage({
   src: siteLogo,
@@ -29,7 +30,7 @@ const {
   title,
   description = 'atohs(あとーす)のポートフォリオサイトです。メディア運営、執筆・編集、文字起こし、写真撮影、校正などを行っています。',
   ogUrl = 'https://atohs.me',
-  ogImage = 'https://atohs.me/src/ogp.png',
+  ogImage: ogImageProp,
   ogSiteName = 'atohs.me',
   twitterEmbeds = false,
   robotsNoindex = false,
@@ -37,6 +38,8 @@ const {
   dateModified,
   schemaHeadline,
 } = Astro.props;
+
+const ogImage = ogImageProp ?? pathOgImageUrl(ogUrl);
 
 const articleSchema =
   datePublished != null

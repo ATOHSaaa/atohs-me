@@ -19,6 +19,8 @@
     "memo:sync": "tsx scripts/sync-memo-from-scrapbox.ts",
     "memo:og:generate": "tsx scripts/generate-memo-og-image.ts",
     "home:og:generate": "tsx scripts/generate-home-og-image.ts",
+    "path:og:generate": "tsx scripts/generate-path-og-images.ts",
+    "path:og:generate:force": "tsx scripts/generate-path-og-images.ts --force",
     "indexnow:submit": "node scripts/indexnow-submit.mjs",
     "indexnow:memo": "node scripts/indexnow-submit.mjs --memo",
     "deploy:cf": "bash scripts/deploy-cf.sh",
