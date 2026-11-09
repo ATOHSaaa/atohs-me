@@ -5,6 +5,7 @@ import SiteHeader from '../../components/SiteHeader.astro';
 import MemoCard from '../../components/MemoCard.astro';
 import { loadMemosForBuild } from '../../lib/scrapbox/load-memos';
 import { isMemoDailyTitle } from '../../lib/scrapbox/slug';
+import { MEMO_OG_IMAGE_URL } from '../../lib/memo-og';
 
 const { pages } = await loadMemosForBuild();
 const indexPages = pages.filter((page) => isMemoDailyTitle(page.title));
@@ -14,6 +15,7 @@ const indexPages = pages.filter((page) => isMemoDailyTitle(page.title));
   title="Memo | atohs.me"
   description="atohs(あとーす)のメモ一覧です。Scrapbox（Cosense）から同期した日記・メモを掲載しています。"
   ogUrl="https://atohs.me/memo/"
+  ogImage={MEMO_OG_IMAGE_URL}
 >
   <SiteHeader />
   <main id="main-content" class="main main--memo-index">

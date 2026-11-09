@@ -34,7 +34,6 @@ export interface BuiltMemoPage {
   bodyHtml: string;
   description: string;
   excerpt: string;
-  thumbnailUrl?: string;
   cacheKey: string;
   outLinkSlugs: string[];
   backLinkSlugs: string[];

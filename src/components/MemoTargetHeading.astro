@@ -11,9 +11,9 @@ const { target } = Astro.props;
 <h3 class="memo-hop-heading">
   {
     target.kind === 'page' && target.href ? (
-      <a href={target.href}>{target.display}</a>
+      <a class="memo-link" href={target.href}>{target.display}</a>
     ) : target.kind === 'tag' && target.href ? (
-      <a class="memo-hop-heading-tag" href={target.href}>#{target.display}</a>
+      <a class="memo-link" href={target.href}>#{target.display}</a>
     ) : (
       <span class="memo-empty-link">{target.display}</span>
     )

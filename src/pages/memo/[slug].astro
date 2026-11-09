@@ -5,6 +5,7 @@ import SiteHeader from '../../components/SiteHeader.astro';
 import { formatJstDateKey } from '../../lib/format-date';
 import { loadMemosForBuild } from '../../lib/scrapbox/load-memos';
 import { memoPagePath } from '../../lib/scrapbox/slug';
+import { MEMO_OG_IMAGE_URL } from '../../lib/memo-og';
 import MemoPageLinks from '../../components/MemoPageLinks.astro';
 
 export async function getStaticPaths() {
@@ -28,6 +29,7 @@ const pageUrl = new URL(memoPagePath(page.slug), 'https://atohs.me').href;
   title={`${page.title} | Memo | atohs.me`}
   description={page.excerpt}
   ogUrl={pageUrl}
+  ogImage={MEMO_OG_IMAGE_URL}
   schemaHeadline={page.title}
   datePublished={createdAt.toISOString()}
   dateModified={updatedAt.toISOString()}
@@ -43,11 +45,11 @@ const pageUrl = new URL(memoPagePath(page.slug), 'https://atohs.me').href;
         <h1 class="blog-title">{page.title}</h1>
         <p class="blog-meta memo-meta">
           <span class="memo-meta-item">
-            公開:
+            published:
             <time datetime={publishedLabel}>{publishedLabel}</time>
           </span>
           <span class="memo-meta-item">
-            更新:
+            updated:
             <time datetime={updatedLabel}>{updatedLabel}</time>
           </span>
         </p>

@@ -19,6 +19,7 @@ export interface MemoParseContext {
 
 export function buildMemoParseContext(
   publishedPages: BuiltMemoPage[],
+  publishedTagKeys: ReadonlySet<string> = new Set(),
 ): MemoParseContext {
   const pageByKey = new Map<string, BuiltMemoPage>();
   for (const page of publishedPages) {
@@ -40,12 +41,15 @@ export function buildMemoParseContext(
         page,
       };
     }
-    return {
-      display,
-      key,
-      kind: 'tag',
-      href: memoTagPath(display),
-    };
+    if (publishedTagKeys.has(key)) {
+      return {
+        display,
+        key,
+        kind: 'tag',
+        href: memoTagPath(display),
+      };
+    }
+    return { display, key, kind: 'missing' };
   };
 
   return { resolvePageTitle, resolveTarget };

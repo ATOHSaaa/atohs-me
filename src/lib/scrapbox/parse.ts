@@ -1,5 +1,4 @@
 import type { MemoParseContext } from './link-context';
-import { memoPagePath, memoTagPath } from './slug';
 import { isValidMemoHashtag } from './tags';
 import type { ScrapboxLine } from './types';
 
@@ -41,12 +40,20 @@ function externalLink(href: string, label: string): string {
   return `<a href="${safeHref}" rel="noopener noreferrer" target="_blank">${safeLabel}</a>`;
 }
 
-function memoPageAnchor(href: string, label: string): string {
-  return `<a href="${escapeHtml(href)}">${escapeHtml(label)}</a>`;
+function memoInternalLink(href: string, label: string): string {
+  return `<a class="memo-link" href="${escapeHtml(href)}">${escapeHtml(label)}</a>`;
 }
 
-function memoEmptyLink(label: string): string {
-  return `<span class="memo-empty-link">${escapeHtml(label)}</span>`;
+function memoLinkLabelOrPlain(
+  ctx: MemoParseContext,
+  targetTitle: string,
+  label: string,
+): string {
+  const target = ctx.resolveTarget(targetTitle);
+  if (target.href) {
+    return memoInternalLink(target.href, label);
+  }
+  return escapeHtml(label);
 }
 
 function parseBracketContent(inner: string, ctx: MemoParseContext): string {
@@ -63,36 +70,27 @@ function parseBracketContent(inner: string, ctx: MemoParseContext): string {
     if (isProbablyUrl(rest)) {
       return externalLink(rest, label);
     }
-    const resolved = ctx.resolvePageTitle(rest);
-    if (resolved) {
-      return memoPageAnchor(memoPagePath(resolved.slug), label);
-    }
-    return memoEmptyLink(label);
+    return memoLinkLabelOrPlain(ctx, rest, label);
   }
 
   if (isProbablyUrl(trimmed)) {
     const href = trimmed.startsWith('//') ? `https:${trimmed}` : trimmed;
     if (isImageUrl(href)) {
-      return `<figure class="memo-figure"><img src="${escapeHtml(href)}" alt="" loading="lazy" decoding="async" /></figure>`;
+      return '';
     }
     return externalLink(href, href);
   }
 
-  const page = ctx.resolvePageTitle(trimmed);
-  if (page) {
-    return memoPageAnchor(memoPagePath(page.slug), trimmed);
-  }
-
-  return memoEmptyLink(trimmed);
+  return memoLinkLabelOrPlain(ctx, trimmed, trimmed);
 }
 
 function renderHashtag(tag: string, ctx: MemoParseContext): string {
   const safeTag = escapeHtml(tag);
-  const page = ctx.resolvePageTitle(tag);
-  if (page) {
-    return `<a class="memo-hashtag" href="${escapeHtml(memoPagePath(page.slug))}">#${safeTag}</a>`;
+  const target = ctx.resolveTarget(tag);
+  if (target.href) {
+    return `<a class="memo-link memo-hashtag" href="${escapeHtml(target.href)}">#${safeTag}</a>`;
   }
-  return `<a class="memo-hashtag" href="${escapeHtml(memoTagPath(tag))}">#${safeTag}</a>`;
+  return `#${safeTag}`;
 }
 
 function parseInline(text: string, ctx: MemoParseContext): string {
@@ -253,49 +251,53 @@ export function renderScrapboxBody(
   return buildOutlineHtml(nodes);
 }
 
-function plainTextFromScrapboxLine(body: string): string {
-  return body
-    .replace(/\[[^\]]*\]/g, ' ')
-    .replace(/#\S+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function imageUrlFromBracketInner(inner: string): string | undefined {
+function plainTextFromBracketInner(inner: string): string {
   const trimmed = inner.trim();
-  if (trimmed.startsWith('*')) return undefined;
+  if (!trimmed) return '';
+
+  if (trimmed.startsWith('*')) {
+    return trimmed.slice(1).trimStart();
+  }
 
   const spaceIdx = trimmed.search(/\s/);
   if (spaceIdx > 0) {
+    const label = trimmed.slice(0, spaceIdx).trim();
     const rest = trimmed.slice(spaceIdx + 1).trim();
     if (isProbablyUrl(rest)) {
-      const href = rest.startsWith('//') ? `https:${rest}` : rest;
-      return isImageUrl(href) ? href : undefined;
+      if (isImageUrl(rest)) return '';
+      return label;
     }
+    return label;
   }
 
   if (isProbablyUrl(trimmed)) {
-    const href = trimmed.startsWith('//') ? `https:${trimmed}` : trimmed;
-    return isImageUrl(href) ? href : undefined;
+    return isImageUrl(trimmed) ? '' : '';
   }
-  return undefined;
+
+  return trimmed;
 }
 
-export function extractFirstImageUrl(
-  lines: ScrapboxLine[],
-  summaryImage?: string | null,
-): string | undefined {
-  const fromSummary = summaryImage?.trim();
-  if (fromSummary) return fromSummary;
+function plainTextFromScrapboxLine(body: string): string {
+  let out = body.replace(/\[([^\]]+)\]/g, (_, inner: string) => {
+    const text = plainTextFromBracketInner(inner);
+    return text || '';
+  });
 
-  for (const line of lines) {
-    const body = stripIndent(line.text);
-    for (const match of body.matchAll(/\[([^\]]+)\]/g)) {
-      const url = imageUrlFromBracketInner(match[1]);
-      if (url) return url;
+  let i = 0;
+  while (i < out.length) {
+    const hashStart = out.indexOf('#', i);
+    if (hashStart === -1) break;
+    const tail = out.slice(hashStart + 1);
+    const match = tail.match(/^([^\s#＃\[\]<>:=,，。、~]+)/u);
+    if (match && isValidMemoHashtag(match[1])) {
+      out = `${out.slice(0, hashStart)} ${match[1]}${tail.slice(match[1].length)}`;
+      i = hashStart + match[1].length + 2;
+      continue;
     }
+    i = hashStart + 1;
   }
-  return undefined;
+
+  return out.replace(/\s+/g, ' ').trim();
 }
 
 export function memoExcerptFromLines(

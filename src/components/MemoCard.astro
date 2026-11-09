@@ -13,21 +13,7 @@ const href = memoPagePath(page.slug);
 
 <div class:list={['item', 'memo-card', compact && 'memo-card--compact']}>
   <a class="item-link memo-card-link" href={href}>
-    {
-      page.thumbnailUrl ? (
-        <div class="memo-card-media">
-          <img
-            src={page.thumbnailUrl}
-            alt=""
-            width={640}
-            height={360}
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-      ) : null
-    }
-    <div class="memo-card-text">
+    <div class="memo-card-inner">
       <h3 class="memo-card-title">{page.title}</h3>
       <p class="memo-card-excerpt">{page.excerpt}</p>
     </div>

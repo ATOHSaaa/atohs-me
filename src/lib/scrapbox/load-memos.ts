@@ -8,7 +8,6 @@ import { extractLinkTargets } from './extract-links';
 import { buildMemoParseContext } from './link-context';
 import { computePageLinkSections } from './link-graph';
 import {
-  extractFirstImageUrl,
   memoDescriptionFromLines,
   memoExcerptFromLines,
   renderScrapboxBody,
@@ -120,7 +119,6 @@ async function buildMemos(): Promise<MemoBuildResult> {
   for (const detail of publishedDetails) {
     const slug = publishedSlugs.get(detail.title)!;
     const targets = extractLinkTargets(detail.lines ?? [], detail.links);
-    const thumbnailUrl = extractFirstImageUrl(detail.lines ?? [], undefined);
     const entry = entryByTitle.get(detail.title)!;
     const cacheKey = `${String(entry.digest)}:${globalCacheKey}:${detail.updated}:${targets.map((t) => t.key).join(',')}`;
 
@@ -132,7 +130,6 @@ async function buildMemos(): Promise<MemoBuildResult> {
       bodyHtml: '',
       description: '',
       excerpt: '',
-      thumbnailUrl,
       cacheKey,
       outLinkSlugs: [],
       backLinkSlugs: [],
@@ -141,7 +138,9 @@ async function buildMemos(): Promise<MemoBuildResult> {
     pages.push(stub);
   }
 
-  const parseCtx = buildMemoParseContext(pages);
+  const tags = buildTagIndex(publishedDetails, publishedSlugs);
+  const publishedTagKeys = new Set(tags.map((t) => t.key));
+  const parseCtx = buildMemoParseContext(pages, publishedTagKeys);
 
   for (let i = 0; i < publishedDetails.length; i++) {
     const detail = publishedDetails[i];
@@ -162,6 +161,7 @@ async function buildMemos(): Promise<MemoBuildResult> {
       pages,
       targetIndex,
       targets,
+      publishedTagKeys,
     );
     page.outLinkSlugs = sections.outLinkSlugs;
     page.backLinkSlugs = sections.backLinkSlugs;
@@ -170,8 +170,6 @@ async function buildMemos(): Promise<MemoBuildResult> {
   }
 
   pages.sort((a, b) => b.created - a.created);
-
-  const tags = buildTagIndex(publishedDetails, publishedSlugs);
 
   return {
     pages,

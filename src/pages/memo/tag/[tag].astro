@@ -10,6 +10,7 @@ import {
   memoTagPath,
 } from '../../../lib/scrapbox/load-memos';
 import { isMemoDailyTitle } from '../../../lib/scrapbox/slug';
+import { MEMO_OG_IMAGE_URL } from '../../../lib/memo-og';
 
 export async function getStaticPaths() {
   const result = await loadMemosForBuild();
@@ -36,6 +37,7 @@ const tagDescription =
   title={`#${tag.tag} | Memo | atohs.me`}
   description={tagDescription}
   ogUrl={pageUrl}
+  ogImage={MEMO_OG_IMAGE_URL}
 >
   <SiteHeader />
   <main id="main-content" class="main main--memo-index">

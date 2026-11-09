@@ -668,3 +668,98 @@ export async function generateOgImage(
 
   return Buffer.from(resvg.render().asPng());
 }
+
+const MEMO_OG_ICON_SIZE = 104;
+const MEMO_OG_FONT_SIZE = 108;
+const MEMO_OG_PATH_LABEL = 'atohs.me/memo';
+const MEMO_OG_ICON_NUDGE_Y = 12;
+
+/** メモ共通 OGP: 中央にロゴ + パスを1行で大きく */
+export async function generateMemoOgImage(): Promise<Buffer> {
+  const font = await loadFont();
+  const brandIconSrc = await loadBrandIconDataUrl();
+
+  const svg = await satori(
+    {
+      type: 'div',
+      props: {
+        style: {
+          width: `${WIDTH}px`,
+          height: `${HEIGHT}px`,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: '#FBFAF7',
+          color: TEXT_COLOR,
+          padding: `${PAD_X}px`,
+          boxSizing: 'border-box',
+        },
+        children: [
+          {
+            type: 'div',
+            props: {
+              style: {
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 28,
+                flexShrink: 0,
+              },
+              children: [
+                {
+                  type: 'img',
+                  props: {
+                    src: brandIconSrc,
+                    width: MEMO_OG_ICON_SIZE,
+                    height: MEMO_OG_ICON_SIZE,
+                    style: {
+                      width: MEMO_OG_ICON_SIZE,
+                      height: MEMO_OG_ICON_SIZE,
+                      flexShrink: 0,
+                      marginTop: MEMO_OG_ICON_NUDGE_Y,
+                    },
+                  },
+                },
+                {
+                  type: 'div',
+                  props: {
+                    style: {
+                      fontSize: MEMO_OG_FONT_SIZE,
+                      fontWeight: 700,
+                      lineHeight: 1,
+                      whiteSpace: 'nowrap',
+                    },
+                    children: MEMO_OG_PATH_LABEL,
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      width: WIDTH,
+      height: HEIGHT,
+      fonts: [
+        {
+          name: 'Noto Sans CJK JP',
+          data: font,
+          weight: 700,
+          style: 'normal',
+        },
+      ],
+    },
+  );
+
+  const resvg = new Resvg(svg, {
+    fitTo: {
+      mode: 'width',
+      value: WIDTH,
+    },
+  });
+
+  return Buffer.from(resvg.render().asPng());
+}

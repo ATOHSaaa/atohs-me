@@ -11,12 +11,13 @@ export function computePageLinkSections(
   allPages: BuiltMemoPage[],
   targetIndex: Map<string, Set<string>>,
   orderedTargets: RawTarget[],
+  publishedTagKeys: ReadonlySet<string> = new Set(),
 ): {
   outLinkSlugs: string[];
   backLinkSlugs: string[];
   twoHop: MemoTwoHopGroup[];
 } {
-  const ctx = buildMemoParseContext(allPages);
+  const ctx = buildMemoParseContext(allPages, publishedTagKeys);
   const pageBySlug = new Map(allPages.map((p) => [p.slug, p]));
   const selfKey = normalizeScrapboxKey(page.title);
 

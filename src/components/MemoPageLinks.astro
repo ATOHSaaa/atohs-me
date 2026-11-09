@@ -55,7 +55,6 @@ const hopGroups = page.twoHop.map((group) => ({
           group.pages.length > 0 && (
             <div class="memo-links-block memo-hop-group">
               <MemoTargetHeading target={group.target} />
-              <p class="memo-hop-lead">この項目へのリンクを含む他のメモ</p>
               <div class="container memo-card-grid memo-card-grid--related">
                 {group.pages.map((linked) => (
                   <MemoCard page={linked} compact />
