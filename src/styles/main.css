@@ -346,6 +346,18 @@ header:not(.header-top) {
 .footer-link {
   text-decoration: none;
   font-weight: 700;
+  color: inherit;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .footer-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .footer-social .link-external-mark {
+    text-decoration: none;
+  }
 }
 
 /* ==========================================================================
@@ -1010,19 +1022,6 @@ a.keywords-chip {
   text-decoration: underline;
   text-underline-offset: 4px;
   color: inherit;
-  transition: transform 0.15s ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .home-footer-nav-link:hover,
-  .home-footer-nav-social:hover {
-    transform: scale(var(--outline-frame-hover-scale));
-  }
-}
-
-.home-footer-nav-link:focus-visible,
-.home-footer-nav-social:focus-visible {
-  transform: scale(var(--outline-frame-hover-scale));
 }
 
 .home-footer-nav-sep {
@@ -1035,7 +1034,6 @@ a.keywords-chip {
   display: inline-block;
   font-weight: 700;
   text-decoration: none;
-  transition: transform 0.15s ease;
 }
 
 .home-footer-nav-social .home-footer-nav-link-label {

@@ -10,12 +10,12 @@ const { target } = Astro.props;
 
 <h3 class="memo-hop-heading">
   {
-    target.kind === 'page' && target.href ? (
-      <a class="memo-link" href={target.href}>{target.display}</a>
-    ) : target.kind === 'tag' && target.href ? (
-      <a class="memo-link" href={target.href}>#{target.display}</a>
+    target.href && (target.kind === 'page' || target.kind === 'tag') ? (
+      <a class="memo-link" href={target.href}>
+        {target.kind === 'tag' ? `#${target.display}` : target.display}
+      </a>
     ) : (
-      <span class="memo-empty-link">{target.display}</span>
+      <span>{target.display}</span>
     )
   }
 </h3>

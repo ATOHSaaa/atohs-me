@@ -44,16 +44,37 @@ function memoInternalLink(href: string, label: string): string {
   return `<a class="memo-link" href="${escapeHtml(href)}">${escapeHtml(label)}</a>`;
 }
 
+/** リンク先がないキーワード（赤・破線・非リンク） */
+function memoUnlinkedKeyword(label: string): string {
+  return `<span class="memo-unlinked">${escapeHtml(label)}</span>`;
+}
+
+function isKeywordStubTarget(
+  target: ReturnType<MemoParseContext['resolveTarget']>,
+): boolean {
+  return target.kind === 'page' && target.page?.keywordStub === true;
+}
+
+function memoResolvedKeywordLink(
+  target: ReturnType<MemoParseContext['resolveTarget']>,
+  label: string,
+): string {
+  if (!target.href) {
+    return memoUnlinkedKeyword(label);
+  }
+  if (isKeywordStubTarget(target)) {
+    return `<a class="memo-link memo-unlinked" href="${escapeHtml(target.href)}">${escapeHtml(label)}</a>`;
+  }
+  return memoInternalLink(target.href, label);
+}
+
 function memoLinkLabelOrPlain(
   ctx: MemoParseContext,
   targetTitle: string,
   label: string,
 ): string {
   const target = ctx.resolveTarget(targetTitle);
-  if (target.href) {
-    return memoInternalLink(target.href, label);
-  }
-  return escapeHtml(label);
+  return memoResolvedKeywordLink(target, label);
 }
 
 function parseBracketContent(inner: string, ctx: MemoParseContext): string {
@@ -87,10 +108,14 @@ function parseBracketContent(inner: string, ctx: MemoParseContext): string {
 function renderHashtag(tag: string, ctx: MemoParseContext): string {
   const safeTag = escapeHtml(tag);
   const target = ctx.resolveTarget(tag);
-  if (target.href) {
-    return `<a class="memo-link memo-hashtag" href="${escapeHtml(target.href)}">#${safeTag}</a>`;
+  if (!target.href) {
+    return `<span class="memo-unlinked memo-hashtag">#${safeTag}</span>`;
   }
-  return `#${safeTag}`;
+  const href = escapeHtml(target.href);
+  if (isKeywordStubTarget(target)) {
+    return `<a class="memo-link memo-unlinked memo-hashtag" href="${href}">#${safeTag}</a>`;
+  }
+  return `<a class="memo-link memo-hashtag" href="${href}">#${safeTag}</a>`;
 }
 
 function parseInline(text: string, ctx: MemoParseContext): string {

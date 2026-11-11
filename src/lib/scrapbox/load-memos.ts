@@ -5,8 +5,16 @@ import {
   scrapboxDetailFromMemoEntry,
 } from './load-memo-content';
 import { extractLinkTargets } from './extract-links';
+import {
+  buildKeywordStubPages,
+  collectBracketStubTargets,
+  pageKeysSet,
+} from './keyword-stubs';
 import { buildMemoParseContext } from './link-context';
-import { computePageLinkSections } from './link-graph';
+import {
+  collectLinkedSidebarTargets,
+  computePageLinkSections,
+} from './link-graph';
 import {
   memoDescriptionFromLines,
   memoExcerptFromLines,
@@ -140,15 +148,27 @@ async function buildMemos(): Promise<MemoBuildResult> {
       outLinkSlugs: [],
       backLinkSlugs: [],
       twoHop: [],
+      linkedTargets: [],
     };
     pages.push(stub);
   }
 
   const tags = buildTagIndex(publishedDetails, publishedSlugs);
   const publishedTagKeys = new Set(tags.map((t) => t.key));
+
+  const stubTargets = collectBracketStubTargets(
+    publishedDetails,
+    pageKeysSet(pages),
+    publishedTagKeys,
+  );
+  pages.push(
+    ...buildKeywordStubPages(stubTargets, targetIndex, pages, globalCacheKey),
+  );
+
+  const contentPageCount = publishedDetails.length;
   const parseCtx = buildMemoParseContext(pages, publishedTagKeys);
 
-  for (let i = 0; i < publishedDetails.length; i++) {
+  for (let i = 0; i < contentPageCount; i++) {
     const detail = publishedDetails[i];
     const page = pages[i];
     page.bodyHtml = renderScrapboxBody(
@@ -172,7 +192,8 @@ async function buildMemos(): Promise<MemoBuildResult> {
     page.outLinkSlugs = sections.outLinkSlugs;
     page.backLinkSlugs = sections.backLinkSlugs;
     page.twoHop = sections.twoHop;
-    page.cacheKey = `${page.cacheKey}:${sections.outLinkSlugs.join(',')}:${sections.backLinkSlugs.join(',')}:${sections.twoHop.length}`;
+    page.linkedTargets = collectLinkedSidebarTargets(targets, parseCtx);
+    page.cacheKey = `${page.cacheKey}:${sections.outLinkSlugs.join(',')}:${sections.backLinkSlugs.join(',')}:${sections.twoHop.length}:${page.linkedTargets.map((t) => t.key).join(',')}`;
   }
 
   pages.sort((a, b) => b.created - a.created);

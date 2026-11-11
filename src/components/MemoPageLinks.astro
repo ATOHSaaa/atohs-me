@@ -8,40 +8,34 @@ import type { MemoBuildResult } from '../lib/scrapbox/types';
 interface Props {
   page: BuiltMemoPage;
   build: Pick<MemoBuildResult, 'pages'>;
+  keywordStub?: boolean;
 }
 
-const { page, build } = Astro.props;
+const { page, build, keywordStub = false } = Astro.props;
 const memoResult = { pages: build.pages } as MemoBuildResult;
-const outLinks = getPagesForSlugs(memoResult, page.outLinkSlugs);
 const backLinks = getPagesForSlugs(memoResult, page.backLinkSlugs);
 
 const hopGroups = page.twoHop.map((group) => ({
   target: group.target,
   pages: getPagesForSlugs(memoResult, group.pageSlugs),
 }));
+
+const showHopGroups =
+  !keywordStub && hopGroups.some((g) => g.pages.length > 0);
+const sectionTitle = keywordStub ? '関連記事' : '関連ページ';
+const backlinkTitle = keywordStub ? '関連記事' : 'バックリンク';
 ---
 
 {
-  outLinks.length > 0 ||
-  backLinks.length > 0 ||
-  hopGroups.some((g) => g.pages.length > 0) ? (
-    <section class="memo-links" aria-labelledby="memo-links-title">
-      <h2 id="memo-links-title" class="memo-links-title">関連ページ</h2>
-
-      {outLinks.length > 0 && (
-        <div class="memo-links-block">
-          <h3 class="memo-links-subtitle">リンク</h3>
-          <div class="container memo-card-grid memo-card-grid--related">
-            {outLinks.map((linked) => (
-              <MemoCard page={linked} compact />
-            ))}
-          </div>
-        </div>
-      )}
-
+  backLinks.length > 0 || showHopGroups ? (
+    <section
+      class="memo-links"
+      aria-label={sectionTitle}
+      data-keyword-stub={keywordStub ? '' : undefined}
+    >
       {backLinks.length > 0 && (
         <div class="memo-links-block">
-          <h3 class="memo-links-subtitle">バックリンク</h3>
+          {!keywordStub && <h3 class="memo-links-subtitle">{backlinkTitle}</h3>}
           <div class="container memo-card-grid memo-card-grid--related">
             {backLinks.map((linked) => (
               <MemoCard page={linked} compact />
@@ -50,7 +44,8 @@ const hopGroups = page.twoHop.map((group) => ({
         </div>
       )}
 
-      {hopGroups.map(
+      {!keywordStub &&
+        hopGroups.map(
         (group) =>
           group.pages.length > 0 && (
             <div class="memo-links-block memo-hop-group">

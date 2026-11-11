@@ -7,6 +7,7 @@ import { loadMemosForBuild } from '../../lib/scrapbox/load-memos';
 import { memoPagePath, memoRouteParam } from '../../lib/scrapbox/slug';
 import { MEMO_OG_IMAGE_URL } from '../../lib/memo-og';
 import MemoPageLinks from '../../components/MemoPageLinks.astro';
+import MemoSidebarKeywords from '../../components/MemoSidebarKeywords.astro';
 
 export async function getStaticPaths() {
   const result = await loadMemosForBuild();
@@ -23,6 +24,9 @@ const updatedAt = new Date(page.updated * 1000);
 const publishedLabel = formatJstDateKey(createdAt);
 const updatedLabel = formatJstDateKey(updatedAt);
 const pageUrl = new URL(memoPagePath(page.slug), 'https://atohs.me').href;
+const isKeywordStub = page.keywordStub === true;
+const hasBody = !isKeywordStub && page.bodyHtml.trim().length > 0;
+
 ---
 
 <BaseLayout
@@ -31,8 +35,8 @@ const pageUrl = new URL(memoPagePath(page.slug), 'https://atohs.me').href;
   ogUrl={pageUrl}
   ogImage={MEMO_OG_IMAGE_URL}
   schemaHeadline={page.title}
-  datePublished={createdAt.toISOString()}
-  dateModified={updatedAt.toISOString()}
+  datePublished={isKeywordStub ? undefined : createdAt.toISOString()}
+  dateModified={isKeywordStub ? undefined : updatedAt.toISOString()}
 >
   <SiteHeader />
   <main id="main-content" class="main blog-main memo-main">
@@ -40,22 +44,45 @@ const pageUrl = new URL(memoPagePath(page.slug), 'https://atohs.me').href;
       <div class="blog-layout-intro">
         <nav class="breadcrumb" aria-label="パンくずリスト">
           <a href="/">Home</a><span class="breadcrumb-slash">/</span>
-          <a href="/memo/">Memo</a><span class="breadcrumb-slash">/</span>
+          <a href="/memo/">memo</a><span class="breadcrumb-slash">/</span>
         </nav>
         <h1 class="blog-title">{page.title}</h1>
-        <p class="blog-meta memo-meta">
-          <span class="memo-meta-item">
-            published:
-            <time datetime={publishedLabel}>{publishedLabel}</time>
-          </span>
-          <span class="memo-meta-item">
-            updated:
-            <time datetime={updatedLabel}>{updatedLabel}</time>
-          </span>
-        </p>
+        {
+          isKeywordStub ? (
+            <p class="blog-meta memo-meta">
+              <span class="memo-meta-item">
+                published:
+                <span class="memo-meta-none">none</span>
+              </span>
+            </p>
+          ) : (
+            <p class="blog-meta memo-meta">
+              <span class="memo-meta-item">
+                published:
+                <time datetime={publishedLabel}>{publishedLabel}</time>
+              </span>
+              <span class="memo-meta-item">
+                updated:
+                <time datetime={updatedLabel}>{updatedLabel}</time>
+              </span>
+            </p>
+          )
+        }
       </div>
-      <div class="blog-body memo-body" set:html={page.bodyHtml} />
-      <MemoPageLinks page={page} build={build} />
+      <div class="blog-layout-share-rail memo-layout-share-rail" aria-hidden="true"></div>
+      {
+        hasBody ? (
+          <div class="blog-body memo-body" set:html={page.bodyHtml} />
+        ) : (
+          <div class="memo-body memo-body--empty" aria-hidden="true" />
+        )
+      }
+      <aside class="blog-sidebar memo-sidebar" aria-label="単語リンク">
+        <MemoSidebarKeywords targets={page.linkedTargets} />
+      </aside>
+      <div class="memo-layout-footer">
+        <MemoPageLinks page={page} build={build} keywordStub={isKeywordStub} />
+      </div>
     </article>
   </main>
 </BaseLayout>

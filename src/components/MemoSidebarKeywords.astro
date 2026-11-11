@@ -1,0 +1,37 @@
+---
+import type { ResolvedMemoTarget } from '../lib/scrapbox/link-context';
+
+interface Props {
+  targets: ResolvedMemoTarget[];
+}
+
+const { targets } = Astro.props;
+const hasItems = targets.length > 0;
+
+function linkLabel(target: ResolvedMemoTarget): string {
+  return target.kind === 'tag' ? `#${target.display}` : target.display;
+}
+---
+
+<div class="blog-sidebar-toc-slot">
+  <div class:list={['blog-toc', 'memo-sidebar-keywords', { 'blog-toc--empty': !hasItems }]}>
+    <h2 class="blog-toc-label">単語リンク</h2>
+    {
+      hasItems ? (
+        <nav aria-label="単語リンク">
+          <ul class="blog-toc-list memo-sidebar-keyword-list">
+            {targets.map((target) => (
+              <li class="blog-toc-item">
+                <a class="blog-toc-link" href={target.href}>
+                  {linkLabel(target)}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ) : (
+        <p class="blog-toc-empty">リンクされている単語はありません</p>
+      )
+    }
+  </div>
+</div>

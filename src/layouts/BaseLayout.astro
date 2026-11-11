@@ -1,5 +1,6 @@
 ---
 import { getImage } from 'astro:assets';
+import SiteFooter from '../components/SiteFooter.astro';
 import { canonicalUrl } from '../lib/canonical-url';
 import { pathOgImageUrl } from '../lib/path-og';
 import { SITE_FAVICON_SRC, siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
@@ -42,6 +43,7 @@ const {
 
 const ogUrl = canonicalUrl(ogUrlProp);
 const ogImage = ogImageProp ?? pathOgImageUrl(ogUrl);
+const isHomePage = Astro.url.pathname === '/';
 
 const articleSchema =
   datePublished != null
@@ -178,5 +180,6 @@ await import('../styles/blog.css');
     <div class="site-content">
       <slot />
     </div>
+    {!isHomePage && <SiteFooter />}
   </body>
 </html>

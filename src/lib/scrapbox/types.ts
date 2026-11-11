@@ -35,9 +35,13 @@ export interface BuiltMemoPage {
   description: string;
   excerpt: string;
   cacheKey: string;
+  /** `[キーワード]` 用の本文なしページ（関連メモのみ） */
+  keywordStub?: boolean;
   outLinkSlugs: string[];
   backLinkSlugs: string[];
   twoHop: MemoTwoHopGroup[];
+  /** 本文からリンクになるキーワード（出現順・重複なし） */
+  linkedTargets: ResolvedMemoTarget[];
 }
 
 export interface BuiltMemoTagIndex {

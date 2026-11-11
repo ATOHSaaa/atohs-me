@@ -1,10 +1,36 @@
 import { extractLinkTargets } from './extract-links';
-import { buildMemoParseContext, type ResolvedMemoTarget } from './link-context';
+import {
+  buildMemoParseContext,
+  type MemoParseContext,
+  type ResolvedMemoTarget,
+} from './link-context';
 import { normalizeScrapboxKey } from './title-match';
 import { memoPagePath } from './slug';
 import type { BuiltMemoPage, MemoTwoHopGroup } from './types';
 
 type RawTarget = ReturnType<typeof extractLinkTargets>[number];
+
+/** サイドバー用: 本文内で実際にリンクになるキーワード（出現順） */
+export function collectLinkedSidebarTargets(
+  orderedTargets: RawTarget[],
+  ctx: MemoParseContext,
+): ResolvedMemoTarget[] {
+  const out: ResolvedMemoTarget[] = [];
+  const seen = new Set<string>();
+  for (const target of orderedTargets) {
+    const resolved = ctx.resolveTarget(target.display);
+    if (
+      (resolved.kind !== 'page' && resolved.kind !== 'tag') ||
+      !resolved.href ||
+      seen.has(resolved.key)
+    ) {
+      continue;
+    }
+    seen.add(resolved.key);
+    out.push(resolved);
+  }
+  return out;
+}
 
 export function computePageLinkSections(
   page: BuiltMemoPage,
@@ -78,14 +104,7 @@ function resolveTargetForSection(
       page,
     };
   }
-  if (target.source === 'hashtag') {
-    return ctx.resolveTarget(target.display);
-  }
-  return {
-    display: target.display,
-    key: target.key,
-    kind: 'missing',
-  };
+  return ctx.resolveTarget(target.display);
 }
 
 export type { RawTarget };
