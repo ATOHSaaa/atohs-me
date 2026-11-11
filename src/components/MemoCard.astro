@@ -1,0 +1,21 @@
+---
+import { memoPagePath } from '../lib/scrapbox/slug';
+import type { BuiltMemoPage } from '../lib/scrapbox/types';
+
+interface Props {
+  page: BuiltMemoPage;
+  compact?: boolean;
+}
+
+const { page, compact = false } = Astro.props;
+const href = memoPagePath(page.slug);
+---
+
+<div class:list={['item', 'memo-card', compact && 'memo-card--compact']}>
+  <a class="item-link memo-card-link" href={href}>
+    <div class="memo-card-inner">
+      <h3 class="memo-card-title">{page.title}</h3>
+      <p class="memo-card-excerpt">{page.excerpt}</p>
+    </div>
+  </a>
+</div>

@@ -1,0 +1,11 @@
+---
+description: 日本語 Markdown 本文の表記
+alwaysApply: true
+---
+
+# 日本語本文
+
+`src/content/` の日本語 Markdown 本文では、英数字の直後に和文が続くとき**欧文和文間の半角スペースは入れない**。
+
+- よい例: `Web制作` `2021年` `WordPressを` `SEOを`
+- 避ける: `Web 制作` `2021 年` `WordPress を`

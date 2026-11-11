@@ -3,30 +3,33 @@ import { getCollection, render } from 'astro:content';
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
-import ProfileBox from '../../components/ProfileBox.astro';
 import BlogToc from '../../components/BlogToc.astro';
-import BlogOtherPosts from '../../components/BlogOtherPosts.astro';
 import BlogPostTags from '../../components/BlogPostTags.astro';
+import BlogQuoteFootnotes from '../../components/BlogQuoteFootnotes.astro';
+import { extractFootnotesFromMarkdown } from '../../lib/blog-footnotes.js';
 import { createPostDescription } from '../../lib/post-description';
 import { extractBlogTocItems } from '../../lib/blog-toc';
-import { getOtherBlogPosts } from '../../lib/blog-posts';
 import { formatDate } from '../../lib/format-date';
+import { postHasTwitterEmbed } from '../../lib/blog-twitter-embed.js';
+import { OG_IMAGE_FILENAME } from '../../lib/og-image';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   return posts.map((post) => ({
     params: { slug: post.id },
     props: { post },
+    cacheKey: String(post.digest),
   }));
 }
 
 const { post } = Astro.props;
 const { Content } = await render(post);
 const postUrl = `https://atohs.me/blog/${post.id}`;
-const ogImage = `https://atohs.me/blog/${post.id}/og.png`;
+const ogImage = `https://atohs.me/blog/${post.id}/${OG_IMAGE_FILENAME}`;
 const description = createPostDescription(post.body ?? '');
 const tocItems = extractBlogTocItems(post.body ?? '');
-const otherPosts = await getOtherBlogPosts(post.id, 5);
+const hasTwitterEmbed = postHasTwitterEmbed(post.body);
+const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
 ---
 
 <BlogLayout
@@ -34,52 +37,86 @@ const otherPosts = await getOtherBlogPosts(post.id, 5);
   description={description}
   ogUrl={postUrl}
   ogImage={ogImage}
+  twitterEmbeds={hasTwitterEmbed}
 >
   <SiteHeader />
   <main id="main-content" class="main blog-main">
-    <article class="blog-post blog-layout">
+    <article class="blog-layout">
       <div class="blog-layout-intro">
         <nav class="breadcrumb" aria-label="パンくずリスト">
           <a href="/">Home</a><span class="breadcrumb-slash">/</span><a href="/blog">Blog</a><span
             class="breadcrumb-slash">/</span>
         </nav>
         <h1 class="blog-title">{post.data.title}</h1>
-        <p class="blog-meta">
-          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-        </p>
+        <div class="blog-intro-meta">
+          {
+            post.data.tags.length > 0 && (
+              <div class="blog-intro-tags">
+                <BlogPostTags tags={post.data.tags} />
+              </div>
+            )
+          }
+          <p class="blog-meta">
+            <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          </p>
+        </div>
       </div>
       <div class="blog-layout-share-rail">
         <ShareButtons url={postUrl} title={post.data.title} />
       </div>
       <div class="blog-body">
-        {
-          post.data.tags.length > 0 && (
-            <div class="blog-body-tags">
-              <BlogPostTags tags={post.data.tags} />
-            </div>
-          )
-        }
         <Content />
       </div>
       <aside class="blog-sidebar" aria-label="サイドバー">
-        <ProfileBox />
         <BlogToc items={tocItems} />
       </aside>
       <div class="blog-layout-footer">
-        <ShareButtons url={postUrl} title={post.data.title} />
-        <div class="blog-layout-footer-profile">
-          <ProfileBox />
-          <BlogOtherPosts posts={otherPosts} />
-        </div>
+        <BlogQuoteFootnotes sources={footnotes} />
       </div>
     </article>
     <div class="blog-share-float" aria-label="記事をシェア">
       <ShareButtons url={postUrl} title={post.data.title} />
     </div>
-    <script
-      is:inline
-      async
-      src="https://platform.twitter.com/widgets.js"
-      charset="utf-8"></script>
+    {
+      hasTwitterEmbed && (
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" />
+      )
+    }
+    <script>
+      (function initBlogShareFloat() {
+        const float = document.querySelector('.blog-share-float');
+        const footer = document.querySelector('.blog-layout-footer');
+        if (!float || !footer) return;
+
+        const mobileQuery = window.matchMedia('(max-width: 720px)');
+        /** @type {IntersectionObserver | undefined} */
+        let observer;
+
+        function apply() {
+          observer?.disconnect();
+          observer = undefined;
+          float.classList.remove('blog-share-float--receded');
+
+          if (!mobileQuery.matches) return;
+
+          observer = new IntersectionObserver(
+            (entries) => {
+              const entry = entries[0];
+              if (!entry) return;
+              float.classList.toggle('blog-share-float--receded', entry.isIntersecting);
+            },
+            {
+              root: null,
+              rootMargin: '0px 0px 80px 0px',
+              threshold: 0,
+            },
+          );
+          observer.observe(footer);
+        }
+
+        apply();
+        mobileQuery.addEventListener('change', apply);
+      })();
+    </script>
   </main>
 </BlogLayout>

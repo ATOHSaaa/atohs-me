@@ -1,7 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import { skillCategories, getSkillsByCategory } from '../../lib/skills';
+import {
+  SKILLS_SECTION_PUBLISHED,
+  skillCategories,
+  getSkillsByCategory,
+} from '../../lib/skills';
+
+export const prerender = SKILLS_SECTION_PUBLISHED;
 ---
 
 <BaseLayout
@@ -10,11 +16,11 @@ import { skillCategories, getSkillsByCategory } from '../../lib/skills';
   ogUrl="https://atohs.me/skills"
 >
   <SiteHeader />
-  <main id="main-content" class="main skills">
+  <main id="main-content" class="main">
     <nav class="breadcrumb" aria-label="パンくずリスト">
       <a href="/">Home</a><span class="breadcrumb-slash">/</span>
     </nav>
-    <h1 class="blog-title">Skills</h1>
+    <h1 class="page-title">Skills</h1>
 
     {
       skillCategories.map((category) => (

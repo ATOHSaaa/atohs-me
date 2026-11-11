@@ -1,5 +1,4 @@
 ---
-import ArchiveSummaryGuard from './ArchiveSummaryGuard.astro';
 import CareerArchiveList from './CareerArchiveList.astro';
 import type { CareerSection } from '../lib/career-tree';
 import { inlineMarkdownToHtml } from '../lib/career-tree';
@@ -11,11 +10,11 @@ interface Props {
 const { sections } = Astro.props;
 ---
 
-<div class="blog-archive blog-archive-tree career-archive-tree">
+<div class="blog-archive-tree career-archive-tree">
   {
     sections.map((section) => (
       <details class="blog-archive-node blog-archive-node--year" open>
-        <summary class="blog-archive-toggle archive-summary" aria-label={`${section.title}を開閉`}>
+        <summary class="blog-archive-toggle" aria-label={`${section.title}を開閉`}>
           <span class="blog-archive-chevron" aria-hidden="true" />
           <span class="blog-archive-label blog-archive-label--year">{section.title}</span>
         </summary>
@@ -36,7 +35,7 @@ const { sections } = Astro.props;
           {
             section.subsections.map((subsection) => (
               <details class="blog-archive-node blog-archive-node--month" open>
-                <summary class="blog-archive-toggle archive-summary" aria-label={`${subsection.title}を開閉`}>
+                <summary class="blog-archive-toggle" aria-label={`${subsection.title}を開閉`}>
                   <span class="blog-archive-chevron" aria-hidden="true" />
                   <span
                     class="blog-archive-label blog-archive-label--month career-archive-label--month"
@@ -57,4 +56,17 @@ const { sections } = Astro.props;
   }
 </div>
 
-<ArchiveSummaryGuard />
+<script>
+  function initCareerArchiveSummaryLinks() {
+    document
+      .querySelectorAll('.career-archive-tree .blog-archive-label a')
+      .forEach((link) => {
+        if (link.dataset.bound === 'true') return;
+        link.dataset.bound = 'true';
+        link.addEventListener('click', (event) => event.stopPropagation());
+      });
+  }
+
+  initCareerArchiveSummaryLinks();
+  document.addEventListener('astro:page-load', initCareerArchiveSummaryLinks);
+</script>

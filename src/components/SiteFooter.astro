@@ -1,27 +1,25 @@
 ---
-import Icon from './Icon.astro';
+import SiteTwitterLink from './SiteTwitterLink.astro';
+import SiteYondaLink from './SiteYondaLink.astro';
 
 const pathname = Astro.url.pathname;
 const isBlog = pathname === '/blog' || pathname.startsWith('/blog/');
 const isWorks = pathname === '/works' || pathname.startsWith('/works/');
 const isContact = pathname === '/contact';
+const isKeywords = pathname === '/keywords' || pathname.startsWith('/keywords/');
+const isResume = pathname === '/resume';
 ---
 
 <footer class="footer-top">
   <div class="footer-inner">
     <nav class="footer-links" aria-label="フッターメニュー">
       <a class="footer-link" href="/blog" aria-current={isBlog ? 'page' : undefined}>Blog</a>
+      <a class="footer-link" href="/resume" aria-current={isResume ? 'page' : undefined}>Resume</a>
       <a class="footer-link" href="/works" aria-current={isWorks ? 'page' : undefined}>Works</a>
+      <a class="footer-link" href="/keywords" aria-current={isKeywords ? 'page' : undefined}>Keywords</a>
       <a class="footer-link" href="/contact" aria-current={isContact ? 'page' : undefined}>Contact</a>
-      <a
-        class="footer-link footer-social"
-        href="https://twitter.com/atohsaaa"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Twitter @atohsaaa（新しいタブで開く）"
-      >
-        <Icon name="twitter" />
-      </a>
+      <SiteYondaLink variant="footer" />
+      <SiteTwitterLink variant="footer" />
     </nav>
   </div>
 </footer>

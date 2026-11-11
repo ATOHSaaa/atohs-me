@@ -1,0 +1,93 @@
+---
+import BlogStatsHeatmap from './BlogStatsHeatmap.astro';
+import { buildBlogCalendarYears } from '../lib/blog-stats';
+import type { BlogPostEntry } from '../lib/blog-posts';
+
+interface Props {
+  posts: BlogPostEntry[];
+  now?: Date;
+}
+
+const { posts, now = new Date() } = Astro.props;
+const years = buildBlogCalendarYears(posts, now);
+const initialIndex = years.length - 1;
+---
+
+<section class="blog-stats-section blog-stats-year-calendar" aria-labelledby="blog-stats-heatmap-heading-all">
+  <div class="blog-stats-cal-toolbar">
+    <h2 id="blog-stats-heatmap-heading-all" class="blog-stats-heading">公開カレンダー</h2>
+    <div class="blog-stats-cal-nav">
+      <button
+        type="button"
+        class="blog-stats-cal-arrow"
+        data-cal-prev
+        aria-label="前の年"
+        disabled={years.length <= 1}
+      >
+        ‹
+      </button>
+      <span class="blog-stats-cal-label" data-cal-label>{years[initialIndex]?.label}</span>
+      <button type="button" class="blog-stats-cal-arrow" data-cal-next aria-label="次の年" disabled>
+        ›
+      </button>
+    </div>
+  </div>
+  {
+    years.map((item, index) => (
+      <div
+        class="blog-stats-cal-panel"
+        data-cal-panel
+        data-cal-label={item.label}
+        hidden={index !== initialIndex}
+      >
+        <BlogStatsHeatmap
+          stats={item.stats}
+          idSuffix={`-all-${item.year}`}
+          showHeading={false}
+        />
+      </div>
+    ))
+  }
+
+<script>
+  function initBlogStatsYearCalendar() {
+    const root = document.querySelector('.blog-stats-year-calendar');
+    if (!root || root.dataset.bound === 'true') return;
+    root.dataset.bound = 'true';
+
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-cal-panel]')];
+    const label = root.querySelector<HTMLElement>('[data-cal-label]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-cal-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-cal-next]');
+    let index = panels.length - 1;
+
+    const render = () => {
+      panels.forEach((panel, panelIndex) => {
+        panel.hidden = panelIndex !== index;
+      });
+      const current = panels[index];
+      if (label && current?.dataset.calLabel) {
+        label.textContent = current.dataset.calLabel;
+      }
+      if (prev) prev.disabled = index <= 0;
+      if (next) next.disabled = index >= panels.length - 1;
+    };
+
+    prev?.addEventListener('click', () => {
+      if (index <= 0) return;
+      index -= 1;
+      render();
+    });
+    next?.addEventListener('click', () => {
+      if (index >= panels.length - 1) return;
+      index += 1;
+      render();
+    });
+
+    render();
+  }
+
+  initBlogStatsYearCalendar();
+  document.addEventListener('astro:page-load', initBlogStatsYearCalendar);
+</script>
+</section>

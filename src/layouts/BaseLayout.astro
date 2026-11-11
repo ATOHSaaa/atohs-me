@@ -1,8 +1,8 @@
 ---
 import { getImage } from 'astro:assets';
-import SiteFooter from '../components/SiteFooter.astro';
+import { canonicalUrl } from '../lib/canonical-url';
+import { pathOgImageUrl } from '../lib/path-og';
 import { SITE_FAVICON_SRC, siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
-
 const siteLogoPreload = await getImage({
   src: siteLogo,
   format: 'webp',
@@ -16,30 +16,99 @@ interface Props {
   ogUrl?: string;
   ogImage?: string;
   ogSiteName?: string;
-  /** false のときグローバル CSS を読み込まない（BlogLayout が blog-layout.css を読む） */
-  includeSiteStyles?: boolean;
+  /** 記事内 X 埋め込み用（preconnect のみ。widgets.js はページ側で読み込む） */
+  twitterEmbeds?: boolean;
+  /** メモなど検索避けページ用 */
+  robotsNoindex?: boolean;
+  /** ISO 8601（article メタ・JSON-LD 用） */
+  datePublished?: string;
+  dateModified?: string;
+  /** JSON-LD の headline（省略時は title） */
+  schemaHeadline?: string;
 }
 
 const {
   title,
   description = 'atohs(あとーす)のポートフォリオサイトです。メディア運営、執筆・編集、文字起こし、写真撮影、校正などを行っています。',
-  ogUrl = 'https://atohs.me',
-  ogImage = 'https://atohs.me/src/ogp.png',
+  ogUrl: ogUrlProp = 'https://atohs.me/',
+  ogImage: ogImageProp,
   ogSiteName = 'atohs.me',
-  includeSiteStyles = true,
+  twitterEmbeds = false,
+  robotsNoindex = false,
+  datePublished,
+  dateModified,
+  schemaHeadline,
 } = Astro.props;
+
+const ogUrl = canonicalUrl(ogUrlProp);
+const ogImage = ogImageProp ?? pathOgImageUrl(ogUrl);
+
+const articleSchema =
+  datePublished != null
+    ? JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: schemaHeadline ?? title,
+        datePublished,
+        dateModified: dateModified ?? datePublished,
+        mainEntityOfPage: { '@type': 'WebPage', '@id': ogUrl },
+      })
+    : null;
+
+await import('../styles/main.css');
+await import('../styles/blog.css');
 ---
 
 <!doctype html>
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
+    <script is:inline>
+      (function () {
+        const key = 'atohs-theme';
+        const stored = localStorage.getItem(key);
+        const theme =
+          stored === 'dark' || stored === 'light'
+            ? stored
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+        document.documentElement.dataset.theme = theme;
+
+        const contrastKey = 'atohs-contrast';
+        const contrastRaw = localStorage.getItem(contrastKey);
+        const contrastParsed = contrastRaw ? parseInt(contrastRaw, 10) : 100;
+        const contrast =
+          contrastParsed >= 75 && contrastParsed <= 125 ? contrastParsed : 100;
+        document.documentElement.style.setProperty(
+          '--contrast-level',
+          String(contrast),
+        );
+        if (contrast >= 100) {
+          const towardHigh = (contrast - 100) / 25;
+          document.documentElement.style.setProperty(
+            '--contrast-toward-high',
+            String(towardHigh),
+          );
+          document.documentElement.style.setProperty('--contrast-toward-low', '0');
+        } else if (contrast < 100) {
+          const towardLow = (100 - contrast) / 25;
+          document.documentElement.style.setProperty(
+            '--contrast-toward-low',
+            String(towardLow),
+          );
+          document.documentElement.style.setProperty('--contrast-toward-high', '0');
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="format-detection" content="telephone=no" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {robotsNoindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={ogUrl} />
 
     <meta property="og:url" content={ogUrl} />
     <meta property="og:type" content="website" />
@@ -50,6 +119,21 @@ const {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@atohsaaa" />
     <meta name="twitter:image" content={ogImage} />
+    {
+      datePublished != null && (
+        <meta property="article:published_time" content={datePublished} />
+      )
+    }
+    {
+      dateModified != null && (
+        <meta property="article:modified_time" content={dateModified} />
+      )
+    }
+  {
+      articleSchema != null && (
+        <script type="application/ld+json" set:html={articleSchema} />
+      )
+    }
 
     <link rel="icon" href={SITE_FAVICON_SRC} />
     <link
@@ -59,7 +143,14 @@ const {
       type="image/webp"
       fetchpriority="high"
     />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3S8S7JGPEZ"></script>
+    {
+      twitterEmbeds && (
+        <>
+          <link rel="preconnect" href="https://syndication.twitter.com" />
+          <link rel="preconnect" href="https://platform.twitter.com" />
+        </>
+      )
+    }
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
@@ -67,6 +158,19 @@ const {
       }
       gtag('js', new Date());
       gtag('config', 'G-3S8S7JGPEZ');
+
+      function loadGtag() {
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-3S8S7JGPEZ';
+        document.head.appendChild(script);
+      }
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadGtag, { timeout: 3500 });
+      } else {
+        window.addEventListener('load', loadGtag, { once: true });
+      }
     </script>
   </head>
   <body class="site">
@@ -74,12 +178,5 @@ const {
     <div class="site-content">
       <slot />
     </div>
-    <SiteFooter />
   </body>
 </html>
-
-{includeSiteStyles ? (
-  <style is:global>
-    @import '../styles/core.css';
-  </style>
-) : null}

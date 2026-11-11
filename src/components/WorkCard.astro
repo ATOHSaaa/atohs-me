@@ -7,11 +7,10 @@ interface Props {
   description: string;
   href: string;
   image?: ImageMetadata;
-  imagePublic?: string;
   external?: boolean;
 }
 
-const { title, description, href, image, imagePublic, external = false } = Astro.props;
+const { title, description, href, image, external = false } = Astro.props;
 ---
 
 <div class="item">
@@ -26,18 +25,11 @@ const { title, description, href, image, imagePublic, external = false } = Astro
         <Image
           src={image}
           alt=""
-          widths={[360, 720]}
-          sizes="(max-width: 720px) 90vw, min(33vw, 220px)"
+          width={720}
+          widths={[240, 360, 480, 720]}
+          sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 899px) 352px, (max-width: 1079px) 229px, 168px"
           format="webp"
-          loading="lazy"
-          decoding="async"
-        />
-      ) : imagePublic ? (
-        <img
-          src={imagePublic}
-          alt=""
-          width="346"
-          height="195"
+          quality={80}
           loading="lazy"
           decoding="async"
         />

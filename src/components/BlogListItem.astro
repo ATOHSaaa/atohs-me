@@ -4,12 +4,29 @@ import { formatDate } from '../lib/format-date';
 
 interface Props {
   post: BlogPostEntry;
+  showNew?: boolean;
+  /** トップの直近一覧用（日付列の subgrid を揃える） */
+  homeRecentList?: boolean;
 }
 
-const { post } = Astro.props;
+const { post, showNew = false, homeRecentList = false } = Astro.props;
+const dateLabel = formatDate(post.data.pubDate);
 ---
 
-<li class="blog-list-item">
-  <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-  <a href={`/blog/${post.id}`}>{post.data.title}</a>
+<li
+  class:list={['blog-list-item', homeRecentList && 'blog-list-item--relative-date']}
+>
+  {showNew && <span class="blog-list-new" aria-hidden="true">NEW</span>}
+  {
+    homeRecentList ? (
+      <time class="blog-list-date" datetime={post.data.pubDate.toISOString()}>
+        {dateLabel}
+      </time>
+    ) : (
+      <time datetime={post.data.pubDate.toISOString()}>{dateLabel}</time>
+    )
+  }
+  <span class="blog-list-title-wrap">
+    <a href={`/blog/${post.id}`}>{post.data.title}</a>
+  </span>
 </li>

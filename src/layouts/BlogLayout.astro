@@ -7,15 +7,12 @@ interface Props {
   ogUrl?: string;
   ogImage?: string;
   ogSiteName?: string;
+  twitterEmbeds?: boolean;
 }
 
 const props = Astro.props;
 ---
 
-<BaseLayout {...props} includeSiteStyles={false}>
+<BaseLayout {...props}>
   <slot />
 </BaseLayout>
-
-<style is:global>
-  @import '../styles/blog-layout.css';
-</style>

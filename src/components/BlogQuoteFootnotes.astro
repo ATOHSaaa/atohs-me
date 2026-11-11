@@ -1,0 +1,29 @@
+---
+interface Props {
+  sources: string[];
+}
+
+const { sources } = Astro.props;
+if (sources.length === 0) {
+  return null;
+}
+---
+
+<section class="quote-footnotes" aria-label="脚注">
+  <ol class="quote-footnotes-list">
+    {
+      sources.map((text, index) => (
+        <li id={`quote-footnote-${index + 1}`} class="quote-footnotes-item">
+          <a
+            href={`#quote-ref-${index + 1}`}
+            class="quote-footnotes-mark-link"
+            aria-label={`本文の脚注 ${index + 1} へ`}
+          >
+            <span class="quote-footnotes-mark">{index + 1}.</span>
+          </a>
+          <span class="quote-footnotes-text">{text}</span>
+        </li>
+      ))
+    }
+  </ol>
+</section>

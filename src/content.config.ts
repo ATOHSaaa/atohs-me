@@ -19,6 +19,8 @@ const blog = defineCollection({
       .default([])
       .transform(parseBlogTags),
     draft: z.boolean().default(false),
+    /** OGP ヒーロー画像（省略時は本文の最初の画像。`false` でテキストのみ） */
+    ogImage: z.union([z.string(), z.literal(false)]).optional(),
   }),
 });
 
@@ -40,4 +42,23 @@ const keywords = defineCollection({
   }),
 });
 
-export const collections = { blog, career, keywords };
+const about = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/about' }),
+  schema: z.object({
+    title: z.string().default('About'),
+  }),
+});
+
+/** Scrapbox 記法の本文（行頭インデント・`[...]`・`#tag`）をそのまま保持 */
+const memo = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/memo' }),
+  schema: z.object({
+    /** 省略時はファイル名（拡張子なし） */
+    title: z.string().optional(),
+    created: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog, career, keywords, about, memo };
