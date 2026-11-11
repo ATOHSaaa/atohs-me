@@ -8,13 +8,20 @@ import {
   getBlogPostsByTag,
   getBlogTagsWithCounts,
 } from '../../../lib/blog-tags';
+import { blogTagPageCacheKey } from '../../../lib/incremental-cache-key';
 
 export async function getStaticPaths() {
   const tagEntries = await getBlogTagsWithCounts();
-  return tagEntries.map(({ tag }) => ({
-    params: { slug: blogTagSlug(tag) },
-    props: { tag },
-  }));
+  return Promise.all(
+    tagEntries.map(async ({ tag }) => {
+      const posts = await getBlogPostsByTag(tag);
+      return {
+        params: { slug: blogTagSlug(tag) },
+        props: { tag },
+        cacheKey: blogTagPageCacheKey(posts),
+      };
+    }),
+  );
 }
 
 interface Props {
@@ -23,7 +30,7 @@ interface Props {
 
 const { tag } = Astro.props;
 const posts = await getBlogPostsByTag(tag);
-const pageHeading = `タグ「${tag}」の記事一覧`;
+const pageHeading = `「${tag}」タグがついている記事一覧`;
 const ogUrl = `https://atohs.me${blogTagHref(tag)}`;
 ---
 
@@ -33,7 +40,7 @@ const ogUrl = `https://atohs.me${blogTagHref(tag)}`;
   ogUrl={ogUrl}
 >
   <SiteHeader />
-  <main id="main-content" class="main">
+  <main id="main-content" class="main main--blog-tags">
     <nav class="breadcrumb" aria-label="パンくずリスト">
       <a href="/">Home</a><span class="breadcrumb-slash">/</span><a href="/blog">Blog</a><span
         class="breadcrumb-slash">/</span><a href="/blog/tags">Tags</a><span class="breadcrumb-slash">/</span>

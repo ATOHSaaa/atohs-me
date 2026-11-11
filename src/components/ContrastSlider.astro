@@ -1,0 +1,74 @@
+---
+/** ヘッダー用のコントラスト調整 */
+---
+
+<div class="contrast-control">
+  <div class="contrast-slider-wrap">
+    <input
+      type="range"
+      id="contrast-slider"
+      class="contrast-slider"
+      data-contrast-slider
+      min="75"
+      max="125"
+      step="5"
+      value="100"
+      aria-label="コントラスト"
+      aria-valuemin="75"
+      aria-valuemax="125"
+      aria-valuenow="100"
+      aria-valuetext="標準"
+    />
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    const key = 'atohs-contrast';
+    const raw = localStorage.getItem(key);
+    const parsed = raw ? parseInt(raw, 10) : NaN;
+    const value = parsed >= 75 && parsed <= 125 ? parsed : 100;
+    const slider = document.getElementById('contrast-slider');
+    if (slider instanceof HTMLInputElement) {
+      slider.value = String(value);
+    }
+  })();
+</script>
+
+<script>
+  import {
+    applyContrastPreference,
+    CONTRAST_DEFAULT,
+    readStoredContrast,
+    setContrastPreference,
+  } from '../lib/contrast-preference';
+
+  function syncContrastSliderUi() {
+    const value = readStoredContrast();
+    document.querySelectorAll<HTMLInputElement>('[data-contrast-slider]').forEach((input) => {
+      input.value = String(value);
+      input.setAttribute('aria-valuenow', String(value));
+      input.setAttribute(
+        'aria-valuetext',
+        value === CONTRAST_DEFAULT ? '標準' : `${value}%`,
+      );
+    });
+  }
+
+  function initContrastSlider() {
+    applyContrastPreference(readStoredContrast());
+    syncContrastSliderUi();
+
+    document.querySelectorAll<HTMLInputElement>('[data-contrast-slider]').forEach((input) => {
+      if (input.dataset.bound === 'true') return;
+      input.dataset.bound = 'true';
+      input.addEventListener('input', () => {
+        setContrastPreference(parseInt(input.value, 10));
+        syncContrastSliderUi();
+      });
+    });
+  }
+
+  initContrastSlider();
+  document.addEventListener('astro:page-load', initContrastSlider);
+</script>

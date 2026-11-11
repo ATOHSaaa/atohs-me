@@ -1,0 +1,68 @@
+---
+import MemoCard from './MemoCard.astro';
+import MemoTargetHeading from './MemoTargetHeading.astro';
+import type { BuiltMemoPage } from '../lib/scrapbox/types';
+import { getPagesForSlugs } from '../lib/scrapbox/load-memos';
+import type { MemoBuildResult } from '../lib/scrapbox/types';
+
+interface Props {
+  page: BuiltMemoPage;
+  build: Pick<MemoBuildResult, 'pages'>;
+}
+
+const { page, build } = Astro.props;
+const memoResult = { pages: build.pages } as MemoBuildResult;
+const outLinks = getPagesForSlugs(memoResult, page.outLinkSlugs);
+const backLinks = getPagesForSlugs(memoResult, page.backLinkSlugs);
+
+const hopGroups = page.twoHop.map((group) => ({
+  target: group.target,
+  pages: getPagesForSlugs(memoResult, group.pageSlugs),
+}));
+---
+
+{
+  outLinks.length > 0 ||
+  backLinks.length > 0 ||
+  hopGroups.some((g) => g.pages.length > 0) ? (
+    <section class="memo-links" aria-labelledby="memo-links-title">
+      <h2 id="memo-links-title" class="memo-links-title">関連ページ</h2>
+
+      {outLinks.length > 0 && (
+        <div class="memo-links-block">
+          <h3 class="memo-links-subtitle">リンク</h3>
+          <div class="container memo-card-grid memo-card-grid--related">
+            {outLinks.map((linked) => (
+              <MemoCard page={linked} compact />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {backLinks.length > 0 && (
+        <div class="memo-links-block">
+          <h3 class="memo-links-subtitle">バックリンク</h3>
+          <div class="container memo-card-grid memo-card-grid--related">
+            {backLinks.map((linked) => (
+              <MemoCard page={linked} compact />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {hopGroups.map(
+        (group) =>
+          group.pages.length > 0 && (
+            <div class="memo-links-block memo-hop-group">
+              <MemoTargetHeading target={group.target} />
+              <div class="container memo-card-grid memo-card-grid--related">
+                {group.pages.map((linked) => (
+                  <MemoCard page={linked} compact />
+                ))}
+              </div>
+            </div>
+          ),
+      )}
+    </section>
+  ) : null
+}

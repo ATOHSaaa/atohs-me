@@ -12,7 +12,7 @@ const tagEntries = await getBlogTagsWithCounts();
   ogUrl="https://atohs.me/blog/tags"
 >
   <SiteHeader />
-  <main id="main-content" class="main">
+  <main id="main-content" class="main main--blog-tags">
     <nav class="breadcrumb" aria-label="パンくずリスト">
       <a href="/">Home</a><span class="breadcrumb-slash">/</span><a href="/blog">Blog</a><span
         class="breadcrumb-slash">/</span>
@@ -26,8 +26,10 @@ const tagEntries = await getBlogTagsWithCounts();
         <ul class="blog-tag-index">
           {tagEntries.map(({ tag, count }) => (
             <li class="blog-tag-index-item">
-              <a class="blog-tag" href={blogTagHref(tag)}>#{tag}</a>
-              <span class="blog-tag-index-count">{count}件</span>
+              <a class="blog-tag" href={blogTagHref(tag)}>
+                #{tag}
+                <span class="blog-tag-index-count">{count}件</span>
+              </a>
             </li>
           ))}
         </ul>

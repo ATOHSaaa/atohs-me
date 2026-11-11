@@ -1,12 +1,15 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import { skills } from '../../lib/skills';
+import { SKILLS_SECTION_PUBLISHED, skills } from '../../lib/skills';
+import { skillPageCacheKey } from '../../lib/incremental-cache-key';
 
 export function getStaticPaths() {
+  if (!SKILLS_SECTION_PUBLISHED) return [];
   return skills.map((skill) => ({
     params: { slug: skill.slug },
     props: { skill },
+    cacheKey: skillPageCacheKey(skill),
   }));
 }
 
@@ -24,6 +27,6 @@ const { skill } = Astro.props;
       <a href="/">Home</a><span class="breadcrumb-slash">/</span>
       <a href="/skills">Skills</a><span class="breadcrumb-slash">/</span>
     </nav>
-    <h1 class="blog-title">{skill.label}</h1>
+    <h1 class="page-title">{skill.label}</h1>
   </main>
 </BaseLayout>
