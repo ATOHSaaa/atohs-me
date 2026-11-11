@@ -17,6 +17,11 @@ if (!existsSync(DIST)) {
   process.exit(1);
 }
 
+/** dist 上のディレクトリ名 → URL パス（セグメントごとに encodeURIComponent） */
+function urlPathFromSegments(segments) {
+  return segments.map((s) => encodeURIComponent(s)).join('/');
+}
+
 /** @param {string} dir @param {string[]} segments */
 function collectTrailingSlash301(dir, segments = []) {
   /** @type {string[]} */
@@ -37,7 +42,7 @@ function collectTrailingSlash301(dir, segments = []) {
       continue;
     }
 
-    const path = [...segments, ent.name].join('/');
+    const path = urlPathFromSegments([...segments, ent.name]);
     lines.push(`/${path} /${path}/ 301`);
     lines.push(...collectTrailingSlash301(full, [...segments, ent.name]));
   }
