@@ -1,0 +1,64 @@
+---
+import '../../../styles/memo.css';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import MemoCard from '../../../components/MemoCard.astro';
+import {
+  getMemoTagBySlug,
+  getPagesForSlugs,
+  loadMemosForBuild,
+  memoTagPath,
+} from '../../../lib/scrapbox/load-memos';
+import { isMemoDailyTitle } from '../../../lib/scrapbox/slug';
+import { MEMO_OG_IMAGE_URL } from '../../../lib/memo-og';
+
+export async function getStaticPaths() {
+  const result = await loadMemosForBuild();
+  return result.tags.map((tag) => ({
+    params: { tag: tag.slug },
+    props: {
+      tag,
+      pages: getPagesForSlugs(result, tag.pageSlugs),
+    },
+    cacheKey: tag.cacheKey,
+  }));
+}
+
+const { tag, pages: tagPages } = Astro.props;
+const pages = tagPages.filter((page) => isMemoDailyTitle(page.title));
+const pageUrl = new URL(memoTagPath(tag.tag), 'https://atohs.me').href;
+const tagDescription =
+  pages[0]?.excerpt != null
+    ? `タグ #${tag.tag} のメモ: ${pages[0].excerpt}`
+    : `タグ #${tag.tag} が付いたメモ一覧です。`;
+---
+
+<BaseLayout
+  title={`#${tag.tag} | Memo | atohs.me`}
+  description={tagDescription}
+  ogUrl={pageUrl}
+  ogImage={MEMO_OG_IMAGE_URL}
+>
+  <SiteHeader />
+  <main id="main-content" class="main main--memo-index">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+      <a href="/memo/">Memo</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="blog-title">#{tag.tag}</h1>
+    <p class="memo-index-lead">
+      同名のメモページがないタグについて、そのタグを含む公開メモを一覧します。
+    </p>
+    {
+      pages.length === 0 ? (
+        <p>表示できるメモはありません。</p>
+      ) : (
+        <div class="container memo-index-grid">
+          {pages.map((page) => (
+            <MemoCard page={page} />
+          ))}
+        </div>
+      )
+    }
+  </main>
+</BaseLayout>

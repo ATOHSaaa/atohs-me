@@ -2,27 +2,45 @@
   "name": "atohs-me",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=22.23.4"
+  },
   "scripts": {
     "dev": "astro dev",
     "dev:reset": "node scripts/reset-astro-dev.mjs && npm run dev",
-    "predev": "node scripts/ensure-og-font.mjs && node scripts/generate-favicon.mjs && node scripts/update-link-card-ogp.mjs && node scripts/split-site-css.mjs",
-    "prebuild": "node scripts/ensure-og-font.mjs && node scripts/generate-favicon.mjs && node scripts/update-link-card-ogp.mjs && node scripts/split-site-css.mjs",
-    "build": "astro build",
+    "build": "node scripts/ensure-indexnow-key-file.mjs && astro build && node scripts/generate-cloudflare-redirects.mjs",
     "preview": "astro preview",
     "ensure-og-font": "node scripts/ensure-og-font.mjs",
-    "sync:hanoi-clicker": "node scripts/sync-hanoi-clicker.mjs"
+    "favicon:generate": "node scripts/generate-favicon.mjs --force",
+    "og:generate": "tsx scripts/generate-blog-og-images.ts",
+    "og:generate:force": "tsx scripts/generate-blog-og-images.ts --force",
+    "link-card-ogp:refresh": "node scripts/update-link-card-ogp.mjs --force",
+    "sync:hanoi-clicker": "node scripts/sync-hanoi-clicker.mjs",
+    "memo:sync": "tsx scripts/sync-memo-from-scrapbox.ts",
+    "memo:og:generate": "tsx scripts/generate-memo-og-image.ts",
+    "home:og:generate": "tsx scripts/generate-home-og-image.ts",
+    "path:og:generate": "tsx scripts/generate-path-og-images.ts",
+    "path:og:generate:force": "tsx scripts/generate-path-og-images.ts --force",
+    "indexnow:submit": "node scripts/indexnow-submit.mjs",
+    "indexnow:memo": "node scripts/indexnow-submit.mjs --memo",
+    "deploy:cf": "bash scripts/deploy-cf.sh",
+    "deploy:cf:dry-run": "bash scripts/deploy-cf.sh --dry-run --outdir=.wrangler-dry-run",
+    "ship": "bash scripts/ship.sh"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/markdown-remark": "^7.3.5",
+    "@astrojs/sitemap": "^3.7.4",
     "@fortawesome/fontawesome-svg-core": "^7.3.1",
     "@fortawesome/free-brands-svg-icons": "^7.3.1",
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^5.7.10",
+    "astro": "^7.4.4",
     "rehype-slug": "^6.0.0",
-    "satori": "^0.28.0"
+    "satori": "^0.63.2"
   },
   "devDependencies": {
-    "to-ico": "^1.1.5"
+    "to-ico": "^1.1.5",
+    "tsx": "^4.23.15",
+    "wrangler": "^4.155.0"
   }
 }

@@ -18,7 +18,7 @@ https://x.com/nagino_kanata/status/2079361510833631509?s=20
 
 なお、ツイートを拝見してからツールの公開まで23分だったようです
 
-![着想ツイートからYobikata公開までのタイムライン](./publish-web-tool-in-23-minutes/timeline.png)
+![着想ツイートからYobikata公開までのタイムライン](./img/publish-web-tool-in-23-minutes-timeline.png)
 
 僕がやった作業は、だいたい以下のような感じです。
 

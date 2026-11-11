@@ -1,5 +1,7 @@
 ---
 import { getImage } from 'astro:assets';
+import { canonicalUrl } from '../lib/canonical-url';
+import { pathOgImageUrl } from '../lib/path-og';
 import { SITE_FAVICON_SRC, siteLogo, SITE_LOGO_DISPLAY_SIZE } from '../lib/site-logo';
 const siteLogoPreload = await getImage({
   src: siteLogo,
@@ -14,27 +16,47 @@ interface Props {
   ogUrl?: string;
   ogImage?: string;
   ogSiteName?: string;
-  /** ブログは blog-layout（core 込み）。それ以外は core のみ */
-  stylesheet?: 'core' | 'blog-layout';
   /** 記事内 X 埋め込み用（preconnect のみ。widgets.js はページ側で読み込む） */
   twitterEmbeds?: boolean;
+  /** メモなど検索避けページ用 */
+  robotsNoindex?: boolean;
+  /** ISO 8601（article メタ・JSON-LD 用） */
+  datePublished?: string;
+  dateModified?: string;
+  /** JSON-LD の headline（省略時は title） */
+  schemaHeadline?: string;
 }
 
 const {
   title,
   description = 'atohs(あとーす)のポートフォリオサイトです。メディア運営、執筆・編集、文字起こし、写真撮影、校正などを行っています。',
-  ogUrl = 'https://atohs.me',
-  ogImage = 'https://atohs.me/src/ogp.png',
+  ogUrl: ogUrlProp = 'https://atohs.me/',
+  ogImage: ogImageProp,
   ogSiteName = 'atohs.me',
-  stylesheet = 'core',
   twitterEmbeds = false,
+  robotsNoindex = false,
+  datePublished,
+  dateModified,
+  schemaHeadline,
 } = Astro.props;
 
-if (stylesheet === 'blog-layout') {
-  await import('../styles/blog-layout.css');
-} else {
-  await import('../styles/core.css');
-}
+const ogUrl = canonicalUrl(ogUrlProp);
+const ogImage = ogImageProp ?? pathOgImageUrl(ogUrl);
+
+const articleSchema =
+  datePublished != null
+    ? JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: schemaHeadline ?? title,
+        datePublished,
+        dateModified: dateModified ?? datePublished,
+        mainEntityOfPage: { '@type': 'WebPage', '@id': ogUrl },
+      })
+    : null;
+
+await import('../styles/main.css');
+await import('../styles/blog.css');
 ---
 
 <!doctype html>
@@ -52,6 +74,31 @@ if (stylesheet === 'blog-layout') {
               ? 'dark'
               : 'light';
         document.documentElement.dataset.theme = theme;
+
+        const contrastKey = 'atohs-contrast';
+        const contrastRaw = localStorage.getItem(contrastKey);
+        const contrastParsed = contrastRaw ? parseInt(contrastRaw, 10) : 100;
+        const contrast =
+          contrastParsed >= 75 && contrastParsed <= 125 ? contrastParsed : 100;
+        document.documentElement.style.setProperty(
+          '--contrast-level',
+          String(contrast),
+        );
+        if (contrast >= 100) {
+          const towardHigh = (contrast - 100) / 25;
+          document.documentElement.style.setProperty(
+            '--contrast-toward-high',
+            String(towardHigh),
+          );
+          document.documentElement.style.setProperty('--contrast-toward-low', '0');
+        } else if (contrast < 100) {
+          const towardLow = (100 - contrast) / 25;
+          document.documentElement.style.setProperty(
+            '--contrast-toward-low',
+            String(towardLow),
+          );
+          document.documentElement.style.setProperty('--contrast-toward-high', '0');
+        }
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -60,6 +107,8 @@ if (stylesheet === 'blog-layout') {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {robotsNoindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={ogUrl} />
 
     <meta property="og:url" content={ogUrl} />
     <meta property="og:type" content="website" />
@@ -70,6 +119,21 @@ if (stylesheet === 'blog-layout') {
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@atohsaaa" />
     <meta name="twitter:image" content={ogImage} />
+    {
+      datePublished != null && (
+        <meta property="article:published_time" content={datePublished} />
+      )
+    }
+    {
+      dateModified != null && (
+        <meta property="article:modified_time" content={dateModified} />
+      )
+    }
+  {
+      articleSchema != null && (
+        <script type="application/ld+json" set:html={articleSchema} />
+      )
+    }
 
     <link rel="icon" href={SITE_FAVICON_SRC} />
     <link

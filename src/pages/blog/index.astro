@@ -27,7 +27,11 @@ const photos = collectBlogPhotos(posts);
     </nav>
     <div class="keywords-heading-row blog-title-row">
       <h1 class="blog-title">Blog</h1>
-      <BlogRandomButton />
+      <div class="blog-title-row-actions">
+        <a class="blog-title-row-link" href="/blog/tags">Tags</a>
+        <a class="blog-title-row-link" href="/blog/stats">Stats</a>
+        <BlogRandomButton />
+      </div>
     </div>
 
     {

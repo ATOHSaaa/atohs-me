@@ -1,0 +1,38 @@
+---
+import '../../styles/memo.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import MemoCard from '../../components/MemoCard.astro';
+import { loadMemosForBuild } from '../../lib/scrapbox/load-memos';
+import { isMemoDailyTitle } from '../../lib/scrapbox/slug';
+import { MEMO_OG_IMAGE_URL } from '../../lib/memo-og';
+
+const { pages } = await loadMemosForBuild();
+const indexPages = pages.filter((page) => isMemoDailyTitle(page.title));
+---
+
+<BaseLayout
+  title="Memo | atohs.me"
+  description="atohs(あとーす)のメモ一覧です。Scrapbox（Cosense）から同期した日記・メモを掲載しています。"
+  ogUrl="https://atohs.me/memo/"
+  ogImage={MEMO_OG_IMAGE_URL}
+>
+  <SiteHeader />
+  <main id="main-content" class="main main--memo-index">
+    <nav class="breadcrumb" aria-label="パンくずリスト">
+      <a href="/">Home</a><span class="breadcrumb-slash">/</span>
+    </nav>
+    <h1 class="blog-title">Memo</h1>
+    {
+      indexPages.length === 0 ? (
+        <p>表示できるメモはありません。</p>
+      ) : (
+        <div class="container memo-index-grid">
+          {indexPages.map((page) => (
+            <MemoCard page={page} />
+          ))}
+        </div>
+      )
+    }
+  </main>
+</BaseLayout>

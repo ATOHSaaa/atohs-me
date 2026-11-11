@@ -15,9 +15,10 @@ export interface CareerSection {
 }
 
 export function inlineMarkdownToHtml(text: string): string {
+  const newTab = ' target="_blank" rel="noopener noreferrer"';
   return text
-    .replace(/\[([^\]]+?)\s+(https?:\/\/[^\s\]]+)\]/g, '<a href="$2">$1</a>')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    .replace(/\[([^\]]+?)\s+(https?:\/\/[^\s\]]+)\]/g, `<a href="$2"${newTab}>$1</a>`)
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, `<a href="$2"${newTab}>$1</a>`);
 }
 
 export function parseCareerBody(body: string): CareerSection[] {

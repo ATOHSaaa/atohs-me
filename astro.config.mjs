@@ -1,6 +1,7 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
 import { remarkBracketUrlLinks } from './src/lib/remark-bracket-url-links.js';
 import { remarkTwitterEmbeds } from './src/lib/remark-twitter-embeds.js';
@@ -31,16 +32,54 @@ function getBlogLastmodByPath() {
   return result;
 }
 
+function getMemoLastmodByPath() {
+  const memoDir = './src/content/memo';
+  if (!existsSync(memoDir)) return {};
+
+  const result = {};
+  let latest = 0;
+
+  for (const entry of readdirSync(memoDir, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+
+    const content = readFileSync(join(memoDir, entry.name), 'utf-8');
+    if (/^draft:\s*true\s*$/m.test(content)) continue;
+    const updatedMatch = content.match(/^updated:\s*(.+)$/m);
+    const createdMatch = content.match(/^created:\s*(.+)$/m);
+    const iso = updatedMatch?.[1]?.trim() ?? createdMatch?.[1]?.trim();
+    if (!iso) continue;
+
+    const updated = new Date(iso).getTime();
+    if (!Number.isFinite(updated)) continue;
+    latest = Math.max(latest, updated);
+
+    const title = entry.name.replace(/\.md$/, '');
+    result[`/memo/${encodeURIComponent(title)}/`] = new Date(updated);
+  }
+
+  if (latest > 0) {
+    result['/memo/'] = new Date(latest);
+  }
+
+  return result;
+}
+
 const postLastmodByPath = getBlogLastmodByPath();
+const memoLastmodByPath = getMemoLastmodByPath();
+const lastmodByPath = { ...memoLastmodByPath, ...postLastmodByPath };
 
 export default defineConfig({
   site: 'https://atohs.me',
   output: 'static',
+  experimental: {
+    incrementalBuild: true,
+  },
   build: {
     // 小さなサイト CSS を HTML に埋め、PSI のレンダリングブロックを避ける
     inlineStylesheets: 'always',
   },
   redirects: {
+    '/stats': '/blog/stats/',
     '/my-business-experience': '/resume#career',
     '/education': '/resume#education',
     '/career': '/resume#career',
@@ -49,10 +88,10 @@ export default defineConfig({
   integrations: [
     sitemap({
       customPages: ['https://atohs.me/works/hanoi-clicker/'],
-      filter: (page) => !page.endsWith('/og.png') && !page.endsWith('/og-v2.png'),
+      filter: (page) => !/\/og\.png\/?$/.test(new URL(page).pathname),
       serialize(item) {
         const path = new URL(item.url).pathname;
-        const pubDate = postLastmodByPath[path];
+        const pubDate = lastmodByPath[path];
         if (pubDate) {
           return { ...item, lastmod: pubDate.toISOString() };
         }
@@ -61,14 +100,16 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [
-      remarkBracketUrlLinks,
-      remarkTwitterEmbeds,
-      remarkAmazonCards,
-      remarkLinkCards,
-      remarkBracketFootnotes,
-    ],
-    rehypePlugins: [rehypeSlug, rehypeExternalLinks, rehypeContentImages],
+    processor: unified({
+      remarkPlugins: [
+        remarkBracketUrlLinks,
+        remarkTwitterEmbeds,
+        remarkAmazonCards,
+        remarkLinkCards,
+        remarkBracketFootnotes,
+      ],
+      rehypePlugins: [rehypeSlug, rehypeExternalLinks, rehypeContentImages],
+    }),
     shikiConfig: {
       theme: 'github-dark',
       wrap: true,

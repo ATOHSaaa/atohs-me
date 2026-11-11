@@ -1,0 +1,47 @@
+---
+import { formatBlogStatsMonthLabel, type BlogStats } from '../lib/blog-stats';
+
+interface Props {
+  stats: BlogStats;
+  idSuffix?: string;
+}
+
+const { stats, idSuffix = '' } = Astro.props;
+const formatJa = (n: number) => n.toLocaleString('ja-JP');
+---
+
+<section class="blog-stats-section blog-stats-monthly" aria-labelledby={`blog-stats-monthly-heading${idSuffix}`}>
+  <h2 id={`blog-stats-monthly-heading${idSuffix}`} class="blog-stats-heading">月ごと</h2>
+  {
+    stats.monthly.length === 0 ? (
+      <p>まだ記事はありません。</p>
+    ) : (
+      <div class="blog-stats-table-wrap">
+        <table class="blog-stats-table">
+          <thead>
+            <tr>
+              <th scope="col">年月</th>
+              <th scope="col" class="blog-stats-table-num">記事数</th>
+              <th scope="col" class="blog-stats-table-num">字数</th>
+              <th scope="col" class="blog-stats-table-num">字数 / 記事数</th>
+            </tr>
+          </thead>
+          <tbody>
+            {stats.monthly.map((row) => {
+              const avg =
+                row.postCount > 0 ? Math.round(row.charCount / row.postCount) : 0;
+              return (
+                <tr>
+                  <th scope="row">{formatBlogStatsMonthLabel(row.year, row.month)}</th>
+                  <td class="blog-stats-table-num">{formatJa(row.postCount)}</td>
+                  <td class="blog-stats-table-num">{formatJa(row.charCount)}</td>
+                  <td class="blog-stats-table-num">{formatJa(avg)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
+</section>

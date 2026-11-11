@@ -2,7 +2,7 @@
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import KeywordsIndexList from '../../components/KeywordsIndexList.astro';
+import KeywordsChips from '../../components/KeywordsChips.astro';
 import KeywordsRandomButton from '../../components/KeywordsRandomButton.astro';
 import { getKeywordIndexEntry, keywordsIndexHref } from '../../lib/keywords';
 
@@ -34,6 +34,6 @@ const description =
         </div>
       ) : null
     }
-    <KeywordsIndexList />
+    <KeywordsChips />
   </main>
 </BaseLayout>

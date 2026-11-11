@@ -41,11 +41,11 @@ tags: 開発, CSS
 
 ### Before
 
-![コトバンクの変更前の見た目](./css-on-kotobank/before.png)
+![コトバンクの変更前の見た目](./img/css-on-kotobank-before.png)
 
 ### After
 
-![コトバンクにCSSを適用した後の見た目](./css-on-kotobank/after.png)
+![コトバンクにCSSを適用した後の見た目](./img/css-on-kotobank-after.png)
 
 ## 感想
 

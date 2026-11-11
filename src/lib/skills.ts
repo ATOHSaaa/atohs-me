@@ -1,3 +1,6 @@
+/** `/skills` 以下をビルド・サイトマップに載せるまで false */
+export const SKILLS_SECTION_PUBLISHED = false;
+
 export type SkillCategoryId = 'website-development' | 'marketing' | 'creation';
 
 export interface SkillCategory {

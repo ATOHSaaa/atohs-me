@@ -2,53 +2,6 @@ import { visit } from 'unist-util-visit';
 
 const BRACKET_URL_PATTERN = /\[([^\]\n]+?)\s+(https?:\/\/[^\s\]]+)\]/g;
 
-function rewriteBracketUrlChildren(children) {
-  const result = [];
-  let index = 0;
-
-  while (index < children.length) {
-    const current = children[index];
-    const next = children[index + 1];
-    const afterNext = children[index + 2];
-
-    if (
-      current?.type === 'text' &&
-      next?.type === 'link' &&
-      afterNext?.type === 'text'
-    ) {
-      const openMatch = current.value.match(/^(.*?)\[([^\[\]]+)\s+$/);
-
-      if (openMatch && afterNext.value.startsWith(']')) {
-        const [, prefix, linkText] = openMatch;
-        const suffix = afterNext.value.slice(1);
-
-        if (prefix) {
-          result.push({ type: 'text', value: prefix });
-        }
-
-        result.push({
-          type: 'link',
-          url: next.url,
-          title: next.title ?? null,
-          children: [{ type: 'text', value: linkText }],
-        });
-
-        if (suffix) {
-          result.push({ type: 'text', value: suffix });
-        }
-
-        index += 3;
-        continue;
-      }
-    }
-
-    result.push(current);
-    index += 1;
-  }
-
-  return result;
-}
-
 function rewriteBracketUrlText(value) {
   if (!/\[[^\]]+\s+https?:\/\//.test(value)) {
     return null;
@@ -90,13 +43,44 @@ function rewriteBracketUrlText(value) {
   return nodes;
 }
 
+/** autolink で壊れた link ノードは表示テキスト（URL ごと）をそのまま連結する */
+function phrasingNodeToRecoverableText(node) {
+  if (node.type === 'text') {
+    return node.value;
+  }
+
+  if (node.type === 'link') {
+    const label = node.children?.map((child) => child.value).join('') ?? '';
+
+    if (/^https?:\/\//.test(label) || /(?:%5D|\])/.test(node.url)) {
+      return label || node.url;
+    }
+
+    return label;
+  }
+
+  return '';
+}
+
+function rewriteParagraphBracketUrls(children) {
+  const flattened = children.map(phrasingNodeToRecoverableText).join('');
+
+  if (!/\[[^\]\n]+\s+https?:\/\//.test(flattened)) {
+    return children;
+  }
+
+  const nodes = rewriteBracketUrlText(flattened);
+  return nodes ?? children;
+}
+
 /**
  * [リンクテキスト https://example.com] を Markdown リンクに変換する remark プラグイン。
+ * GFM autolink が `]` 以降まで URL に含めてしまうケースも段落単位で復元する。
  */
 export function remarkBracketUrlLinks() {
   return (tree) => {
     visit(tree, 'paragraph', (node) => {
-      node.children = rewriteBracketUrlChildren(node.children);
+      node.children = rewriteParagraphBracketUrls(node.children);
     });
 
     visit(tree, 'text', (node, index, parent) => {
