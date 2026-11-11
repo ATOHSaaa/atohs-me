@@ -32,6 +32,30 @@ function getBlogLastmodByPath() {
   return result;
 }
 
+function normalizeMemoDailySlashTitle(title) {
+  const match = title.trim().match(/^(\d{4})[\/／\\](\d{1,2})[\/／\\](\d{1,2})$/);
+  if (!match) return null;
+  return `${match[1]}-${match[2].padStart(2, '0')}-${match[3].padStart(2, '0')}`;
+}
+
+function memoSlugForSitemap(title, fileBase) {
+  const daily = normalizeMemoDailySlashTitle(title);
+  if (daily) return daily;
+  if (/[\/／\\]/.test(title.trim())) return fileBase;
+  return title;
+}
+
+function parseMemoFrontmatterTitle(content, fileBase) {
+  const titleMatch = content.match(/^title:\s*(.+)$/m);
+  if (!titleMatch) return fileBase;
+  const raw = titleMatch[1].trim();
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return raw;
+  }
+}
+
 function getMemoLastmodByPath() {
   const memoDir = './src/content/memo';
   if (!existsSync(memoDir)) return {};
@@ -53,8 +77,10 @@ function getMemoLastmodByPath() {
     if (!Number.isFinite(updated)) continue;
     latest = Math.max(latest, updated);
 
-    const title = entry.name.replace(/\.md$/, '');
-    result[`/memo/${encodeURIComponent(title)}/`] = new Date(updated);
+    const fileBase = entry.name.replace(/\.md$/, '');
+    const title = parseMemoFrontmatterTitle(content, fileBase);
+    const slug = memoSlugForSitemap(title, fileBase);
+    result[`/memo/${encodeURIComponent(slug)}/`] = new Date(updated);
   }
 
   if (latest > 0) {

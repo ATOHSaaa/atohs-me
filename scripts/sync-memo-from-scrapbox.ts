@@ -7,6 +7,7 @@ import path from 'node:path';
 import { cacheDetails, syncScrapboxCache } from '../src/lib/scrapbox/cache';
 import { getScrapboxPublishTag } from '../src/lib/scrapbox/config';
 import { pageHasHashtag } from '../src/lib/scrapbox/tags';
+import { memoContentFileBaseName } from '../src/lib/scrapbox/slug';
 import type { ScrapboxPageDetail } from '../src/lib/scrapbox/types';
 
 const OUT_DIR = path.join(process.cwd(), 'src/content/memo');
@@ -37,7 +38,7 @@ function unixToJstYaml(sec: number): string {
 }
 
 function memoFileName(title: string): string {
-  return `${title.replace(/[\\/:*?"<>|]/g, '－')}.md`;
+  return `${memoContentFileBaseName(title)}.md`;
 }
 
 function detailToMarkdown(detail: ScrapboxPageDetail): string {

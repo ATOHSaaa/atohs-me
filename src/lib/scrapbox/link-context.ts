@@ -1,4 +1,8 @@
-import { memoPagePath, memoTagPath } from './slug';
+import {
+  memoPagePath,
+  memoTagPath,
+  normalizeMemoDailySlashTitle,
+} from './slug';
 import { normalizeScrapboxKey } from './title-match';
 import type { BuiltMemoPage } from './types';
 
@@ -23,7 +27,17 @@ export function buildMemoParseContext(
 ): MemoParseContext {
   const pageByKey = new Map<string, BuiltMemoPage>();
   for (const page of publishedPages) {
-    pageByKey.set(normalizeScrapboxKey(page.title), page);
+    const keys = new Set<string>([
+      normalizeScrapboxKey(page.title),
+      normalizeScrapboxKey(page.slug),
+    ]);
+    const slashDaily = normalizeMemoDailySlashTitle(page.title);
+    if (slashDaily) {
+      keys.add(normalizeScrapboxKey(slashDaily));
+    }
+    for (const key of keys) {
+      pageByKey.set(key, page);
+    }
   }
 
   const resolvePageTitle = (title: string): BuiltMemoPage | undefined =>
