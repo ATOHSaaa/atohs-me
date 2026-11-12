@@ -17,11 +17,20 @@ export function isMemoDailyTitle(title: string): boolean {
   return normalizeMemoDailySlashTitle(trimmed) !== null;
 }
 
-/** ビルド時の URL slug（未エンコード・1 セグメント） */
+/** スラッシュ入りタイトルを 1 セグメント化した slug か */
+function isMemoSlugPreencoded(slug: string): boolean {
+  return /%2[fF]/.test(slug);
+}
+
+/** ビルド時の URL slug（`/` を含むキーワードは 1 セグメントにエンコード） */
 export function memoSlugFromTitle(title: string): string {
   const normalized = normalizeMemoDailySlashTitle(title);
   if (normalized) return normalized;
-  return title;
+  const trimmed = title.trim();
+  if (/[\/／\\]/.test(trimmed)) {
+    return encodeURIComponent(trimmed);
+  }
+  return trimmed;
 }
 
 /**
@@ -37,6 +46,7 @@ export function memoSlugFromMemoEntry(title: string, entryId: string): string {
 
 /** `getStaticPaths` の params.slug。`/` を含むと Astro が複数セグメントと解釈する */
 export function memoRouteParam(slug: string): string {
+  if (isMemoSlugPreencoded(slug)) return slug;
   return slug.includes('/') ? encodeURIComponent(slug) : slug;
 }
 
@@ -52,6 +62,9 @@ export function memoTitleFromSlug(slug: string): string {
 }
 
 export function memoPagePath(titleOrSlug: string): string {
+  if (isMemoSlugPreencoded(titleOrSlug)) {
+    return `/memo/${titleOrSlug}/`;
+  }
   return `/memo/${encodeURIComponent(titleOrSlug)}/`;
 }
 
