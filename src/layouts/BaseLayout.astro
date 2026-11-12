@@ -104,7 +104,8 @@ await import('../styles/blog.css');
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="text-scale" content="scale" />
     <meta name="format-detection" content="telephone=no" />
 
     <title>{title}</title>
@@ -138,13 +139,17 @@ await import('../styles/blog.css');
     }
 
     <link rel="icon" href={SITE_FAVICON_SRC} />
-    <link
-      rel="preload"
-      href={siteLogoPreload.src}
-      as="image"
-      type="image/webp"
-      fetchpriority="high"
-    />
+    {
+      isHomePage && (
+        <link
+          rel="preload"
+          href={siteLogoPreload.src}
+          as="image"
+          type="image/webp"
+          fetchpriority="high"
+        />
+      )
+    }
     {
       twitterEmbeds && (
         <>
