@@ -11,7 +11,15 @@ export function collectBracketStubTargets(
 ): Map<string, string> {
   const map = new Map<string, string>();
   for (const detail of publishedDetails) {
-    for (const target of extractLinkTargets(detail.lines ?? [], detail.links)) {
+    const knownKeys = new Set([
+      ...existingPageKeys,
+      ...publishedTagKeys,
+    ]);
+    for (const target of extractLinkTargets(
+      detail.lines ?? [],
+      detail.links,
+      knownKeys,
+    )) {
       if (target.source === 'hashtag') continue;
       if (existingPageKeys.has(target.key)) continue;
       if (publishedTagKeys.has(target.key)) continue;

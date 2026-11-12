@@ -58,6 +58,9 @@ const memo = defineCollection({
     created: z.coerce.date(),
     updated: z.coerce.date().optional(),
     draft: z.boolean().default(false),
+    /** 井戸端共同日記の出典（表示は記事末尾のみ） */
+    idobataViaDate: z.string().optional(),
+    idobataViaUrl: z.string().url().optional(),
   }),
 });
 

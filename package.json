@@ -17,6 +17,7 @@
     "link-card-ogp:refresh": "node scripts/update-link-card-ogp.mjs --force",
     "sync:hanoi-clicker": "node scripts/sync-hanoi-clicker.mjs",
     "memo:sync": "tsx scripts/sync-memo-from-scrapbox.ts",
+    "memo:import-idobata": "tsx scripts/import-memo-from-idobata.ts",
     "memo:og:generate": "tsx scripts/generate-memo-og-image.ts",
     "home:og:generate": "tsx scripts/generate-home-og-image.ts",
     "path:og:generate": "tsx scripts/generate-path-og-images.ts",
@@ -35,10 +36,12 @@
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "@resvg/resvg-js": "^2.6.2",
     "astro": "^7.4.4",
+    "kuromoji": "^0.1.2",
     "rehype-slug": "^6.0.0",
     "satori": "^0.63.2"
   },
   "devDependencies": {
+    "@types/kuromoji": "^0.1.3",
     "to-ico": "^1.1.5",
     "tsx": "^4.23.15",
     "wrangler": "^4.155.0"

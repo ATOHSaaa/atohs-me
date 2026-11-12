@@ -15,6 +15,21 @@ import {
   collectLinkedSidebarTargets,
   computePageLinkSections,
 } from './link-graph';
+import { bracketifyMemoLines } from '../memo-linking/bracketify';
+import {
+  buildMemoLinkDictionary,
+  memoLinkDictionaryCacheKey,
+} from '../memo-linking/dictionary';
+import { initMemoKuromoji } from '../memo-linking/kuromoji';
+import {
+  collectDictionarySidebarTargets,
+  mergeSidebarTargets,
+} from '../memo-linking/sidebar';
+import {
+  memoLinkPhase1Sidebar,
+  memoLinkPhase2Bracketify,
+  memoLinkPhase3Kuromoji,
+} from '../memo-linking/config';
 import {
   memoDescriptionFromLines,
   memoExcerptFromLines,
@@ -99,7 +114,7 @@ async function buildMemos(): Promise<MemoBuildResult> {
       entry,
     ] as const),
   );
-  const globalCacheKey = memoContentGlobalCacheKey(entries);
+  const globalCacheKey = `${memoContentGlobalCacheKey(entries)}:link:${memoLinkPhase1Sidebar()}:${memoLinkPhase2Bracketify()}:${memoLinkPhase3Kuromoji()}`;
 
   const details = entries.map(scrapboxDetailFromMemoEntry);
 
@@ -167,21 +182,44 @@ async function buildMemos(): Promise<MemoBuildResult> {
 
   const contentPageCount = publishedDetails.length;
   const parseCtx = buildMemoParseContext(pages, publishedTagKeys);
+  const linkDictionary = await buildMemoLinkDictionary(pages, tags);
+  const kuromojiTokenizer = await initMemoKuromoji();
+  parseCtx.linkDictionary = linkDictionary;
+  parseCtx.autoLinkPlainText = memoLinkPhase3Kuromoji();
+  parseCtx.kuromojiTokenizer = kuromojiTokenizer;
+
+  const dictCachePart = memoLinkDictionaryCacheKey(linkDictionary);
 
   for (let i = 0; i < contentPageCount; i++) {
     const detail = publishedDetails[i];
     const page = pages[i];
+    const entry = entryByTitle.get(detail.title)!;
+    if (entry.data.idobataViaUrl && entry.data.idobataViaDate) {
+      page.idobataVia = {
+        dateLabel: entry.data.idobataViaDate,
+        url: entry.data.idobataViaUrl,
+      };
+    }
+
+    const rawLineTexts = detail.lines?.map((l) => l.text) ?? [];
+    const lineTexts = memoLinkPhase2Bracketify()
+      ? bracketifyMemoLines(rawLineTexts, linkDictionary)
+      : rawLineTexts;
+    const renderLines = lineTexts.map((text) => ({ text }));
+
     page.bodyHtml = renderScrapboxBody(
       detail.title,
-      detail.lines ?? [],
+      renderLines,
       parseCtx,
     );
     page.description = memoDescriptionFromLines(
       detail.title,
-      detail.lines ?? [],
+      renderLines,
     );
-    page.excerpt = memoExcerptFromLines(detail.title, detail.lines ?? []);
-    const targets = extractLinkTargets(detail.lines ?? [], detail.links);
+    page.excerpt = memoExcerptFromLines(detail.title, renderLines);
+    const knownLinkKeys = pageKeysSet(pages);
+    for (const tagKey of publishedTagKeys) knownLinkKeys.add(tagKey);
+    const targets = extractLinkTargets(renderLines, detail.links, knownLinkKeys);
     const sections = computePageLinkSections(
       page,
       pages,
@@ -192,8 +230,18 @@ async function buildMemos(): Promise<MemoBuildResult> {
     page.outLinkSlugs = sections.outLinkSlugs;
     page.backLinkSlugs = sections.backLinkSlugs;
     page.twoHop = sections.twoHop;
-    page.linkedTargets = collectLinkedSidebarTargets(targets, parseCtx);
-    page.cacheKey = `${page.cacheKey}:${sections.outLinkSlugs.join(',')}:${sections.backLinkSlugs.join(',')}:${sections.twoHop.length}:${page.linkedTargets.map((t) => t.key).join(',')}`;
+    const bracketSidebar = collectLinkedSidebarTargets(targets, parseCtx);
+    const dictionarySidebar = collectDictionarySidebarTargets(
+      renderLines,
+      linkDictionary,
+      parseCtx,
+      detail.title,
+    );
+    page.linkedTargets = mergeSidebarTargets(
+      bracketSidebar,
+      dictionarySidebar,
+    );
+    page.cacheKey = `${page.cacheKey}:${sections.outLinkSlugs.join(',')}:${sections.backLinkSlugs.join(',')}:${sections.twoHop.length}:${page.linkedTargets.map((t) => t.key).join(',')}:${page.idobataVia?.url ?? ''}:${dictCachePart}`;
   }
 
   pages.sort((a, b) => b.created - a.created);

@@ -1,3 +1,4 @@
+import { renderPlainWithAutoLinks } from '../memo-linking/plain-auto-link';
 import type { MemoParseContext } from './link-context';
 import { isValidMemoHashtag } from './tags';
 import type { ScrapboxLine } from './types';
@@ -38,6 +39,24 @@ function externalLink(href: string, label: string): string {
   const safeHref = escapeHtml(href);
   const safeLabel = escapeHtml(label);
   return `<a href="${safeHref}" rel="noopener noreferrer" target="_blank">${safeLabel}</a>`;
+}
+
+/** 括弧外テキスト: `https://…` を外部リンクにし、残りは辞書自動リンク */
+const ABSOLUTE_URL_IN_PLAIN_RE = /https?:\/\/[^\s<>\[\]"'）\]、。]+/gi;
+
+function renderPlainSegment(text: string, ctx: MemoParseContext): string {
+  if (!text) return '';
+  let out = '';
+  let last = 0;
+  for (const match of text.matchAll(ABSOLUTE_URL_IN_PLAIN_RE)) {
+    const start = match.index ?? 0;
+    out += renderPlainWithAutoLinks(text.slice(last, start), ctx);
+    const url = match[0];
+    out += externalLink(url, url);
+    last = start + url.length;
+  }
+  out += renderPlainWithAutoLinks(text.slice(last), ctx);
+  return out;
 }
 
 function memoInternalLink(href: string, label: string): string {
@@ -88,10 +107,32 @@ function parseBracketContent(inner: string, ctx: MemoParseContext): string {
   if (spaceIdx > 0) {
     const label = trimmed.slice(0, spaceIdx);
     const rest = trimmed.slice(spaceIdx + 1).trim();
+    if (isProbablyUrl(label)) {
+      return externalLink(label, rest || label);
+    }
     if (isProbablyUrl(rest)) {
       return externalLink(rest, label);
     }
-    return memoLinkLabelOrPlain(ctx, rest, label);
+    if (/\shttps?:\/\//i.test(rest) || /\s\/\//.test(rest)) {
+      const urlMatch = rest.match(/(?:https?:\/\/|\/\/)\S+/);
+      if (urlMatch) {
+        const href = urlMatch[0].startsWith('//')
+          ? `https:${urlMatch[0]}`
+          : urlMatch[0];
+        return externalLink(href, label);
+      }
+      const labelTarget = ctx.resolveTarget(label);
+      return memoResolvedKeywordLink(labelTarget, label);
+    }
+    const wholeTarget = ctx.resolveTarget(trimmed);
+    if (wholeTarget.href) {
+      return memoResolvedKeywordLink(wholeTarget, trimmed);
+    }
+    const restTarget = ctx.resolveTarget(rest);
+    if (restTarget.href) {
+      return memoLinkLabelOrPlain(ctx, rest, label);
+    }
+    return memoLinkLabelOrPlain(ctx, trimmed, trimmed);
   }
 
   if (isProbablyUrl(trimmed)) {
@@ -132,11 +173,11 @@ function parseInline(text: string, ctx: MemoParseContext): string {
           : Math.min(bracketStart, hashStart);
 
     if (nextSpecial === -1) {
-      out += escapeHtml(text.slice(i));
+      out += renderPlainSegment(text.slice(i), ctx);
       break;
     }
 
-    out += escapeHtml(text.slice(i, nextSpecial));
+    out += renderPlainSegment(text.slice(i, nextSpecial), ctx);
 
     if (nextSpecial === hashStart && (hashStart < bracketStart || bracketStart === -1)) {
       const tail = text.slice(hashStart + 1);
@@ -256,6 +297,10 @@ export function renderScrapboxBody(
       i += 1;
       continue;
     }
+    if (!body) {
+      i += 1;
+      continue;
+    }
     const indent = measureIndent(raw);
     const depth = Math.max(0, indent - indentBaseline);
     const codeHeader = body.match(/^code(?::\S*)?$/i);
@@ -288,6 +333,10 @@ function plainTextFromBracketInner(inner: string): string {
   if (spaceIdx > 0) {
     const label = trimmed.slice(0, spaceIdx).trim();
     const rest = trimmed.slice(spaceIdx + 1).trim();
+    if (isProbablyUrl(label)) {
+      if (isImageUrl(label)) return '';
+      return rest || label;
+    }
     if (isProbablyUrl(rest)) {
       if (isImageUrl(rest)) return '';
       return label;

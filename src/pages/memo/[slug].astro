@@ -72,7 +72,24 @@ const hasBody = !isKeywordStub && page.bodyHtml.trim().length > 0;
       <div class="blog-layout-share-rail memo-layout-share-rail" aria-hidden="true"></div>
       {
         hasBody ? (
-          <div class="blog-body memo-body" set:html={page.bodyHtml} />
+          <div class="memo-article-main">
+            <div class="blog-body memo-body" set:html={page.bodyHtml} />
+            {
+              page.idobataVia && (
+                <p class="memo-idobata-via">
+                  <span class="memo-idobata-via-prefix">via:井戸端</span>
+                  <a
+                    class="memo-idobata-via-link"
+                    href={page.idobataVia.url}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {page.idobataVia.dateLabel}
+                  </a>
+                </p>
+              )
+            }
+          </div>
         ) : (
           <div class="memo-body memo-body--empty" aria-hidden="true" />
         )

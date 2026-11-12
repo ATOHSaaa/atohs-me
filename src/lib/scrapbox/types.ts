@@ -1,3 +1,4 @@
+import type { MemoIdobataVia } from '../idobata/via';
 import type { ResolvedMemoTarget } from './link-context';
 
 export interface ScrapboxLine {
@@ -42,6 +43,8 @@ export interface BuiltMemoPage {
   twoHop: MemoTwoHopGroup[];
   /** 本文からリンクになるキーワード（出現順・重複なし） */
   linkedTargets: ResolvedMemoTarget[];
+  /** 井戸端日記への出典（記事末尾表示） */
+  idobataVia?: MemoIdobataVia;
 }
 
 export interface BuiltMemoTagIndex {

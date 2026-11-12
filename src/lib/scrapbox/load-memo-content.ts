@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { stripIdobataViaMemoLines } from '../idobata/config';
 import type { ScrapboxPageDetail } from './types';
 
 export type MemoContentEntry = CollectionEntry<'memo'>;
@@ -15,7 +16,7 @@ export function scrapboxDetailFromMemoEntry(
   const updated = Math.floor(
     (entry.data.updated ?? entry.data.created).getTime() / 1000,
   );
-  const body = entry.body ?? '';
+  const body = stripIdobataViaMemoLines(entry.body ?? '');
   const lines = body.split(/\r?\n/).map((text) => ({ text }));
 
   return {

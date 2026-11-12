@@ -1,7 +1,16 @@
 /** Scrapbox / Cosense の API 連携設定（ビルド時のみ） */
-export const SCRAPBOX_PROJECT =
-  (typeof process !== 'undefined' && process.env.SCRAPBOX_PROJECT) ||
-  'atohs-memo';
+const SCRAPBOX_PROJECT_DEFAULT = 'atohs-memo';
+
+/** Cosense / Scrapbox のプロジェクト名（`SCRAPBOX_PROJECT` を都度参照） */
+export function getScrapboxProject(): string {
+  const raw =
+    typeof process !== 'undefined' ? process.env.SCRAPBOX_PROJECT : undefined;
+  const trimmed = raw?.trim();
+  return trimmed && trimmed.length > 0 ? trimmed : SCRAPBOX_PROJECT_DEFAULT;
+}
+
+/** @deprecated {@link getScrapboxProject} を使う */
+export const SCRAPBOX_PROJECT = getScrapboxProject();
 
 /** connect.sid クッキー値。非公開プロジェクト取得時に必要。ログに出さないこと。 */
 export function getScrapboxSid(): string | undefined {

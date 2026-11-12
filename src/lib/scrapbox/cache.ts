@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { SCRAPBOX_PROJECT, scrapboxForceRefresh } from './config';
+import { getScrapboxProject, scrapboxForceRefresh } from './config';
 import {
   fetchScrapboxPageDetail,
   fetchScrapboxPageSummariesPage,
@@ -24,14 +24,14 @@ export interface ScrapboxCacheFile {
 const CACHE_VERSION = 1;
 
 function cacheFilePath(): string {
-  return path.join(SCRAPBOX_CACHE_DIR, `${SCRAPBOX_PROJECT}.json`);
+  return path.join(SCRAPBOX_CACHE_DIR, `${getScrapboxProject()}.json`);
 }
 
 export async function readScrapboxCache(): Promise<ScrapboxCacheFile> {
   try {
     const raw = await readFile(cacheFilePath(), 'utf8');
     const data = JSON.parse(raw) as ScrapboxCacheFile;
-    if (data.version === CACHE_VERSION && data.project === SCRAPBOX_PROJECT) {
+    if (data.version === CACHE_VERSION && data.project === getScrapboxProject()) {
       return data;
     }
   } catch {
@@ -39,7 +39,7 @@ export async function readScrapboxCache(): Promise<ScrapboxCacheFile> {
   }
   return {
     version: CACHE_VERSION,
-    project: SCRAPBOX_PROJECT,
+    project: getScrapboxProject(),
     syncedAt: '',
     pages: {},
   };

@@ -138,6 +138,38 @@
   .main.memo-main .memo-layout .memo-layout-footer {
     grid-area: 3 / 2;
   }
+
+  .main.memo-main .memo-layout .memo-article-main {
+    grid-area: 2 / 2;
+    min-width: 0;
+  }
+
+  .main.memo-main .memo-layout .memo-article-main .memo-body.blog-body {
+    grid-area: auto;
+  }
+}
+
+.memo-idobata-via {
+  margin: 2rem 0 0;
+  padding-inline: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.memo-idobata-via-prefix {
+  margin-right: 0.35em;
+}
+
+.memo-idobata-via-link {
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.memo-idobata-via-link:hover,
+.memo-idobata-via-link:focus-visible {
+  color: var(--color-text);
 }
 
 .memo-main .blog-layout-intro {

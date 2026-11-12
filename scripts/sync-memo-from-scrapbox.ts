@@ -7,6 +7,8 @@ import path from 'node:path';
 import { cacheDetails, syncScrapboxCache } from '../src/lib/scrapbox/cache';
 import { getScrapboxPublishTag } from '../src/lib/scrapbox/config';
 import { pageHasHashtag } from '../src/lib/scrapbox/tags';
+import { getIdobataAuthorIcon } from '../src/lib/idobata/config';
+import { maybeStripIdobataFromMemoLines } from '../src/lib/idobata/diary-extract';
 import { memoContentFileBaseName } from '../src/lib/scrapbox/slug';
 import type { ScrapboxPageDetail } from '../src/lib/scrapbox/types';
 
@@ -42,7 +44,11 @@ function memoFileName(title: string): string {
 }
 
 function detailToMarkdown(detail: ScrapboxPageDetail): string {
-  const lines = detail.lines?.map((l) => l.text) ?? [];
+  const rawLines = detail.lines?.map((l) => l.text) ?? [];
+  const lines = maybeStripIdobataFromMemoLines(
+    rawLines,
+    getIdobataAuthorIcon(),
+  );
   const body = lines.join('\n').replace(/\n+$/, '');
   const created = unixToJstYaml(detail.created);
   const updated =

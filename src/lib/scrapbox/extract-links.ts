@@ -18,6 +18,33 @@ export interface RawLinkTarget {
   source: RawLinkSource;
 }
 
+/**
+ * `[...]` 内のリンク先表示語。空白ありでも `[Vibe Coding]` は1語として扱う。
+ * 既知キーがあるときだけ `[表示 既存ページ名]` を rest に分解する。
+ */
+export function bracketInnerLinkDisplay(
+  inner: string,
+  knownKeys?: ReadonlySet<string>,
+): string {
+  const trimmed = inner.trim();
+  const spaceIdx = trimmed.search(/\s/);
+  if (spaceIdx <= 0) return trimmed;
+
+  const label = trimmed.slice(0, spaceIdx);
+  const rest = trimmed.slice(spaceIdx + 1).trim();
+  if (isProbablyUrl(label)) return rest || label;
+  if (isProbablyUrl(rest)) return label;
+  if (/\shttps?:\/\//i.test(rest) || /\s\/\//.test(rest)) return label;
+
+  if (knownKeys) {
+    const wholeKey = normalizeScrapboxKey(trimmed);
+    const restKey = normalizeScrapboxKey(rest);
+    if (knownKeys.has(wholeKey)) return trimmed;
+    if (knownKeys.has(restKey)) return rest;
+  }
+  return trimmed;
+}
+
 function pushTarget(
   out: RawLinkTarget[],
   seen: Set<string>,
@@ -36,6 +63,7 @@ function pushTarget(
 export function extractLinkTargets(
   lines: ScrapboxLine[],
   apiLinks?: string[],
+  knownKeys?: ReadonlySet<string>,
 ): RawLinkTarget[] {
   const seen = new Set<string>();
   const out: RawLinkTarget[] = [];
@@ -46,18 +74,8 @@ export function extractLinkTargets(
       const inner = match[1].trim();
       if (!inner || inner.startsWith('*')) continue;
 
-      const spaceIdx = inner.search(/\s/);
-      if (spaceIdx > 0) {
-        const label = inner.slice(0, spaceIdx);
-        const rest = inner.slice(spaceIdx + 1).trim();
-        if (isProbablyUrl(rest)) {
-          pushTarget(out, seen, label, 'bracket');
-          continue;
-        }
-      }
-
       if (isProbablyUrl(inner)) continue;
-      pushTarget(out, seen, inner, 'bracket');
+      pushTarget(out, seen, bracketInnerLinkDisplay(inner, knownKeys), 'bracket');
     }
 
     for (const match of body.matchAll(HASHTAG_RE)) {

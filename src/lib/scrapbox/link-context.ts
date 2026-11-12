@@ -1,3 +1,5 @@
+import type { MemoLinkDictionary } from '../memo-linking/dictionary';
+import type kuromoji from 'kuromoji';
 import {
   memoPagePath,
   memoTagPath,
@@ -5,6 +7,8 @@ import {
 } from './slug';
 import { normalizeScrapboxKey } from './title-match';
 import type { BuiltMemoPage } from './types';
+
+type KuromojiTokenizer = kuromoji.Tokenizer<kuromoji.IpadicFeatures>;
 
 export type MemoTargetKind = 'page' | 'tag' | 'missing';
 
@@ -19,6 +23,9 @@ export interface ResolvedMemoTarget {
 export interface MemoParseContext {
   resolvePageTitle(title: string): BuiltMemoPage | undefined;
   resolveTarget(display: string): ResolvedMemoTarget;
+  linkDictionary?: MemoLinkDictionary;
+  autoLinkPlainText?: boolean;
+  kuromojiTokenizer?: KuromojiTokenizer;
 }
 
 export function buildMemoParseContext(

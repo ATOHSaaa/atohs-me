@@ -95,6 +95,41 @@ API 用の差分キャッシュは `.scrapbox-cache/`（Git 管理外）。日�
 
 **定期取り込み**: `.github/workflows/scheduled-memo-sync.yml` が毎日 Cosense から `npm run memo:sync` し、`src/content/memo/` に差分があれば commit して `npm run ship` する（`SCRAPBOX_SID`・`CLOUDFLARE_API_TOKEN` が Actions Secrets に必要。`SCRAPBOX_PUBLISH_TAG` は Variables）。手動は Actions の **Scheduled memo sync** → **Run workflow**。
 
+### 井戸端の共同日記から取り込む（任意）
+
+[井戸端](https://scrapbox.io/villagepump/)（`villagepump`）の日付ページには他者の記述や返信（`○○.icon`）が混ざる。atohs-me には**自分の行だけ**残す。
+
+- **Cosense 同期**（`memo:sync`）: 本文が共同日記形式（複数の `名前.icon` 見出しや pin-diary テンプレ）のとき、自動で自分（既定 `atohs`）の段落だけに絞り、会話行を落とす（`IDOBATA_AUTHOR_ICON` で変更可）。
+- **井戸端 API から日付指定で取り込み**:
+
+```bash
+npm run memo:import-idobata -- 2026-11-12
+npm run memo:import-idobata -- --search --merge   # 井戸端で atohs.icon がある日付を一括
+npm run memo:import-idobata -- 2026-11-12 --dry-run            # 書き込まず確認
+```
+
+`IDOBATA_SCRAPBOX_PROJECT`（既定 `villagepump`）、`IDOBATA_AUTHOR_ICON`（既定 `atohs`）。日記タイトルは `YYYY/MM/DD`。出典は frontmatter の `idobataViaDate` / `idobataViaUrl`（作者セクション行への `#` 付き）に入り、記事末尾にグレーで `via:井戸端` + 日付リンクとして表示する。
+
+### メモの単語リンク（Phase 1〜3）
+
+ビルド時に、メモタイトル・タグ・`/keywords/` から辞書を作り、リンクを拡張する（実装: `src/lib/memo-linking/`）。
+
+| Phase | 内容 |
+| --- | --- |
+| 1 | 本文に出現する辞書語をサイドバー「単語リンク」に追加（`[...]` なしでも） |
+| 2 | 辞書ヒットを `[...]` で補完（**Git の本文は変えず**ビルド時メモリ上のみ） |
+| 3 | 括弧外プレーンテキストを kuromoji 名詞＋辞書で自動リンク（欧文・スペース含む語は最長一致） |
+
+**リバート**（従来どおり `[...]` / `#tag` のみに戻す）:
+
+```bash
+export MEMO_LINK_ALL=0          # 一括オフ
+# または個別
+export MEMO_LINK_PHASE1=0
+export MEMO_LINK_PHASE2=0
+export MEMO_LINK_PHASE3=0
+```
+
 ## デプロイ（Cloudflare Workers）
 
 本番は **Cloudflare Workers の静的アセット**（Worker 名 `atohs-me`、`wrangler.jsonc` の `./dist`）で配信する。GitHub Actions（`.github/workflows/ci.yml`）は **ビルド検証のみ**（push / PR）。Pages への自動デプロイは行わない。

@@ -1,6 +1,6 @@
 import {
   SCRAPBOX_API_BASE,
-  SCRAPBOX_PROJECT,
+  getScrapboxProject,
   getScrapboxSid,
 } from './config';
 import type { ScrapboxPageDetail, ScrapboxPageSummary } from './types';
@@ -42,7 +42,7 @@ export async function fetchScrapboxPageSummariesPage(
     skip: String(skip),
     sort: 'updated',
   });
-  const path = `/pages/${encodeURIComponent(SCRAPBOX_PROJECT)}?${params}`;
+  const path = `/pages/${encodeURIComponent(getScrapboxProject())}?${params}`;
   const res = await scrapboxFetch(path);
   if (!res.ok) {
     throw new Error(
@@ -74,7 +74,7 @@ export async function fetchScrapboxPageList(): Promise<ScrapboxPageSummary[]> {
 export async function fetchScrapboxPageDetail(
   title: string,
 ): Promise<ScrapboxPageDetail> {
-  const path = `/pages/${encodeURIComponent(SCRAPBOX_PROJECT)}/${encodeURIComponent(title)}`;
+  const path = `/pages/${encodeURIComponent(getScrapboxProject())}/${encodeURIComponent(title)}`;
   const res = await scrapboxFetch(path);
   if (!res.ok) {
     throw new Error(
