@@ -50,7 +50,18 @@ export function pathOgImageUrl(canonicalUrl: string): string {
   const relative = p
     .slice(1)
     .split('/')
-    .map((seg) => encodeURIComponent(decodeURIComponent(seg)))
+    .map((seg) => {
+      let decoded = seg;
+      try {
+        decoded = decodeURIComponent(seg);
+      } catch {
+        /* keep seg */
+      }
+      if (/[\/\\]/.test(decoded)) {
+        return seg.includes('%') ? seg : encodeURIComponent(decoded);
+      }
+      return encodeURIComponent(decoded);
+    })
     .join('/');
   return `${SITE_ORIGIN}/${relative}/${OG_IMAGE_FILENAME}`;
 }
@@ -59,9 +70,15 @@ export function pathOgImageUrl(canonicalUrl: string): string {
 export function publicOgFilePath(pathname: string, cwd = process.cwd()): string {
   const p = normalizePathname(pathname);
   if (p === '/') return join(cwd, 'public', OG_IMAGE_FILENAME);
-  const parts = p
-    .slice(1)
-    .split('/')
-    .map((seg) => decodeURIComponent(seg));
+  const parts: string[] = [];
+  for (const seg of p.slice(1).split('/')) {
+    let decoded = seg;
+    try {
+      decoded = decodeURIComponent(seg);
+    } catch {
+      /* keep seg */
+    }
+    parts.push(/[\/\\]/.test(decoded) ? seg : decoded);
+  }
   return join(cwd, 'public', ...parts, OG_IMAGE_FILENAME);
 }
