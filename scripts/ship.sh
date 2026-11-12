@@ -7,7 +7,9 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 source "$ROOT/scripts/cloudflare-account-id.sh"
 cd "$ROOT"
 
-if ! git diff --quiet --ignore-submodules HEAD 2>/dev/null || ! git diff --cached --quiet --ignore-submodules 2>/dev/null; then
+if ! git diff --quiet --ignore-submodules HEAD 2>/dev/null \
+  || ! git diff --cached --quiet --ignore-submodules 2>/dev/null \
+  || [ -n "$(git ls-files --others --exclude-standard)" ]; then
   echo "ship: 未コミットの変更があります。commit してから実行してください。" >&2
   exit 1
 fi
