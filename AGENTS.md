@@ -26,3 +26,4 @@
 
 - 日本語 Markdown 本文: [.cursor/rules/japanese-prose.mdc](./.cursor/rules/japanese-prose.mdc)
 - ブログ新規作成: [.cursor/rules/write-blog.mdc](./.cursor/rules/write-blog.mdc)
+- HTML/CSS/クライアント JS のモダン化: [.agents/skills/modern-web-guidance/SKILL.md](./.agents/skills/modern-web-guidance/SKILL.md)（[Modern Web Guidance](https://developer.chrome.com/docs/modern-web-guidance)）
