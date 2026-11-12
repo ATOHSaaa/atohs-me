@@ -1639,14 +1639,17 @@ h1.page-title {
   opacity: 0.88;
 }
 
-.not-found-posts {
+.recent-blog-posts {
   margin-top: 72px;
   padding-top: 40px;
   border-top: 3px solid var(--color-text);
+}
+
+.not-found .recent-blog-posts {
   animation: not-found-rise 0.7s ease-out 0.32s both;
 }
 
-.not-found-posts h2 {
+.recent-blog-posts h2 {
   margin-top: 0;
   font-size: 1.2em;
   letter-spacing: 0.05em;
@@ -1673,7 +1676,7 @@ h1.page-title {
   .not-found-title,
   .not-found-text,
   .not-found-actions,
-  .not-found-posts {
+  .not-found .recent-blog-posts {
     animation: none;
   }
 
@@ -1965,7 +1968,7 @@ h1.page-title {
     font-size: 1.45em;
   }
 
-  .not-found-posts {
+  .not-found .recent-blog-posts {
     margin-top: 56px;
     padding-top: 32px;
   }

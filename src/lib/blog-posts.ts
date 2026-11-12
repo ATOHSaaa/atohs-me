@@ -8,6 +8,24 @@ import {
 
 export type BlogPostEntry = CollectionEntry<'blog'>;
 
+/** 記事下・404 など「最近の記事」リストの件数。 */
+export const RECENT_BLOG_POSTS_LIST_LIMIT = 10;
+
+/**
+ * 新しい順に並んだ公開記事から最近の記事を取る。
+ * `excludeId` を渡すとその記事を除いてから `limit` 件に切る（記事詳細用）。
+ */
+export function pickRecentBlogPosts(
+  postsSortedByNewest: BlogPostEntry[],
+  limit = RECENT_BLOG_POSTS_LIST_LIMIT,
+  excludeId?: string,
+): BlogPostEntry[] {
+  const pool = excludeId
+    ? postsSortedByNewest.filter((post) => post.id !== excludeId)
+    : postsSortedByNewest;
+  return pool.slice(0, limit);
+}
+
 export type BlogArchiveMonthGroup = {
   month: number;
   posts: BlogPostEntry[];

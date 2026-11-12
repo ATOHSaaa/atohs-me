@@ -12,17 +12,27 @@ import { extractBlogTocItems } from '../../lib/blog-toc';
 import { formatDate } from '../../lib/format-date';
 import { postHasTwitterEmbed } from '../../lib/blog-twitter-embed.js';
 import { OG_IMAGE_FILENAME } from '../../lib/og-image';
+import RecentBlogPosts from '../../components/RecentBlogPosts.astro';
+import { pickRecentBlogPosts } from '../../lib/blog-posts';
+import { blogRecentPostsSectionCacheKey } from '../../lib/incremental-cache-key';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const sorted = [...posts].sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  );
+  const recentSectionKey = blogRecentPostsSectionCacheKey(sorted);
   return posts.map((post) => ({
     params: { slug: post.id },
-    props: { post },
-    cacheKey: String(post.digest),
+    props: {
+      post,
+      recentPosts: pickRecentBlogPosts(sorted, undefined, post.id),
+    },
+    cacheKey: `${String(post.digest)}:${recentSectionKey}`,
   }));
 }
 
-const { post } = Astro.props;
+const { post, recentPosts } = Astro.props;
 const { Content } = await render(post);
 const postUrl = `https://atohs.me/blog/${post.id}`;
 const ogImage = `https://atohs.me/blog/${post.id}/${OG_IMAGE_FILENAME}`;
@@ -74,6 +84,7 @@ const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
         <BlogQuoteFootnotes sources={footnotes} />
       </div>
     </article>
+    <RecentBlogPosts posts={recentPosts} />
     <div class="blog-share-float" aria-label="記事をシェア">
       <ShareButtons url={postUrl} title={post.data.title} />
     </div>

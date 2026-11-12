@@ -1,0 +1,23 @@
+---
+import BlogListItem from './BlogListItem.astro';
+import type { BlogPostEntry } from '../lib/blog-posts';
+
+interface Props {
+  posts: BlogPostEntry[];
+}
+
+const { posts } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    <section class="recent-blog-posts" aria-labelledby="recent-blog-posts-heading">
+      <h2 id="recent-blog-posts-heading">最近の記事</h2>
+      <ul class="blog-list">
+        {posts.map((post) => (
+          <BlogListItem post={post} />
+        ))}
+      </ul>
+    </section>
+  )
+}

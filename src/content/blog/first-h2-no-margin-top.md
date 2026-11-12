@@ -1,5 +1,5 @@
 ---
-title: 本文のいちばん最初の見出しがh2のときだけ、margin-top を0にする
+title: 本文のいちばん最初の見出しがh2のときだけ、margin-topを0にする
 pubDate: 2026-11-12T10:15:00+09:00
 tags: CSS
 ---
