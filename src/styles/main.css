@@ -3,6 +3,7 @@
    ========================================================================== */
 
 :root {
+  color-scheme: light dark;
   --contrast-level: 100;
   --contrast-toward-high: 0;
   --contrast-toward-low: 0;
@@ -102,6 +103,10 @@
       calc(100% - var(--contrast-toward-high) * 100%),
     #ffffff calc(var(--contrast-toward-high) * 100%)
   );
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
 }
 
 [data-theme="dark"] {
@@ -390,7 +395,7 @@ header:not(.header-top) {
   font-weight: 700;
 }
 
-.skip-link:focus {
+.skip-link:focus-visible {
   top: 16px;
 }
 
