@@ -6,7 +6,7 @@ const SITE_ORIGIN = 'https://atohs.me';
 
 /** サイト内ナビの表記に合わせる URL 第1セグメント */
 const FIRST_SEGMENT_LABEL: Record<string, string> = {
-  blog: 'Blog',
+  blog: 'blog',
   about: 'About',
   contact: 'Contact',
   works: 'Works',
@@ -27,7 +27,7 @@ export function pathnameFromCanonicalUrl(canonicalUrl: string): string {
   return normalizePathname(new URL(canonicalUrl).pathname);
 }
 
-/** OGP 画像内に描画するパスラベル（例: `atohs.me/Blog/tags/foo`） */
+/** OGP 画像内に描画するパスラベル（例: `atohs.me/blog/tags/foo`） */
 export function pathLabelForOg(pathname: string): string {
   const p = normalizePathname(pathname);
   if (p === '/') return 'atohs.me';

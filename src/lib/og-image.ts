@@ -625,7 +625,7 @@ export async function generateOgImage(
                             alignItems: 'center',
                             height: BRAND_ICON_SIZE,
                           },
-                          children: 'atohs.me/Blog',
+                          children: 'atohs.me/blog',
                         },
                       },
                     ],
