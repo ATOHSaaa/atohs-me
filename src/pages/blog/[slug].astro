@@ -110,11 +110,19 @@ const footnotes = extractFootnotesFromMarkdown(post.body ?? '');
 
           if (!mobileQuery.matches) return;
 
+          const syncReceded = (footerIntersects) => {
+            const pastFooter = footer.getBoundingClientRect().bottom <= 0;
+            float.classList.toggle(
+              'blog-share-float--receded',
+              footerIntersects || pastFooter,
+            );
+          };
+
           observer = new IntersectionObserver(
             (entries) => {
               const entry = entries[0];
               if (!entry) return;
-              float.classList.toggle('blog-share-float--receded', entry.isIntersecting);
+              syncReceded(entry.isIntersecting);
             },
             {
               root: null,
