@@ -6,7 +6,7 @@ title: Career
 - Webメディア[蓼食う本の虫](https://tadeku.net)の運営・執筆・編集
 - 小説執筆ツール集 [tadeku-tools](https://tools.tadeku.net) の開発
 
-### [蓼食う本の虫制作室](https://production.tadeku.net)としての制作事業
+### [蓼食う本の虫制作室](https://works.tadeku.net)としての制作事業
 
 - WordPressを用いたWebサイト制作
 - ノベルゲームシナリオの校正
