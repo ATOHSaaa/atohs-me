@@ -612,6 +612,10 @@ a.blog-tag:hover {
 }
 
 @media (max-width: 720px) {
+  .main.blog-main {
+    width: min(calc(100% - 32px), var(--width-content));
+  }
+
   .blog-body {
     font-size: 15px;
   }
@@ -621,6 +625,12 @@ a.blog-tag:hover {
 .blog-layout .blog-body {
   --blog-body-inline-inset: 1em;
   padding-inline: var(--blog-body-inline-inset);
+}
+
+@media (max-width: 720px) {
+  .blog-layout .blog-body {
+    --blog-body-inline-inset: 0;
+  }
 }
 
 .blog-layout .blog-body :is(h2, h3, h4, h5, h6) {
@@ -643,7 +653,7 @@ a.blog-tag:hover {
 }
 
 .blog-body blockquote:not(.twitter-tweet) {
-  margin: 1.8em 0 2em 1em;
+  margin: 1.8em 1em 2em 1em;
   padding-left: 1.1em;
 }
 
