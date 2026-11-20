@@ -58,6 +58,7 @@
   --width-header: 1200px;
   --site-gutter: 16px;
   --header-height: 86px;
+  --header-display-only-height: 52px;
   --radius-sm: 8px;
   --radius-md: 16px;
   --card-surface: var(--color-bg);
@@ -254,8 +255,16 @@ body:has(.header-top) {
   padding-top: var(--header-height);
 }
 
+body:has(.header-top--display-only) {
+  padding-top: var(--header-display-only-height);
+}
+
 html:has(.header-top) {
   scroll-padding-top: var(--header-height);
+}
+
+html:has(.header-top--display-only) {
+  scroll-padding-top: var(--header-display-only-height);
 }
 
 p {
@@ -409,9 +418,17 @@ header:not(.header-top) {
   padding: 0;
   font-weight: bold;
   border-top: none;
-  border-bottom: var(--color-text) solid 2px;
+  border-bottom: none;
   margin: 0;
   background-color: var(--color-bg);
+}
+
+.header-top--display-only {
+  height: var(--header-display-only-height);
+}
+
+.header-top--display-only .header-inner {
+  height: var(--header-display-only-height);
 }
 
 .header-inner {
@@ -1696,6 +1713,7 @@ h1.page-title {
 @media (max-width: 720px) {
   :root {
     --header-height: 70px;
+    --header-display-only-height: 48px;
     --site-gutter: 24px;
     --font-size-blog-title: 1.4em;
   }
@@ -1720,10 +1738,6 @@ h1.page-title {
   .header-menu-toggle {
     display: inline-flex;
     position: relative;
-  }
-
-  .header-top.is-menu-open {
-    border-bottom-color: transparent;
   }
 
   .header-top.is-menu-open .header-menu-toggle {

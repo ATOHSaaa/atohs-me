@@ -1,0 +1,125 @@
+---
+import Icon from './Icon.astro';
+import SiteLogo from './SiteLogo.astro';
+import { getPublishedBlogPosts } from '../lib/blog-posts';
+import { buildBlogStats } from '../lib/blog-stats';
+
+const now = new Date();
+const allPosts = await getPublishedBlogPosts();
+const stats = buildBlogStats(allPosts, 'all', now);
+---
+
+<div class="home-bento-layout">
+  <aside class="home-bento-sidebar" aria-label="プロフィール">
+    <SiteLogo
+      class="home-bento-profile-icon"
+      decoding="sync"
+      loading="eager"
+      fetchpriority="high"
+    />
+    <h1 class="home-bento-profile-name">atohs</h1>
+    <p class="home-bento-profile-meta">
+      <span class="home-bento-profile-meta-ja" lang="ja">
+        <span>伊藤</span>
+        <span>祥太</span>
+      </span>
+      （<span class="home-bento-profile-meta-ja" lang="en">
+        <span>ITO</span>
+        <span>SHOTA</span>
+      </span>）
+    </p>
+    <div class="home-bento-profile-intro">
+      <p class="home-bento-profile-detail">
+        うちらの代でインターネットをよくしていかなくっちゃ✌️
+      </p>
+      <p class="home-bento-profile-detail">印刷会社 → ピクシブ → 独立</p>
+    </div>
+  </aside>
+
+  <div class="home-bento-main">
+    <section class="home-bento" aria-label="サイト案内">
+  <a class="home-bento-card home-bento-card--blog" href="/blog">
+    <div class="home-bento-card__inner">
+      <p class="home-bento-card__eyebrow">Blog</p>
+      <p class="home-bento-card__stat" aria-hidden="true">{stats.postCount}</p>
+      <p class="home-bento-card__stat-label">posts</p>
+      <span class="home-bento-card__pill">Read</span>
+    </div>
+  </a>
+
+  <a class="home-bento-card home-bento-card--about" href="/about">
+    <span class="home-bento-card__inner">
+      <span class="home-bento-card__icon" aria-hidden="true">👋</span>
+      <span class="home-bento-card__title">About</span>
+    </span>
+  </a>
+
+  <a class="home-bento-card home-bento-card--memo" href="/memo/">
+    <span class="home-bento-card__inner">
+      <span class="home-bento-card__icon" aria-hidden="true">✍️</span>
+      <span class="home-bento-card__title">Memo</span>
+    </span>
+  </a>
+
+  <a class="home-bento-card home-bento-card--resume" href="/resume">
+    <span class="home-bento-card__inner">
+      <span class="home-bento-card__icon" aria-hidden="true">📝</span>
+      <span class="home-bento-card__title">Resume</span>
+    </span>
+  </a>
+
+  <a class="home-bento-card home-bento-card--keywords" href="/keywords">
+    <span class="home-bento-card__inner">
+      <span class="home-bento-card__icon" aria-hidden="true">🙋‍♀️</span>
+      <span class="home-bento-card__title">Keywords</span>
+    </span>
+  </a>
+
+  <a class="home-bento-card home-bento-card--contact" href="/contact">
+    <span class="home-bento-card__inner">
+      <span class="home-bento-card__icon" aria-hidden="true">👏</span>
+      <span class="home-bento-card__title">Contact</span>
+    </span>
+  </a>
+
+  <a class="home-bento-card home-bento-card--stats" href="/blog/stats">
+    <span class="home-bento-card__inner">
+      <span class="home-bento-card__icon" aria-hidden="true">🎉</span>
+      <span class="home-bento-card__title">Stats</span>
+    </span>
+  </a>
+
+  <a
+    class="home-bento-card home-bento-card--yonda"
+    href="https://yonda.tadeku.net/atohs"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <span class="home-bento-card__inner">
+      <span class="home-bento-card__icon" aria-hidden="true">📚️</span>
+      <span class="home-bento-card__title">
+        Yonda<span class="link-external-mark" aria-hidden="true">↗</span>
+      </span>
+      <span class="visually-hidden">（新しいタブで開く）</span>
+    </span>
+  </a>
+
+  <a
+    class="home-bento-card home-bento-card--twitter"
+    href="https://twitter.com/atohsaaa"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <span class="home-bento-card__inner">
+      <span class="home-bento-card__icon" aria-hidden="true">
+        <Icon name="twitter" />
+      </span>
+      <span class="home-bento-card__title">
+        Twitter<span class="link-external-mark" aria-hidden="true">↗</span>
+      </span>
+      <span class="visually-hidden">（新しいタブで開く）</span>
+    </span>
+  </a>
+    </section>
+  </div>
+</div>

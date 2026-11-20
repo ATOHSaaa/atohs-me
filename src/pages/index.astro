@@ -1,9 +1,8 @@
 ---
+import '../styles/home-bento.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
-import HomeRecentBlogPosts from '../components/HomeRecentBlogPosts.astro';
-import HomeFooterNav from '../components/HomeFooterNav.astro';
-import SiteLogo from '../components/SiteLogo.astro';
+import HomeBento from '../components/HomeBento.astro';
 import { HOME_OG_IMAGE_URL } from '../lib/home-og';
 ---
 
@@ -15,32 +14,7 @@ import { HOME_OG_IMAGE_URL } from '../lib/home-og';
   <SiteHeader />
   <div class="home-layout">
     <main id="main-content" class="main main-home">
-      <div class="home-profile">
-        <div class="name-box">
-          <SiteLogo
-            class="profile-icon home-profile-icon"
-            decoding="sync"
-            loading="eager"
-            fetchpriority="high"
-          />
-          <p class="name-detail">
-            <span class="name-detail-line name-primary">
-              <span class="name-primary-part">あとーす（atohs）</span>
-              <span class="name-primary-part">伊藤祥太（ITO SHOTA）</span>
-            </span>
-            <span class="name-detail-line">
-              Born on November 13, 1993 / Live in Kumamoto
-            </span>
-            <span class="name-detail-line">Website Development / Web Marketing / Writing / Editing</span>
-          </p>
-        </div>
-      </div>
-
-      <HomeRecentBlogPosts />
-
-      <div class="home-footer-zone">
-        <HomeFooterNav />
-      </div>
+      <HomeBento />
     </main>
   </div>
 </BaseLayout>
