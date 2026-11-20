@@ -57,7 +57,7 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
       <ul class="home-bento-blog-list" data-home-bento-blog-list aria-label="最近のブログ記事">
         {
           recentBlogPosts.map((post, index) => (
-            <li class="home-bento-blog-list__item" hidden={index >= 8}>
+            <li class="home-bento-blog-list__item" hidden={index >= 6}>
               <time
                 class="home-bento-blog-list__date"
                 datetime={post.data.pubDate.toISOString()}
@@ -226,9 +226,16 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
     if (items.length === 0) return;
 
     const maxBottom = () => {
-      const style = getComputedStyle(inner);
-      const padBottom = Number.parseFloat(style.paddingBottom) || 0;
-      return inner.getBoundingClientRect().bottom - padBottom - 4;
+      const innerStyle = getComputedStyle(inner);
+      const cardStyle = getComputedStyle(card);
+      const padBottom = Number.parseFloat(innerStyle.paddingBottom) || 0;
+      const borderBottom = Number.parseFloat(cardStyle.borderBottomWidth) || 0;
+      return (
+        Math.min(
+          inner.getBoundingClientRect().bottom - padBottom,
+          card.getBoundingClientRect().bottom - borderBottom,
+        ) - 8
+      );
     };
 
     const visibleItemsFit = (visible: number) => {
@@ -250,8 +257,14 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
       visible += 1;
       if (!visibleItemsFit(visible)) {
         items[i].hidden = true;
+        visible -= 1;
         break;
       }
+    }
+
+    while (visible > 0 && !visibleItemsFit(visible)) {
+      items[visible - 1].hidden = true;
+      visible -= 1;
     }
   }
 

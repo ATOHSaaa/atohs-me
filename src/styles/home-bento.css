@@ -323,11 +323,34 @@ a.home-bento-card:focus-visible {
 }
 
 .home-bento-card--blog .home-bento-card__head {
+  display: flex;
+  flex-flow: row wrap;
   flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(4px, 3cqmin, 8px);
   width: 100%;
-  margin-bottom: clamp(14px, 10cqmin, 24px);
-  padding-top: clamp(4px, 3cqmin, 8px);
-  transform: translateY(clamp(2px, 3cqmin, 6px));
+  margin: 0 0 clamp(6px, 4cqmin, 10px);
+  padding: 0;
+  text-align: start;
+  transform: none;
+}
+
+.home-bento-card--blog .home-bento-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-size: clamp(1.05rem, 9cqmin, 1.35rem);
+  line-height: 1;
+  color: var(--color-text);
+}
+
+.home-bento-card--blog .home-bento-card__title {
+  margin: 0;
+  font-size: clamp(0.74rem, 9cqmin, 0.95rem);
+  font-weight: 800;
+  line-height: 1.2;
 }
 
 .home-bento-blog-list {
@@ -497,8 +520,7 @@ a.home-bento-card:focus-visible {
 }
 
 .home-bento-card:not(.home-bento-card--stats, .home-bento-card--blog) .home-bento-card__inner,
-.home-bento-card--stats .home-bento-card__head,
-.home-bento-card--blog .home-bento-card__head {
+.home-bento-card--stats .home-bento-card__head {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -512,8 +534,7 @@ a.home-bento-card:focus-visible {
 }
 
 .home-bento-card:not(.home-bento-card--stats, .home-bento-card--blog) .home-bento-card__icon,
-.home-bento-card--stats .home-bento-card__icon,
-.home-bento-card--blog .home-bento-card__icon {
+.home-bento-card--stats .home-bento-card__icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -524,8 +545,7 @@ a.home-bento-card:focus-visible {
 }
 
 .home-bento-card:not(.home-bento-card--stats, .home-bento-card--blog) .home-bento-card__title,
-.home-bento-card--stats .home-bento-card__title,
-.home-bento-card--blog .home-bento-card__title {
+.home-bento-card--stats .home-bento-card__title {
   margin: 0;
   font-size: clamp(0.72rem, 12.5cqmin, 1.05rem);
   font-weight: 800;
@@ -562,16 +582,14 @@ a.home-bento-card:focus-visible {
 
 @supports (width: 1cqmin) {
   .home-bento-card:not(.home-bento-card--stats, .home-bento-card--blog) .home-bento-card__inner,
-  .home-bento-card--stats .home-bento-card__head,
-  .home-bento-card--blog .home-bento-card__head {
+  .home-bento-card--stats .home-bento-card__head {
     gap: clamp(4px, 5.5cqmin, 10px);
   }
 }
 
 @supports not (width: 1cqmin) {
   .home-bento-card:not(.home-bento-card--stats, .home-bento-card--blog) .home-bento-card__inner,
-  .home-bento-card--stats .home-bento-card__head,
-  .home-bento-card--blog .home-bento-card__head {
+  .home-bento-card--stats .home-bento-card__head {
     gap: 0.35em;
   }
 }
