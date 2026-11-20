@@ -609,6 +609,7 @@ a.blog-tag:hover {
   hyphens: auto;
   -webkit-hyphens: auto;
   text-spacing-trim: trim-start;
+  hanging-punctuation: allow-end;
 }
 
 @media (max-width: 720px) {
