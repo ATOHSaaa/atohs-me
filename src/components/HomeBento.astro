@@ -13,8 +13,9 @@ const stats = buildBlogStats(allPosts, 'all', now);
 const statsPreviewWeeks = 11;
 const statsHeatmapWeeks = stats.heatmapWeeks.slice(-statsPreviewWeeks);
 const formatStat = (n: number) => n.toLocaleString('en-US');
-const HOME_BENTO_BLOG_LIMIT = 5;
-const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_LIMIT);
+/** カード内に収まる分だけクライアントで切り詰める（上限は全公開記事まで） */
+const HOME_BENTO_BLOG_MAX = Math.max(allPosts.length, 1);
+const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
 ---
 
 <div class="home-bento-layout">
@@ -53,10 +54,10 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_LIMIT);
         <span class="home-bento-card__icon" aria-hidden="true">📰</span>
         <span class="home-bento-card__title">Blog</span>
       </div>
-      <ul class="home-bento-blog-list" aria-label="最近のブログ記事">
+      <ul class="home-bento-blog-list" data-home-bento-blog-list aria-label="最近のブログ記事">
         {
-          recentBlogPosts.map((post) => (
-            <li class="home-bento-blog-list__item">
+          recentBlogPosts.map((post, index) => (
+            <li class="home-bento-blog-list__item" hidden={index >= 8}>
               <time
                 class="home-bento-blog-list__date"
                 datetime={post.data.pubDate.toISOString()}
@@ -216,6 +217,69 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_LIMIT);
 </div>
 
 <script>
+  function fitHomeBentoBlogList(card: HTMLElement) {
+    const inner = card.querySelector<HTMLElement>('.home-bento-card__inner');
+    const list = card.querySelector<HTMLUListElement>('[data-home-bento-blog-list]');
+    if (!inner || !list) return;
+
+    const items = [...list.querySelectorAll<HTMLLIElement>('.home-bento-blog-list__item')];
+    if (items.length === 0) return;
+
+    const maxBottom = () => {
+      const style = getComputedStyle(inner);
+      const padBottom = Number.parseFloat(style.paddingBottom) || 0;
+      return inner.getBoundingClientRect().bottom - padBottom - 4;
+    };
+
+    const visibleItemsFit = (visible: number) => {
+      const bottom = maxBottom();
+      for (let i = 0; i < visible; i += 1) {
+        if (items[i].hidden) return false;
+        if (items[i].getBoundingClientRect().bottom > bottom) return false;
+      }
+      return true;
+    };
+
+    for (const item of items) {
+      item.hidden = true;
+    }
+
+    let visible = 0;
+    for (let i = 0; i < items.length; i += 1) {
+      items[i].hidden = false;
+      visible += 1;
+      if (!visibleItemsFit(visible)) {
+        items[i].hidden = true;
+        break;
+      }
+    }
+  }
+
+  function scheduleHomeBentoBlogListFit(card: HTMLElement) {
+    const run = () => fitHomeBentoBlogList(card);
+    run();
+    requestAnimationFrame(() => {
+      run();
+      requestAnimationFrame(run);
+    });
+  }
+
+  function initHomeBentoBlogList() {
+    document.querySelectorAll<HTMLElement>('.home-bento-card--blog').forEach((card) => {
+      const fit = () => scheduleHomeBentoBlogListFit(card);
+
+      if (card.dataset.homeBentoBlogListInit !== 'true') {
+        card.dataset.homeBentoBlogListInit = 'true';
+        const observer = new ResizeObserver(() => fit());
+        observer.observe(card);
+        window.addEventListener('resize', fit, { passive: true });
+        document.fonts?.ready.then(fit);
+      }
+
+      fit();
+    });
+  }
+
   function initHomeBentoCat() {
     document
       .querySelectorAll<HTMLButtonElement>('.home-bento-card--cat[data-home-bento-cat]')
@@ -246,6 +310,10 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_LIMIT);
       });
   }
 
+  initHomeBentoBlogList();
   initHomeBentoCat();
-  document.addEventListener('astro:page-load', initHomeBentoCat);
+  document.addEventListener('astro:page-load', () => {
+    initHomeBentoBlogList();
+    initHomeBentoCat();
+  });
 </script>
