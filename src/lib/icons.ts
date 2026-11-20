@@ -5,7 +5,12 @@ import {
   faTwitter,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
-import { faCheck, faLink, faShuffle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowUpRightFromSquare,
+  faCheck,
+  faLink,
+  faShuffle,
+} from '@fortawesome/free-solid-svg-icons';
 
 /** CDN の all.css を使わず、利用アイコンだけバンドルする */
 config.autoAddCss = false;
@@ -16,6 +21,7 @@ const ICON_DEFINITIONS = {
   tiktok: faTiktok,
   amazon: faAmazon,
   link: faLink,
+  externalLink: faArrowUpRightFromSquare,
   check: faCheck,
   shuffle: faShuffle,
 } as const satisfies Record<string, IconDefinition>;

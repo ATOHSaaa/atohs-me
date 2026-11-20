@@ -1,4 +1,5 @@
 ---
+import ExternalLinkMark from './ExternalLinkMark.astro';
 import HeaderNavLabel from './HeaderNavLabel.astro';
 
 interface Props {
@@ -25,16 +26,16 @@ const className =
     variant === 'home-footer' ? (
       <>
         <span class="home-footer-nav-link-label">Yonda</span>
-        <span class="link-external-mark" aria-hidden="true">↗</span>
+        <ExternalLinkMark />
       </>
     ) : variant === 'header' ? (
       <>
         <HeaderNavLabel label="Yonda" />
-        <span class="link-external-mark" aria-hidden="true">↗</span>
+        <ExternalLinkMark />
       </>
     ) : (
       <>
-        Yonda<span class="link-external-mark" aria-hidden="true">↗</span>
+        Yonda<ExternalLinkMark />
       </>
     )
   }

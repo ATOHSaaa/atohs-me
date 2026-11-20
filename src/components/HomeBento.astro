@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import ExternalLinkMark from './ExternalLinkMark.astro';
 import Icon from './Icon.astro';
 import SiteLogo from './SiteLogo.astro';
 import catImage from '../cat.png';
@@ -150,6 +151,7 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
     <span class="home-bento-card__inner">
       <span class="home-bento-card__icon" aria-hidden="true">👋</span>
       <span class="home-bento-card__title">About</span>
+      <span class="home-bento-card__sub" aria-hidden="true"></span>
     </span>
   </a>
 
@@ -157,6 +159,7 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
     <span class="home-bento-card__inner">
       <span class="home-bento-card__icon" aria-hidden="true">✍️</span>
       <span class="home-bento-card__title">Memo</span>
+      <span class="home-bento-card__sub" aria-hidden="true"></span>
     </span>
   </a>
 
@@ -164,6 +167,7 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
     <span class="home-bento-card__inner">
       <span class="home-bento-card__icon" aria-hidden="true">📝</span>
       <span class="home-bento-card__title">Resume</span>
+      <span class="home-bento-card__sub" aria-hidden="true"></span>
     </span>
   </a>
 
@@ -171,6 +175,7 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
     <span class="home-bento-card__inner">
       <span class="home-bento-card__icon" aria-hidden="true">🙋‍♀️</span>
       <span class="home-bento-card__title">Keywords</span>
+      <span class="home-bento-card__sub" aria-hidden="true"></span>
     </span>
   </a>
 
@@ -178,6 +183,33 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
     <span class="home-bento-card__inner">
       <span class="home-bento-card__icon" aria-hidden="true">👀</span>
       <span class="home-bento-card__title">Contact</span>
+      <span class="home-bento-card__sub" aria-hidden="true"></span>
+    </span>
+  </a>
+
+  <a
+    class="home-bento-card home-bento-card--tadeku"
+    href="https://tadeku.net/"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <span class="home-bento-card__inner">
+      <span class="home-bento-card__icon" aria-hidden="true">
+        <img
+          class="home-bento-card__favicon"
+          src="/icons/tadeku-favicon.png"
+          alt=""
+          width="170"
+          height="170"
+          loading="lazy"
+          decoding="async"
+        />
+      </span>
+      <span class="home-bento-card__title">
+        蓼食う本の虫<ExternalLinkMark />
+      </span>
+      <span class="home-bento-card__sub">主宰</span>
+      <span class="visually-hidden">（新しいタブで開く）</span>
     </span>
   </a>
 
@@ -190,8 +222,9 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
     <span class="home-bento-card__inner">
       <span class="home-bento-card__icon" aria-hidden="true">📚️</span>
       <span class="home-bento-card__title">
-        Yonda<span class="link-external-mark" aria-hidden="true">↗</span>
+        Yonda<ExternalLinkMark />
       </span>
+      <span class="home-bento-card__sub">読書記録</span>
       <span class="visually-hidden">（新しいタブで開く）</span>
     </span>
   </a>
@@ -207,8 +240,9 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
         <Icon name="twitter" />
       </span>
       <span class="home-bento-card__title">
-        Twitter<span class="link-external-mark" aria-hidden="true">↗</span>
+        Twitter<ExternalLinkMark />
       </span>
+      <span class="home-bento-card__sub" lang="en">@atohsaaa</span>
       <span class="visually-hidden">（新しいタブで開く）</span>
     </span>
   </a>
@@ -217,6 +251,36 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
 </div>
 
 <script>
+  function alignBlogHeadToStats(card: HTMLElement) {
+    const statsHead = document.querySelector<HTMLElement>(
+      '.home-bento-card--stats .home-bento-card__head',
+    );
+    const statsIcon = document.querySelector<HTMLElement>(
+      '.home-bento-card--stats .home-bento-card__icon',
+    );
+    const statsTitle = document.querySelector<HTMLElement>(
+      '.home-bento-card--stats .home-bento-card__title',
+    );
+    const blogHead = card.querySelector<HTMLElement>('.home-bento-card__head');
+    const blogIcon = card.querySelector<HTMLElement>('.home-bento-card__icon');
+    const blogTitle = card.querySelector<HTMLElement>('.home-bento-card__title');
+    if (!statsHead || !blogHead) return;
+
+    const height = statsHead.getBoundingClientRect().height;
+    if (height <= 0) return;
+
+    blogHead.style.height = `${height}px`;
+    blogHead.style.minHeight = `${height}px`;
+    blogHead.style.maxHeight = `${height}px`;
+
+    if (statsIcon && blogIcon) {
+      blogIcon.style.fontSize = getComputedStyle(statsIcon).fontSize;
+    }
+    if (statsTitle && blogTitle) {
+      blogTitle.style.fontSize = getComputedStyle(statsTitle).fontSize;
+    }
+  }
+
   function fitHomeBentoBlogList(card: HTMLElement) {
     const inner = card.querySelector<HTMLElement>('.home-bento-card__inner');
     const list = card.querySelector<HTMLUListElement>('[data-home-bento-blog-list]');
@@ -269,7 +333,10 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
   }
 
   function scheduleHomeBentoBlogListFit(card: HTMLElement) {
-    const run = () => fitHomeBentoBlogList(card);
+    const run = () => {
+      alignBlogHeadToStats(card);
+      fitHomeBentoBlogList(card);
+    };
     run();
     requestAnimationFrame(() => {
       run();
@@ -285,6 +352,8 @@ const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_MAX);
         card.dataset.homeBentoBlogListInit = 'true';
         const observer = new ResizeObserver(() => fit());
         observer.observe(card);
+        const stats = document.querySelector('.home-bento-card--stats');
+        if (stats) observer.observe(stats);
         window.addEventListener('resize', fit, { passive: true });
         document.fonts?.ready.then(fit);
       }

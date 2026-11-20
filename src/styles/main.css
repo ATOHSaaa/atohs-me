@@ -731,12 +731,22 @@ html[data-theme="dark"] .theme-toggle-icon--light {
 }
 
 .link-external-mark {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-left: 0.15em;
   font-size: 0.85em;
   font-weight: 400;
+  line-height: 1;
+  vertical-align: -0.1em;
   opacity: 0.75;
   text-decoration: none;
+}
+
+.link-external-mark .icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: 0;
 }
 
 .header-menu-toggle {
