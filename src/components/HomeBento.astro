@@ -1,12 +1,20 @@
 ---
+import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import SiteLogo from './SiteLogo.astro';
-import { getPublishedBlogPosts } from '../lib/blog-posts';
+import catImage from '../cat.png';
+import { getPublishedBlogPosts, pickRecentBlogPosts } from '../lib/blog-posts';
 import { buildBlogStats } from '../lib/blog-stats';
+import { formatDate } from '../lib/format-date';
 
 const now = new Date();
 const allPosts = await getPublishedBlogPosts();
 const stats = buildBlogStats(allPosts, 'all', now);
+const statsPreviewWeeks = 11;
+const statsHeatmapWeeks = stats.heatmapWeeks.slice(-statsPreviewWeeks);
+const formatStat = (n: number) => n.toLocaleString('en-US');
+const HOME_BENTO_BLOG_LIMIT = 5;
+const recentBlogPosts = pickRecentBlogPosts(allPosts, HOME_BENTO_BLOG_LIMIT);
 ---
 
 <div class="home-bento-layout">
@@ -38,14 +46,104 @@ const stats = buildBlogStats(allPosts, 'all', now);
 
   <div class="home-bento-main">
     <section class="home-bento" aria-label="サイト案内">
-  <a class="home-bento-card home-bento-card--blog" href="/blog">
+  <article class="home-bento-card home-bento-card--blog">
+    <a class="home-bento-blog-card-surface" href="/blog/" aria-label="ブログ一覧へ"></a>
     <div class="home-bento-card__inner">
-      <p class="home-bento-card__eyebrow">Blog</p>
-      <p class="home-bento-card__stat" aria-hidden="true">{stats.postCount}</p>
-      <p class="home-bento-card__stat-label">posts</p>
-      <span class="home-bento-card__pill">Read</span>
+      <div class="home-bento-card__head">
+        <span class="home-bento-card__icon" aria-hidden="true">📰</span>
+        <span class="home-bento-card__title">Blog</span>
+      </div>
+      <ul class="home-bento-blog-list" aria-label="最近のブログ記事">
+        {
+          recentBlogPosts.map((post) => (
+            <li class="home-bento-blog-list__item">
+              <time
+                class="home-bento-blog-list__date"
+                datetime={post.data.pubDate.toISOString()}
+              >
+                {formatDate(post.data.pubDate)}
+              </time>
+              <a class="home-bento-blog-list__title" href={`/blog/${post.id}/`}>
+                {post.data.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
+  </article>
+
+  <a class="home-bento-card home-bento-card--stats" href="/blog/stats">
+    <span class="home-bento-card__inner">
+      <span class="home-bento-card__head">
+        <span class="home-bento-card__icon" aria-hidden="true">
+          <span class="home-bento-card__mark">
+            <svg viewBox="0 0 16 16">
+              <rect x="1" y="9" width="3.2" height="6" rx="0.8" />
+              <rect x="6.4" y="5" width="3.2" height="10" rx="0.8" />
+              <rect x="11.8" y="1" width="3.2" height="14" rx="0.8" />
+            </svg>
+          </span>
+        </span>
+        <span class="home-bento-card__title">Stats</span>
+      </span>
+      <span class="home-bento-stats-metrics">
+        <span class="home-bento-stats-heading">Blog's stats</span>
+        <span class="home-bento-stats-metric">
+          <span class="home-bento-stats-metric__label">Total posts</span>
+          <span class="home-bento-stats-metric__value">{formatStat(stats.postCount)}</span>
+        </span>
+        <span class="home-bento-stats-metric">
+          <span class="home-bento-stats-metric__label">Total characters</span>
+          <span class="home-bento-stats-metric__value">{formatStat(stats.totalCharCount)}</span>
+        </span>
+      </span>
+      <span
+        class="home-bento-heatmap"
+        style={`--home-bento-heatmap-weeks: ${statsHeatmapWeeks.length}`}
+        aria-hidden="true"
+      >
+        {
+          statsHeatmapWeeks.map((week) =>
+            week.days
+              .filter((day) => !day.outOfRange)
+              .map((day) => (
+                <span
+                  class:list={[
+                    'home-bento-heatmap-cell',
+                    `home-bento-heatmap-cell--${day.level}`,
+                  ]}
+                />
+              )),
+          )
+        }
+      </span>
+    </span>
   </a>
+
+  <div class="home-bento-cat-unit">
+    <span class="home-bento-cat-nya" aria-hidden="true">nya〜！</span>
+    <button
+      type="button"
+      class="home-bento-card home-bento-card--cat"
+      data-home-bento-cat
+      aria-expanded="false"
+      aria-label="猫の写真"
+    >
+      <Image
+        class="home-bento-card__photo"
+        src={catImage}
+        alt=""
+        width={720}
+        widths={[240, 360, 480, 720]}
+        sizes="(min-width: 880px) 20cqi, (min-width: 640px) 45cqi, 100cqi"
+        format="webp"
+        quality={80}
+        loading="lazy"
+        decoding="async"
+      />
+    </button>
+  </div>
 
   <a class="home-bento-card home-bento-card--about" href="/about">
     <span class="home-bento-card__inner">
@@ -77,15 +175,8 @@ const stats = buildBlogStats(allPosts, 'all', now);
 
   <a class="home-bento-card home-bento-card--contact" href="/contact">
     <span class="home-bento-card__inner">
-      <span class="home-bento-card__icon" aria-hidden="true">👏</span>
+      <span class="home-bento-card__icon" aria-hidden="true">👀</span>
       <span class="home-bento-card__title">Contact</span>
-    </span>
-  </a>
-
-  <a class="home-bento-card home-bento-card--stats" href="/blog/stats">
-    <span class="home-bento-card__inner">
-      <span class="home-bento-card__icon" aria-hidden="true">🎉</span>
-      <span class="home-bento-card__title">Stats</span>
     </span>
   </a>
 
@@ -123,3 +214,38 @@ const stats = buildBlogStats(allPosts, 'all', now);
     </section>
   </div>
 </div>
+
+<script>
+  function initHomeBentoCat() {
+    document
+      .querySelectorAll<HTMLButtonElement>('.home-bento-card--cat[data-home-bento-cat]')
+      .forEach((button) => {
+        if (button.dataset.homeBentoCatInit === 'true') return;
+        button.dataset.homeBentoCatInit = 'true';
+
+        let hideTimer: ReturnType<typeof setTimeout> | undefined;
+
+        button.addEventListener('click', () => {
+          const unit = button.closest('.home-bento-cat-unit');
+          if (!unit) return;
+          const nya = unit.querySelector('.home-bento-cat-nya');
+
+          if (hideTimer !== undefined) clearTimeout(hideTimer);
+
+          unit.classList.add('is-nya-visible');
+          button.setAttribute('aria-expanded', 'true');
+          nya?.setAttribute('aria-hidden', 'false');
+
+          hideTimer = setTimeout(() => {
+            unit.classList.remove('is-nya-visible');
+            button.setAttribute('aria-expanded', 'false');
+            nya?.setAttribute('aria-hidden', 'true');
+            hideTimer = undefined;
+          }, 2000);
+        });
+      });
+  }
+
+  initHomeBentoCat();
+  document.addEventListener('astro:page-load', initHomeBentoCat);
+</script>
