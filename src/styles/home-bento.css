@@ -324,16 +324,16 @@ a.home-bento-card:focus-visible {
 
 .home-bento-card--blog .home-bento-card__head {
   display: flex;
-  flex-flow: row wrap;
+  flex-direction: column;
   flex-shrink: 0;
   align-items: center;
-  justify-content: flex-start;
-  gap: clamp(4px, 3cqmin, 8px);
+  justify-content: center;
+  gap: clamp(2px, 2.5cqmin, 6px);
   width: 100%;
-  margin: 0 0 clamp(6px, 4cqmin, 10px);
-  padding: 0;
-  text-align: start;
-  transform: none;
+  min-height: clamp(2.75rem, 20cqmin, 3.75rem);
+  margin: 0 0 clamp(8px, 5cqmin, 12px);
+  padding: clamp(2px, 2cqmin, 6px) 0 0;
+  text-align: center;
 }
 
 .home-bento-card--blog .home-bento-card__icon {
@@ -341,16 +341,17 @@ a.home-bento-card:focus-visible {
   align-items: center;
   justify-content: center;
   margin: 0;
-  font-size: clamp(1.05rem, 9cqmin, 1.35rem);
+  font-size: clamp(1.35rem, 16cqmin, 2.15rem);
   line-height: 1;
   color: var(--color-text);
 }
 
 .home-bento-card--blog .home-bento-card__title {
   margin: 0;
-  font-size: clamp(0.74rem, 9cqmin, 0.95rem);
+  font-size: clamp(0.78rem, 11cqmin, 1.05rem);
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
 }
 
 .home-bento-blog-list {
